@@ -1,6 +1,6 @@
 //
 //  Flickr-Constants.swift
-//  Virtual Tourist
+//  SiteSee
 //
 //  Created by Tom Lai on 1/31/16.
 //  Copyright © 2016 Lai. All rights reserved.

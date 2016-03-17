@@ -17,29 +17,28 @@
 		773575231C4DF51100752585 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 773575221C4DF51100752585 /* MapKit.framework */; };
 		7756E4CB1C559E3400480651 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7756E4C91C559E3400480651 /* Image.swift */; };
 		775C9E2E1C4EBFCC00D45730 /* VTAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */; };
-		775C9E311C4F19DA00D45730 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 775C9E2F1C4F19DA00D45730 /* Model.xcdatamodeld */; };
 		775C9E511C4F492A00D45730 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C9E501C4F492A00D45730 /* CoreDataStackManager.swift */; };
 		775D0A281C5EAD5E0030AC9C /* Flickr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D0A271C5EAD5E0030AC9C /* Flickr.swift */; };
 		775D0A2A1C5EAEBB0030AC9C /* Flickr-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D0A291C5EAEBB0030AC9C /* Flickr-Constants.swift */; };
+		7772B5DF1C9B49350009CD5C /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7772B5DE1C9B49350009CD5C /* Model.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7703CAC01C77DD19000D9F34 /* VTCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VTCollectionViewCell.swift; path = SiteSee/VTCollectionViewCell.swift; sourceTree = "<group>"; };
-		771A69691C53F43F00973CA6 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoAlbumViewController.swift; path = SiteSee/PhotoAlbumViewController.swift; sourceTree = "<group>"; };
-		7735750D1C4DF39C00752585 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		773575101C4DF39C00752585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = SiteSee/AppDelegate.swift; sourceTree = "<group>"; };
-		773575121C4DF39C00752585 /* TravelLocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TravelLocationsMapViewController.swift; path = SiteSee/TravelLocationsMapViewController.swift; sourceTree = "<group>"; };
+		7703CAC01C77DD19000D9F34 /* VTCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VTCollectionViewCell.swift; path = SiteSee/VTCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
+		771A69691C53F43F00973CA6 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoAlbumViewController.swift; path = SiteSee/PhotoAlbumViewController.swift; sourceTree = SOURCE_ROOT; };
+		7735750D1C4DF39C00752585 /* SiteSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiteSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		773575101C4DF39C00752585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = SiteSee/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
+		773575121C4DF39C00752585 /* TravelLocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TravelLocationsMapViewController.swift; path = SiteSee/TravelLocationsMapViewController.swift; sourceTree = SOURCE_ROOT; };
 		773575151C4DF39C00752585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		773575171C4DF39C00752585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = SiteSee/Assets.xcassets; sourceTree = "<group>"; };
+		773575171C4DF39C00752585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = SiteSee/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		7735751A1C4DF39C00752585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7735751C1C4DF39C00752585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = SiteSee/Info.plist; sourceTree = "<group>"; };
 		773575221C4DF51100752585 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		7756E4C91C559E3400480651 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Image.swift; path = SiteSee/Image.swift; sourceTree = "<group>"; };
-		775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VTAnnotation.swift; path = SiteSee/VTAnnotation.swift; sourceTree = "<group>"; };
-		775C9E301C4F19DA00D45730 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		775C9E501C4F492A00D45730 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStackManager.swift; path = SiteSee/CoreDataStackManager.swift; sourceTree = "<group>"; };
-		775D0A271C5EAD5E0030AC9C /* Flickr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Flickr.swift; path = SiteSee/Flickr.swift; sourceTree = "<group>"; };
-		775D0A291C5EAEBB0030AC9C /* Flickr-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Flickr-Constants.swift"; path = "SiteSee/Flickr-Constants.swift"; sourceTree = "<group>"; };
+		7756E4C91C559E3400480651 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Image.swift; path = SiteSee/Image.swift; sourceTree = SOURCE_ROOT; };
+		775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VTAnnotation.swift; path = SiteSee/VTAnnotation.swift; sourceTree = SOURCE_ROOT; };
+		775C9E501C4F492A00D45730 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStackManager.swift; path = SiteSee/CoreDataStackManager.swift; sourceTree = SOURCE_ROOT; };
+		775D0A271C5EAD5E0030AC9C /* Flickr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Flickr.swift; path = SiteSee/Flickr.swift; sourceTree = SOURCE_ROOT; };
+		775D0A291C5EAEBB0030AC9C /* Flickr-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Flickr-Constants.swift"; path = "SiteSee/Flickr-Constants.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				773575221C4DF51100752585 /* MapKit.framework */,
-				7735750F1C4DF39C00752585 /* Virtual Tourist */,
+				7735750F1C4DF39C00752585 /* SiteSee */,
 				7735750E1C4DF39C00752585 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -76,12 +75,12 @@
 		7735750E1C4DF39C00752585 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7735750D1C4DF39C00752585 /* Virtual Tourist.app */,
+				7735750D1C4DF39C00752585 /* SiteSee.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7735750F1C4DF39C00752585 /* Virtual Tourist */ = {
+		7735750F1C4DF39C00752585 /* SiteSee */ = {
 			isa = PBXGroup;
 			children = (
 				773575101C4DF39C00752585 /* AppDelegate.swift */,
@@ -93,6 +92,7 @@
 				773575191C4DF39C00752585 /* LaunchScreen.storyboard */,
 				7735751C1C4DF39C00752585 /* Info.plist */,
 			);
+			name = SiteSee;
 			path = "Virtual Tourist";
 			sourceTree = "<group>";
 		};
@@ -101,7 +101,7 @@
 			children = (
 				775D0A261C5EAD070030AC9C /* Flicker */,
 				775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */,
-				775C9E2F1C4F19DA00D45730 /* Model.xcdatamodeld */,
+				7772B5DE1C9B49350009CD5C /* Model.xcdatamodeld */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -119,9 +119,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7735750C1C4DF39C00752585 /* Virtual Tourist */ = {
+		7735750C1C4DF39C00752585 /* SiteSee */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7735751F1C4DF39C00752585 /* Build configuration list for PBXNativeTarget "Virtual Tourist" */;
+			buildConfigurationList = 7735751F1C4DF39C00752585 /* Build configuration list for PBXNativeTarget "SiteSee" */;
 			buildPhases = (
 				773575091C4DF39C00752585 /* Sources */,
 				7735750A1C4DF39C00752585 /* Frameworks */,
@@ -131,9 +131,9 @@
 			);
 			dependencies = (
 			);
-			name = "Virtual Tourist";
+			name = SiteSee;
 			productName = "Virtual Tourist";
-			productReference = 7735750D1C4DF39C00752585 /* Virtual Tourist.app */;
+			productReference = 7735750D1C4DF39C00752585 /* SiteSee.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -169,7 +169,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7735750C1C4DF39C00752585 /* Virtual Tourist */,
+				7735750C1C4DF39C00752585 /* SiteSee */,
 			);
 		};
 /* End PBXProject section */
@@ -199,7 +199,7 @@
 				773575131C4DF39C00752585 /* TravelLocationsMapViewController.swift in Sources */,
 				773575111C4DF39C00752585 /* AppDelegate.swift in Sources */,
 				775D0A2A1C5EAEBB0030AC9C /* Flickr-Constants.swift in Sources */,
-				775C9E311C4F19DA00D45730 /* Model.xcdatamodeld in Sources */,
+				7772B5DF1C9B49350009CD5C /* Model.xcdatamodeld in Sources */,
 				7703CAC11C77DD19000D9F34 /* VTCollectionViewCell.swift in Sources */,
 				775C9E511C4F492A00D45730 /* CoreDataStackManager.swift in Sources */,
 			);
@@ -214,7 +214,8 @@
 				773575151C4DF39C00752585 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
+			path = SiteSee;
+			sourceTree = SOURCE_ROOT;
 		};
 		773575191C4DF39C00752585 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -222,7 +223,8 @@
 				7735751A1C4DF39C00752585 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
+			path = SiteSee;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXVariantGroup section */
 
@@ -295,6 +297,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -312,9 +315,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "Virtual Tourist/Info.plist";
+				INFOPLIST_FILE = SiteSee/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Lai.Virtual-Tourist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lai.SiteSee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -323,9 +326,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "Virtual Tourist/Info.plist";
+				INFOPLIST_FILE = SiteSee/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Lai.Virtual-Tourist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lai.SiteSee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -342,7 +345,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7735751F1C4DF39C00752585 /* Build configuration list for PBXNativeTarget "Virtual Tourist" */ = {
+		7735751F1C4DF39C00752585 /* Build configuration list for PBXNativeTarget "SiteSee" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				773575201C4DF39C00752585 /* Debug */,
@@ -354,13 +357,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		775C9E2F1C4F19DA00D45730 /* Model.xcdatamodeld */ = {
+		7772B5DE1C9B49350009CD5C /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				775C9E301C4F19DA00D45730 /* Model.xcdatamodel */,
 			);
-			currentVersion = 775C9E301C4F19DA00D45730 /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
+			name = Model.xcdatamodeld;
+			path = ../SiteSee/Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
