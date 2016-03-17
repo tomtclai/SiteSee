@@ -10,7 +10,7 @@
 		7703CAC11C77DD19000D9F34 /* VTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703CAC01C77DD19000D9F34 /* VTCollectionViewCell.swift */; };
 		771A696A1C53F43F00973CA6 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771A69691C53F43F00973CA6 /* PhotoAlbumViewController.swift */; };
 		773575111C4DF39C00752585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773575101C4DF39C00752585 /* AppDelegate.swift */; };
-		773575131C4DF39C00752585 /* TravelLocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773575121C4DF39C00752585 /* TravelLocationsMapViewController.swift */; };
+		773575131C4DF39C00752585 /* LocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773575121C4DF39C00752585 /* LocationsMapViewController.swift */; };
 		773575161C4DF39C00752585 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 773575141C4DF39C00752585 /* Main.storyboard */; };
 		773575181C4DF39C00752585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773575171C4DF39C00752585 /* Assets.xcassets */; };
 		7735751B1C4DF39C00752585 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 773575191C4DF39C00752585 /* LaunchScreen.storyboard */; };
@@ -28,7 +28,7 @@
 		771A69691C53F43F00973CA6 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoAlbumViewController.swift; path = SiteSee/PhotoAlbumViewController.swift; sourceTree = SOURCE_ROOT; };
 		7735750D1C4DF39C00752585 /* SiteSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiteSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		773575101C4DF39C00752585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = SiteSee/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
-		773575121C4DF39C00752585 /* TravelLocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TravelLocationsMapViewController.swift; path = SiteSee/TravelLocationsMapViewController.swift; sourceTree = SOURCE_ROOT; };
+		773575121C4DF39C00752585 /* LocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationsMapViewController.swift; path = SiteSee/LocationsMapViewController.swift; sourceTree = SOURCE_ROOT; };
 		773575151C4DF39C00752585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		773575171C4DF39C00752585 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = SiteSee/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		7735751A1C4DF39C00752585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -56,7 +56,7 @@
 		771A696B1C53F44400973CA6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				773575121C4DF39C00752585 /* TravelLocationsMapViewController.swift */,
+				773575121C4DF39C00752585 /* LocationsMapViewController.swift */,
 				771A69691C53F43F00973CA6 /* PhotoAlbumViewController.swift */,
 				7703CAC01C77DD19000D9F34 /* VTCollectionViewCell.swift */,
 			);
@@ -196,7 +196,7 @@
 				7756E4CB1C559E3400480651 /* Image.swift in Sources */,
 				775D0A281C5EAD5E0030AC9C /* Flickr.swift in Sources */,
 				771A696A1C53F43F00973CA6 /* PhotoAlbumViewController.swift in Sources */,
-				773575131C4DF39C00752585 /* TravelLocationsMapViewController.swift in Sources */,
+				773575131C4DF39C00752585 /* LocationsMapViewController.swift in Sources */,
 				773575111C4DF39C00752585 /* AppDelegate.swift in Sources */,
 				775D0A2A1C5EAEBB0030AC9C /* Flickr-Constants.swift in Sources */,
 				7772B5DF1C9B49350009CD5C /* Model.xcdatamodeld in Sources */,

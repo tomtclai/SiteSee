@@ -1,5 +1,5 @@
 //
-//  TravelLocationsMapViewController.swift
+//  LocationsMapViewController.swift
 //  SiteSee
 //
 //  Created by Tom Lai on 1/18/16.
@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class TravelLocationsMapViewController: UIViewController {
+class LocationsMapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     var annotation: VTAnnotation!
@@ -113,14 +113,14 @@ class TravelLocationsMapViewController: UIViewController {
 }
 
 // MARK: UIViewControllerRestoration
-extension TravelLocationsMapViewController : UIViewControllerRestoration {
+extension LocationsMapViewController : UIViewControllerRestoration {
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("TravelLocationsMapViewController")
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LocationsMapViewController")
     }
 }
 
 // MARK: MKMapViewDelegate
-extension TravelLocationsMapViewController : MKMapViewDelegate {
+extension LocationsMapViewController : MKMapViewDelegate {
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         annotation = view.annotation as! VTAnnotation
         performSegueWithIdentifier(showPhotoAlbumSegueID, sender: self)
@@ -128,7 +128,7 @@ extension TravelLocationsMapViewController : MKMapViewDelegate {
 }
 
 // MARK: NSFetchedResultsControllerDelegate
-extension TravelLocationsMapViewController : NSFetchedResultsControllerDelegate {
+extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         let pin = anObject as! VTAnnotation
         switch type {
