@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mRI-q5-i6j">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Lal-ki-qG9">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="na1-6I-Tlz">
+            <objects>
+                <navigationController id="Lal-ki-qG9" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iWY-X0-oSC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="rsY-fQ-LbW" kind="relationship" relationship="rootViewController" id="U2w-gc-H1S"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sQL-Qg-ikO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1250" y="-273"/>
+        </scene>
         <!--Locations Map View Controller-->
         <scene sceneID="WDa-ip-kw8">
             <objects>
@@ -25,17 +41,6 @@
                                     <outletCollection property="gestureRecognizers" destination="4Gs-gx-xcY" appends="YES" id="h4v-v7-u4Q"/>
                                 </connections>
                             </mapView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uld-Cd-RKq">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BCa-g3-Lnv">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="RLY-ct-H3v"/>
-                                </constraints>
-                                <blurEffect style="light"/>
-                            </visualEffectView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qc2-Ev-WcM">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
@@ -59,19 +64,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Uld-Cd-RKq" secondAttribute="trailing" constant="-20" id="5Sa-ow-frk"/>
                             <constraint firstItem="Qc2-Ev-WcM" firstAttribute="leading" secondItem="5DQ-7v-uvS" secondAttribute="leadingMargin" constant="-20" id="Crf-Ji-VFF"/>
-                            <constraint firstItem="Uld-Cd-RKq" firstAttribute="top" secondItem="5DQ-7v-uvS" secondAttribute="topMargin" id="ISw-42-XnD"/>
                             <constraint firstItem="mqW-1t-EoP" firstAttribute="top" secondItem="Qc2-Ev-WcM" secondAttribute="bottom" id="KZO-Sc-VGf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Qc2-Ev-WcM" secondAttribute="trailing" constant="-20" id="U9u-do-6HE"/>
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="height" secondItem="5DQ-7v-uvS" secondAttribute="height" id="drh-nt-7Fo"/>
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="centerX" secondItem="5DQ-7v-uvS" secondAttribute="centerX" id="l9x-Jg-Bvw"/>
-                            <constraint firstItem="Uld-Cd-RKq" firstAttribute="leading" secondItem="5DQ-7v-uvS" secondAttribute="leadingMargin" constant="-20" id="o0B-ym-shf"/>
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="centerY" secondItem="5DQ-7v-uvS" secondAttribute="centerY" id="oj6-U2-4ts"/>
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="width" secondItem="5DQ-7v-uvS" secondAttribute="width" id="zuR-k5-McG"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="K9d-rU-GhD"/>
+                    <navigationItem key="navigationItem" id="K9d-rU-GhD">
+                        <barButtonItem key="rightBarButtonItem" image="List" id="OZ3-Jt-lCg"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>
                     </connections>
@@ -85,26 +89,9 @@
             </objects>
             <point key="canvasLocation" x="1250" y="464"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="aN4-JF-0YZ">
-            <objects>
-                <navigationController storyboardIdentifier="navigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mRI-q5-i6j" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yW3-iU-b08">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="rsY-fQ-LbW" kind="relationship" relationship="rootViewController" id="VTO-Sb-TU9"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QO3-Iq-wh5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1250" y="-292"/>
-        </scene>
     </scenes>
     <resources>
         <image name="GPS" width="22" height="22"/>
+        <image name="List" width="22" height="22"/>
     </resources>
 </document>

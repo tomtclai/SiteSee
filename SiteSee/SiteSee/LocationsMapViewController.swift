@@ -29,7 +29,7 @@ class LocationsMapViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        navigationController?.navigationBarHidden = true
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,18 +86,18 @@ class LocationsMapViewController: UIViewController {
     }
 
     // MARK: Segue
-    let showPhotoAlbumSegueID = "showPhotoAlbum"
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == showPhotoAlbumSegueID {
-            guard let pavc = segue.destinationViewController as? PhotoAlbumViewController else {
-                print("unexpected destionation viewcontroller")
-                return
-            }
-            pavc.annotation = annotation
-            pavc.span = mapView.region.span
-
-        }
-    }
+//    let showPhotoAlbumSegueID = "showPhotoAlbum"
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == showPhotoAlbumSegueID {
+//            guard let pavc = segue.destinationViewController as? PhotoAlbumViewController else {
+//                print("unexpected destionation viewcontroller")
+//                return
+//            }
+//            pavc.annotation = annotation
+//            pavc.span = mapView.region.span
+//
+//        }
+//    }
     
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
@@ -121,10 +121,10 @@ extension LocationsMapViewController : UIViewControllerRestoration {
 
 // MARK: MKMapViewDelegate
 extension LocationsMapViewController : MKMapViewDelegate {
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        annotation = view.annotation as! VTAnnotation
-        performSegueWithIdentifier(showPhotoAlbumSegueID, sender: self)
-    }
+//    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+//        annotation = view.annotation as! VTAnnotation
+//        performSegueWithIdentifier(showPhotoAlbumSegueID, sender: self)
+//    }
 }
 
 // MARK: NSFetchedResultsControllerDelegate
