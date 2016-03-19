@@ -14,6 +14,8 @@ class LocationsMapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     var annotation: VTAnnotation!
+    var manager = CLLocationManager()
+    @IBOutlet weak var locationButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,15 @@ class LocationsMapViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    @IBAction func locationTapped(sender: UIBarButtonItem) {
+        switch mapView.userTrackingMode {
+        case .Follow, .FollowWithHeading:
+            mapView.setUserTrackingMode(.None, animated: true)
+        case .None:
+            manager.requestWhenInUseAuthorization()
+            mapView.setUserTrackingMode(.Follow, animated: true)
+        }
     }
 
     @IBAction func handleLongPress(gestureRecognizer: UIGestureRecognizer){
@@ -121,10 +132,13 @@ extension LocationsMapViewController : UIViewControllerRestoration {
 
 // MARK: MKMapViewDelegate
 extension LocationsMapViewController : MKMapViewDelegate {
-//    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-//        annotation = view.annotation as! VTAnnotation
-//        performSegueWithIdentifier(showPhotoAlbumSegueID, sender: self)
-//    }
+    func mapView(mapView: MKMapView, didChangeUserTrackingMode mode: MKUserTrackingMode, animated: Bool) {
+        if mode == .None {
+            locationButton.image = UIImage(named: "GPS")
+        } else {
+            locationButton.image = UIImage(named: "GPS-Filled")
+        }
+    }
 }
 
 // MARK: NSFetchedResultsControllerDelegate
@@ -145,5 +159,7 @@ extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
     }
     
 }
+
+
 
 

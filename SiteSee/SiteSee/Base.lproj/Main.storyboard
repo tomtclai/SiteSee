@@ -38,13 +38,18 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <gestureRecognizers/>
                                 <connections>
+                                    <outlet property="delegate" destination="rsY-fQ-LbW" id="xfS-ep-PkO"/>
                                     <outletCollection property="gestureRecognizers" destination="4Gs-gx-xcY" appends="YES" id="h4v-v7-u4Q"/>
                                 </connections>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qc2-Ev-WcM">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem image="GPS" id="3BX-99-c6V" userLabel="GPS Button"/>
+                                    <barButtonItem image="GPS" id="3BX-99-c6V" userLabel="GPS Button">
+                                        <connections>
+                                            <action selector="locationTapped:" destination="rsY-fQ-LbW" id="jd9-9k-rtE"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dq4-tD-lhs"/>
                                     <barButtonItem style="plain" id="enh-5h-WxO">
                                         <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="EZp-Kx-ALo">
@@ -77,6 +82,7 @@
                         <barButtonItem key="rightBarButtonItem" image="List" id="OZ3-Jt-lCg"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="locationButton" destination="3BX-99-c6V" id="kxk-g4-X9F"/>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>
                     </connections>
                 </viewController>
