@@ -26,6 +26,7 @@ class LocationsMapViewController: UIViewController {
         } catch {
             fatalError("Fetch failed: \(error)")
         }
+        manager.delegate = self
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(fetchedResultsController.fetchedObjects as! [MKAnnotation])
     }
@@ -39,12 +40,38 @@ class LocationsMapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     @IBAction func locationTapped(sender: UIBarButtonItem) {
-        switch mapView.userTrackingMode {
-        case .Follow, .FollowWithHeading:
-            mapView.setUserTrackingMode(.None, animated: true)
-        case .None:
-            manager.requestWhenInUseAuthorization()
-            mapView.setUserTrackingMode(.Follow, animated: true)
+        switch CLLocationManager.authorizationStatus() {
+        case .NotDetermined:
+                manager.requestWhenInUseAuthorization()
+        case .Denied:
+            presentViewController(UIAlertController(title: "Location Service is disabled", message: "Please enable location services for SiteSee from Settings > Privacy", preferredStyle: UIAlertControllerStyle.Alert), animated: true, completion: nil)
+
+        case .Restricted:
+            locationButton.enabled = false
+        case .AuthorizedAlways, .AuthorizedWhenInUse:
+            switch mapView.userTrackingMode {
+            case .Follow, .FollowWithHeading:
+                mapView.setUserTrackingMode(.None, animated: true)
+            case .None:
+                mapView.setUserTrackingMode(.Follow, animated: true)
+            }
+            
+        }
+    }
+    
+    @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
+        let Map = 0
+        let Hybrid = 1
+        let Satellite = 2
+        switch(sender.selectedSegmentIndex){
+        case Map:
+            mapView.mapType = .Standard
+        case Hybrid:
+            mapView.mapType = .Hybrid
+        case Satellite:
+            mapView.mapType = .Satellite
+        default:
+            print("Wrong Index in segmented control")
         }
     }
 
@@ -160,6 +187,8 @@ extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
     
 }
 
+extension LocationsMapViewController : CLLocationManagerDelegate {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
 
-
-
+    }
+}
