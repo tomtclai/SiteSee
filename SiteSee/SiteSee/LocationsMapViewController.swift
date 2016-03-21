@@ -11,10 +11,12 @@ import MapKit
 import CoreData
 
 class LocationsMapViewController: UIViewController {
-
+    
     @IBOutlet weak var mapView: MKMapView!
     var annotation: VTAnnotation!
-    var manager = CLLocationManager()
+    var locationManager = CLLocationManager()
+    var geocoder = CLGeocoder()
+    
     @IBOutlet weak var locationButton: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -26,26 +28,23 @@ class LocationsMapViewController: UIViewController {
         } catch {
             fatalError("Fetch failed: \(error)")
         }
-        manager.delegate = self
+        locationManager.delegate = self
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(fetchedResultsController.fetchedObjects as! [MKAnnotation])
+        
     }
     
-    override func viewWillAppear(animated: Bool) {
-
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     @IBAction func locationTapped(sender: UIBarButtonItem) {
+        startTrackingLocation()
+    }
+    
+    func startTrackingLocation() {
         switch CLLocationManager.authorizationStatus() {
         case .NotDetermined:
-                manager.requestWhenInUseAuthorization()
+            locationManager.requestWhenInUseAuthorization()
         case .Denied:
             presentViewController(UIAlertController(title: "Location Service is disabled", message: "Please enable location services for SiteSee from Settings > Privacy", preferredStyle: UIAlertControllerStyle.Alert), animated: true, completion: nil)
-
+            
         case .Restricted:
             locationButton.enabled = false
         case .AuthorizedAlways, .AuthorizedWhenInUse:
@@ -58,7 +57,6 @@ class LocationsMapViewController: UIViewController {
             
         }
     }
-    
     @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
         let Map = 0
         let Hybrid = 1
@@ -74,23 +72,28 @@ class LocationsMapViewController: UIViewController {
             print("Wrong Index in segmented control")
         }
     }
-
-    @IBAction func handleLongPress(gestureRecognizer: UIGestureRecognizer){
-        if (gestureRecognizer.state == .Began) {
-            let touchPoint = gestureRecognizer.locationInView(mapView)
-            let coordinateInMaps = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
-            let annotationDictionary : [String:AnyObject] = [
-                VTAnnotation.Keys.Longitude : NSNumber(double: coordinateInMaps.longitude),
-                VTAnnotation.Keys.Latitude : NSNumber(double: coordinateInMaps.latitude),
-                //TODO: make title the city name, subtitle country
-                VTAnnotation.Keys.Title : String.localizedStringWithFormat("%.3f, %.3f", coordinateInMaps.latitude, coordinateInMaps.longitude),
-                VTAnnotation.Keys.Page : NSNumber(integer: 1)
-            ]
-            dispatch_async(dispatch_get_main_queue()){
-                let _ = VTAnnotation(dictionary: annotationDictionary, context: self.sharedContext)
-                CoreDataStackManager.sharedInstance().saveContext()
+    
+    @IBAction func addButtonTapped(sender: UIBarButtonItem) {
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)) { (placemarks, error) -> Void in
+            if let placemark = placemarks?.first {
+                var locationNames = self.locationNames(placemark, altitude:self.mapView.camera.altitude)
+                var annotationDictionary : [String:AnyObject]
+                annotationDictionary = [
+                    VTAnnotation.Keys.Longitude : NSNumber(double: self.mapView.centerCoordinate.longitude),
+                    VTAnnotation.Keys.Latitude : NSNumber(double: self.mapView.centerCoordinate.latitude),
+                    VTAnnotation.Keys.Title : locationNames[0],
+                    VTAnnotation.Keys.Page : NSNumber(integer: 1)
+                ]
+                if locationNames.count > 1 {
+                    annotationDictionary[VTAnnotation.Keys.Subtitle] = locationNames[1]
+                }
+                dispatch_async(dispatch_get_main_queue()){
+                    let _ = VTAnnotation(dictionary: annotationDictionary, context: self.sharedContext)
+                    CoreDataStackManager.sharedInstance().saveContext()
+                }
             }
         }
+
     }
     
     // MARK: - state restoration
@@ -108,7 +111,7 @@ class LocationsMapViewController: UIViewController {
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
         super.decodeRestorableStateWithCoder(coder)
-
+        
         var center = CLLocationCoordinate2D()
         var span = MKCoordinateSpan()
         
@@ -117,25 +120,25 @@ class LocationsMapViewController: UIViewController {
         
         span.latitudeDelta = coder.decodeDoubleForKey(mapViewSpanLatDelta)
         span.longitudeDelta = coder.decodeDoubleForKey(mapViewSpanLongDelta)
-
+        
         let region = MKCoordinateRegion(center: center, span: span)
-
+        
         mapView.setRegion(region, animated: true)
     }
-
+    
     // MARK: Segue
-//    let showPhotoAlbumSegueID = "showPhotoAlbum"
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == showPhotoAlbumSegueID {
-//            guard let pavc = segue.destinationViewController as? PhotoAlbumViewController else {
-//                print("unexpected destionation viewcontroller")
-//                return
-//            }
-//            pavc.annotation = annotation
-//            pavc.span = mapView.region.span
-//
-//        }
-//    }
+    //    let showPhotoAlbumSegueID = "showPhotoAlbum"
+    //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    //        if segue.identifier == showPhotoAlbumSegueID {
+    //            guard let pavc = segue.destinationViewController as? PhotoAlbumViewController else {
+    //                print("unexpected destionation viewcontroller")
+    //                return
+    //            }
+    //            pavc.annotation = annotation
+    //            pavc.span = mapView.region.span
+    //
+    //        }
+    //    }
     
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
@@ -146,8 +149,55 @@ class LocationsMapViewController: UIViewController {
         return NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
     }()
     
-    
+    func locationNames(placemark: CLPlacemark, altitude: CLLocationDistance) -> [String] {
+        var names = [String]()
+        
+        
+        if altitude < 100000 {
+            if let subLocality = placemark.subLocality {
+                names.append(subLocality)
+            }
+        }
+        
+        if altitude < 300000 {
+            if let locality = placemark.locality {
+                names.append(locality)
+            }
+        }
+        
+        if altitude < 1000000 {
+            if let administrativeArea = placemark.administrativeArea {
+                names.append(administrativeArea)
+            }
+        }
 
+        if let country = placemark.country {
+            names.append(country)
+        }
+        if let ocean = placemark.ocean {
+            names.append(ocean)
+        }
+
+        return names
+    }
+    func reverseGeocodeLocation(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, completionHandler: (name: String) -> Void) {
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { (placemarks, error) -> Void in
+            if error == nil {
+                guard let placemarks = placemarks else {
+                    return
+                }
+                guard let placemark = placemarks.first else {
+                    return
+                }
+            
+                let name = self.locationNames(placemark, altitude: altitude).first!
+                
+                completionHandler(name: name)
+                
+            }
+        }
+    }
+    
 }
 
 // MARK: UIViewControllerRestoration
@@ -164,6 +214,12 @@ extension LocationsMapViewController : MKMapViewDelegate {
             locationButton.image = UIImage(named: "GPS")
         } else {
             locationButton.image = UIImage(named: "GPS-Filled")
+        }
+    }
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        
+        reverseGeocodeLocation(mapView.centerCoordinate, altitude: mapView.camera.altitude) { (name) -> Void in
+            self.navigationItem.title = name
         }
     }
 }
@@ -189,6 +245,6 @@ extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
 
 extension LocationsMapViewController : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-
+        startTrackingLocation()
     }
 }

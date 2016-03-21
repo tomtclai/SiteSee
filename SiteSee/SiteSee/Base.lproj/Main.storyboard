@@ -22,7 +22,7 @@
             </objects>
             <point key="canvasLocation" x="1250" y="-273"/>
         </scene>
-        <!--Locations Map View Controller-->
+        <!--SiteSee-->
         <scene sceneID="WDa-ip-kw8">
             <objects>
                 <viewController storyboardIdentifier="LocationsMapViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rsY-fQ-LbW" customClass="LocationsMapViewController" customModule="SiteSee" sceneMemberID="viewController">
@@ -39,7 +39,6 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="rsY-fQ-LbW" id="xfS-ep-PkO"/>
-                                    <outletCollection property="gestureRecognizers" destination="4Gs-gx-xcY" appends="YES" id="h4v-v7-u4Q"/>
                                 </connections>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qc2-Ev-WcM">
@@ -66,6 +65,11 @@
                                         </segmentedControl>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="UGM-2t-DBC"/>
+                                    <barButtonItem style="plain" systemItem="add" id="eAW-cm-Wmi">
+                                        <connections>
+                                            <action selector="addButtonTapped:" destination="rsY-fQ-LbW" id="LKy-EO-FMt"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -81,7 +85,7 @@
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="width" secondItem="5DQ-7v-uvS" secondAttribute="width" id="zuR-k5-McG"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="K9d-rU-GhD">
+                    <navigationItem key="navigationItem" title="SiteSee" id="K9d-rU-GhD">
                         <barButtonItem key="rightBarButtonItem" image="List" id="OZ3-Jt-lCg"/>
                     </navigationItem>
                     <connections>
@@ -90,11 +94,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xzv-hL-eit" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="4Gs-gx-xcY">
-                    <connections>
-                        <action selector="handleLongPress:" destination="rsY-fQ-LbW" id="de0-M5-RZ8"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1250" y="464"/>
         </scene>
