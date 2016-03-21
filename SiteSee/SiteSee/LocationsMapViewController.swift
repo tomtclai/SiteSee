@@ -127,18 +127,17 @@ class LocationsMapViewController: UIViewController {
     }
     
     // MARK: Segue
-    //    let showPhotoAlbumSegueID = "showPhotoAlbum"
-    //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    //        if segue.identifier == showPhotoAlbumSegueID {
-    //            guard let pavc = segue.destinationViewController as? PhotoAlbumViewController else {
-    //                print("unexpected destionation viewcontroller")
-    //                return
-    //            }
-    //            pavc.annotation = annotation
-    //            pavc.span = mapView.region.span
-    //
-    //        }
-    //    }
+    let siteTableViewControllerSegueID = "SiteTableViewController"
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == siteTableViewControllerSegueID {
+            guard let pavc = segue.destinationViewController as? SiteTableViewController else {
+                print("unexpected destionation viewcontroller")
+                return
+            }
+            pavc.annotation = annotation
+            
+        }
+    }
     
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
@@ -191,7 +190,6 @@ class LocationsMapViewController: UIViewController {
                 }
             
                 let name = self.locationNames(placemark, altitude: altitude).first!
-                
                 completionHandler(name: name)
                 
             }
@@ -220,6 +218,12 @@ extension LocationsMapViewController : MKMapViewDelegate {
         
         reverseGeocodeLocation(mapView.centerCoordinate, altitude: mapView.camera.altitude) { (name) -> Void in
             self.navigationItem.title = name
+        }
+    }
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        if let annotation = view.annotation as? VTAnnotation {
+            self.annotation = annotation
+            performSegueWithIdentifier(siteTableViewControllerSegueID, sender: self)
         }
     }
 }
