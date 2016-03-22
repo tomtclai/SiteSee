@@ -8,43 +8,13 @@
 
 import Foundation
 
-class Flickr : NSObject {
-    typealias CompletionHandler = (result: AnyObject!, error: NSError) -> Void
-    
-    var session: NSURLSession
-    
-    override init() {
-        session = NSURLSession.sharedSession()
-        super.init()
-    }
+class Flickr : Model {
     // MARK: Shared Instance
     class func sharedInstance() -> Flickr {
         struct Singleton {
             static var sharedInstance = Flickr()
         }
         return Singleton.sharedInstance
-    }
-    
-    // MARK: Escape HTML Parameters
-    
-    func escapedParameters(parameters: [String : AnyObject]) -> String {
-        
-        var urlVars = [String]()
-        
-        for (key, value) in parameters {
-            
-            /* Make sure that it is a string value */
-            let stringValue = "\(value)"
-            
-            /* Escape it */
-            let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-            
-            /* Append it */
-            urlVars += [key + "=" + "\(escapedValue!)"]
-            
-        }
-        
-        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
     
     /* Function makes first request to get a random page, then it makes a request to get an image with the random page */
@@ -205,16 +175,8 @@ class Flickr : NSObject {
         
         task.resume()
     }
-    func getDataFromUrl(url: NSURL, completion: ((data:NSData?, response: NSURLResponse?, error: NSError?) ->Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(url) {
-            completion(data: $0, response: $1, error: $2)
-            }.resume()
-    }
-    func downloadImage(url: String, completion:(data:NSData?, response: NSURLResponse?, error: NSError?) ->Void) {
-        getDataFromUrl(NSURL(string: url)!) {
-            completion(data: $0, response: $1, error: $2)
-        }
-    }
+
+
 }
 // Convenience methods
 extension Flickr {

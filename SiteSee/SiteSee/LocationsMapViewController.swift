@@ -189,8 +189,9 @@ class LocationsMapViewController: UIViewController {
                     return
                 }
             
-                let name = self.locationNames(placemark, altitude: altitude).first!
-                completionHandler(name: name)
+                if let name = self.locationNames(placemark, altitude: altitude).first {
+                    completionHandler(name: name)
+                }
                 
             }
         }
