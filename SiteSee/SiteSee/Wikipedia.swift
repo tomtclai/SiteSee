@@ -78,17 +78,25 @@ class Wikipedia : Model {
                 return
             }
             
-            /* GUARD: Did Wiki return 0 hits? */
-            guard let stat = parsedResult["query.searchinfo.totalhits"] as? Int where stat > 0 else {
-                print("Wiki API returned 0 hits.")
-                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Wiki API returned 0 hits. \(data)"]))
+            
+            /* GUARD: Did Wiki return query? */
+            guard let queryDict = parsedResult["query"] as? NSDictionary else {
+                print("Cannot find key 'query'")
+                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query' in \(parsedResult)"]))
                 return
             }
             
+            /* GUARD: Did Wiki return 0 hits? */
+//            guard let stat = queryDict["query.searchinfo.totalhits"] as? Int where stat > 0 else {
+//                print("Wiki API returned 0 hits.")
+//                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Wiki API returned 0 hits. \(parsedResult)"]))
+//                return
+//            }
+            
             /* GUARD: Is "search" key in the query? */
-            guard let searchDictionary = parsedResult["query.search"] as? NSArray else {
-                print("Cannot find key 'query.search' in \(parsedResult)")
-                completionHandler(resultsDict: nil, error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0,  userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query.search' in \(parsedResult)"]))
+            guard let searchDictionary = queryDict["search"] as? NSArray else {
+                print("Cannot find key 'query.search' in \(queryDict)")
+                completionHandler(resultsDict: nil, error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0,  userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query.search' in \(queryDict)"]))
                 return
             }
             
@@ -117,7 +125,7 @@ extension Wikipedia {
                     completionHandler(title: nil, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no title in \(resultDict)"]))
                     return
                 }
-                guard let subtitle = resultDict["subtitle"] as? String else {
+                guard let subtitle = resultDict["snippet"] as? String else {
                     print("no subtitle")
                     completionHandler(title: title, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no subtitle in \(resultDict)"]))
                     return
