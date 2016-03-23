@@ -17,7 +17,14 @@ class SiteTableViewController: UITableViewController {
             keyword += ", \(subtitle)"
             navigationItem.title = keyword
         }
+        fetchedResultsController.delegate = self
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Fetch failed: \(error)")
+        }
         searchWikipediaForArticles(keyword)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
