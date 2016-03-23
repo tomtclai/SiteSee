@@ -11,6 +11,7 @@ extension Wikipedia {
     struct Constants {
         // TODO: consider changing language based on region setting
         static let baseUrl = "https://en.wikipedia.org"
+        static let format = "json"
     }
     
     struct Actions {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreData
 class SiteTableViewController: UITableViewController {
     var annotation: VTAnnotation!
     override func viewDidLoad() {
@@ -17,11 +17,40 @@ class SiteTableViewController: UITableViewController {
             keyword += ", \(subtitle)"
             navigationItem.title = keyword
         }
+        searchWikipediaForArticles(keyword)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func searchWikipediaForArticles(keyword: String) {
+        let metthodArguments: [String: AnyObject] = [
+            "action" : Wikipedia.Actions.query,
+            "format" : Wikipedia.Constants.format,
+            "list" : Wikipedia.List.search,
+            "utf-8" : 1,
+            "srsearch" : keyword
+        ]
+
+        Wikipedia.sharedInstance().getListOfArticles(metthodArguments) { (title, subtitle, error) -> Void in
+            guard error == nil else {
+                print(error)
+                return
+            }
+            if let title = title {
+                let articleDict : [String : AnyObject?] = [
+                    Article.Keys.Title : title,
+                    Article.Keys.Subtitle : subtitle,
+                    Article.Keys.Url : nil
+                ]
+                Article(dictionary: articleDict, context: self.sharedContext).pin = self.annotation
+                
+            } else {
+                print ("no title")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,13 +61,11 @@ class SiteTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return fetchedResultsController.sections!.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return fetchedResultsController.sections![section].numberOfObjects
     }
 
     /*
@@ -95,6 +122,55 @@ class SiteTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    // MARK: - Core Data Convenience
+    func saveContext() {
+        CoreDataStackManager.sharedInstance().saveContext()
+    }
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        let request = NSFetchRequest(entityName: "Article")
+        request.predicate = NSPredicate(format: "pin == %@", self.annotation)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        let fetched =  NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetched.delegate = self
+        return fetched
+    }()
+    
+    // MARK: state restoration
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        super.encodeRestorableStateWithCoder(coder)
+    }
+    
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        super.decodeRestorableStateWithCoder(coder)
+    }
 
 }
-
+// MARK: NSFetchedResultsControllerDelegate
+extension SiteTableViewController : NSFetchedResultsControllerDelegate {
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch type {
+        case .Insert:
+            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
+        case .Delete:
+            tableView.deleteRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
+        case .Update:
+            tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
+        case .Move:
+            tableView.moveRowAtIndexPath(indexPath!, toIndexPath: newIndexPath!)
+        }
+    }
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        let set = NSIndexSet(index: sectionIndex)
+        switch type {
+        case .Insert:
+            tableView.insertSections(set, withRowAnimation: .Automatic)
+        case .Delete:
+            tableView.deleteSections(set, withRowAnimation: .Automatic)
+        default: break
+        }
+    }
+}

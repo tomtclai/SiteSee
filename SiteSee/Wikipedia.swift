@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 // Input : coordinates
 // Output : list of articles with title and link and description
 class Wikipedia : Model {
@@ -19,7 +20,22 @@ class Wikipedia : Model {
         return Singleton.sharedInstance
     }
     
-    func getArticleFromWikipediaBySearch(methodArguments: [String : AnyObject], completionHandler: (stat: String?, articleDict: NSDictionary?, error: NSError?) -> Void) {
+    func stripHTMLTags(htmlString: String) -> String {
+        let data = htmlString.dataUsingEncoding(NSUTF8StringEncoding)!
+
+        let option : [String:AnyObject] = [
+            NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
+            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+        ]
+        var attr = NSAttributedString()
+        do {
+            try attr = NSAttributedString(data: data, options: option, documentAttributes: nil)
+        } catch {
+        }
+        return attr.string
+    }
+    
+    func searchWikipediaByKeywords(methodArguments: [String : AnyObject], completionHandler: (resultsDict: NSArray?, error: NSError?) -> Void) {
         let session = NSURLSession.sharedSession()
         let urlString = Constants.baseUrl + escapedParameters(methodArguments)
         let url = NSURL(string: urlString)!
@@ -58,11 +74,58 @@ class Wikipedia : Model {
                 parsedResult = nil
                 print("Could not parse the data as JSON: '\(data)'")
                 
-                completionHandler(stat: nil, articleDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
+                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
             }
+            
+            /* GUARD: Did Wiki return 0 hits? */
+            guard let stat = parsedResult["query.searchinfo.totalhits"] as? Int where stat > 0 else {
+                print("Wiki API returned 0 hits.")
+                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Wiki API returned 0 hits. \(data)"]))
+                return
+            }
+            
+            /* GUARD: Is "search" key in the query? */
+            guard let searchDictionary = parsedResult["query.search"] as? NSArray else {
+                print("Cannot find key 'query.search' in \(parsedResult)")
+                completionHandler(resultsDict: nil, error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0,  userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query.search' in \(parsedResult)"]))
+                return
+            }
+            
+            completionHandler(resultsDict: searchDictionary, error: error)
+            
 
         }
         task.resume()
+    }
+}
+// MARK: Convenience
+extension Wikipedia {
+    func getListOfArticles(methodArguments: [String : AnyObject], completionHandler: (title: String?, subtitle: String?, error: NSError?) -> Void) {
+        searchWikipediaByKeywords(methodArguments) { (resultsDict, error) in
+            guard error == nil else {
+                print(error)
+                return
+            }
+            guard let resultsDict = resultsDict else {
+                print("resultsDict is nil")
+                return
+            }
+            for resultDict in resultsDict {
+                guard let title = resultDict["title"] as? String else {
+                    print("no title")
+                    completionHandler(title: nil, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no title in \(resultDict)"]))
+                    return
+                }
+                guard let subtitle = resultDict["subtitle"] as? String else {
+                    print("no subtitle")
+                    completionHandler(title: title, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no subtitle in \(resultDict)"]))
+                    return
+                }
+                
+                completionHandler(title: title, subtitle: subtitle, error: nil)
+                
+            }
+        }
     }
 }

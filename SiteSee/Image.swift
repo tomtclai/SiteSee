@@ -2,18 +2,16 @@
 //  Image.swift
 //  SiteSee
 //
-//  Created by Tom Lai on 1/24/16.
+//  Created by Tom Lai on 3/23/16.
 //  Copyright © 2016 Lai. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
+
 class Image: NSManagedObject {
-    @NSManaged var imageUrl: String?
-    @NSManaged var uuid: String?
-    @NSManaged var thumbnailUrl: String
-    @NSManaged var pin: VTAnnotation!
+
     struct Keys {
         static let ImageUrl = "imageUrl"
         static let ThumbnailUrl = "thumbnailUrl"
@@ -29,7 +27,7 @@ class Image: NSManagedObject {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
         imageUrl = dictionary[Keys.ImageUrl] as? String
-        thumbnailUrl = dictionary[Keys.ThumbnailUrl] as! String
+        thumbnailUrl = dictionary[Keys.ThumbnailUrl] as? String
         uuid = dictionary[Keys.UUID] as? String
     }
     

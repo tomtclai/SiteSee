@@ -14,7 +14,6 @@
 		773575181C4DF39C00752585 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773575171C4DF39C00752585 /* Assets.xcassets */; };
 		7735751B1C4DF39C00752585 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 773575191C4DF39C00752585 /* LaunchScreen.storyboard */; };
 		773575231C4DF51100752585 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 773575221C4DF51100752585 /* MapKit.framework */; };
-		7756E4CB1C559E3400480651 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7756E4C91C559E3400480651 /* Image.swift */; };
 		775C9E2E1C4EBFCC00D45730 /* VTAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */; };
 		775C9E511C4F492A00D45730 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775C9E501C4F492A00D45730 /* CoreDataStackManager.swift */; };
 		775D0A281C5EAD5E0030AC9C /* Flickr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D0A271C5EAD5E0030AC9C /* Flickr.swift */; };
@@ -22,6 +21,10 @@
 		77B6766A1CA1A22800E27BF0 /* Wikipedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B676691CA1A22800E27BF0 /* Wikipedia.swift */; };
 		77B6766C1CA1A23800E27BF0 /* Wikipedia-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6766B1CA1A23800E27BF0 /* Wikipedia-Constants.swift */; };
 		77B6766F1CA1AC8C00E27BF0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B6766E1CA1AC8C00E27BF0 /* Model.swift */; };
+		77B676841CA31ACA00E27BF0 /* Image+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B676801CA31ACA00E27BF0 /* Image+CoreDataProperties.swift */; };
+		77B676851CA31ACA00E27BF0 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B676811CA31ACA00E27BF0 /* Image.swift */; };
+		77B676861CA31ACA00E27BF0 /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B676821CA31ACA00E27BF0 /* Article+CoreDataProperties.swift */; };
+		77B676871CA31ACA00E27BF0 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B676831CA31ACA00E27BF0 /* Article.swift */; };
 		77C31C741CA09EFA00ED68F2 /* LocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C31C731CA09EFA00ED68F2 /* LocationsMapViewController.swift */; };
 		77C31C761CA09F0800ED68F2 /* SiteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C31C751CA09F0800ED68F2 /* SiteTableViewController.swift */; };
 		77C31C7C1CA0A14B00ED68F2 /* Model.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 77C31C7B1CA0A14B00ED68F2 /* Model.xcdatamodel */; };
@@ -37,7 +40,6 @@
 		7735751A1C4DF39C00752585 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7735751C1C4DF39C00752585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = SiteSee/Info.plist; sourceTree = "<group>"; };
 		773575221C4DF51100752585 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		7756E4C91C559E3400480651 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Image.swift; path = SiteSee/Image.swift; sourceTree = SOURCE_ROOT; };
 		775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VTAnnotation.swift; path = SiteSee/VTAnnotation.swift; sourceTree = SOURCE_ROOT; };
 		775C9E501C4F492A00D45730 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStackManager.swift; path = SiteSee/CoreDataStackManager.swift; sourceTree = SOURCE_ROOT; };
 		775D0A271C5EAD5E0030AC9C /* Flickr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Flickr.swift; path = SiteSee/Flickr.swift; sourceTree = SOURCE_ROOT; };
@@ -45,6 +47,10 @@
 		77B676691CA1A22800E27BF0 /* Wikipedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wikipedia.swift; sourceTree = SOURCE_ROOT; };
 		77B6766B1CA1A23800E27BF0 /* Wikipedia-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Wikipedia-Constants.swift"; sourceTree = SOURCE_ROOT; };
 		77B6766E1CA1AC8C00E27BF0 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = SiteSee/Model.swift; sourceTree = SOURCE_ROOT; };
+		77B676801CA31ACA00E27BF0 /* Image+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		77B676811CA31ACA00E27BF0 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = SOURCE_ROOT; };
+		77B676821CA31ACA00E27BF0 /* Article+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Article+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		77B676831CA31ACA00E27BF0 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = SOURCE_ROOT; };
 		77C31C731CA09EFA00ED68F2 /* LocationsMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsMapViewController.swift; path = SiteSee/LocationsMapViewController.swift; sourceTree = SOURCE_ROOT; };
 		77C31C751CA09F0800ED68F2 /* SiteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SiteTableViewController.swift; path = SiteSee/SiteTableViewController.swift; sourceTree = SOURCE_ROOT; };
 		77C31C7B1CA0A14B00ED68F2 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = Model.xcdatamodel; path = SiteSee/Model.xcdatamodel; sourceTree = SOURCE_ROOT; };
@@ -109,9 +115,9 @@
 		775C9E381C4F1B5100D45730 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				77C31C7B1CA0A14B00ED68F2 /* Model.xcdatamodel */,
 				77B6766E1CA1AC8C00E27BF0 /* Model.swift */,
 				77B6766D1CA1A24D00E27BF0 /* Wikipedia */,
-				77C31C7B1CA0A14B00ED68F2 /* Model.xcdatamodel */,
 				775D0A261C5EAD070030AC9C /* Flicker */,
 				775C9E2D1C4EBFCC00D45730 /* VTAnnotation.swift */,
 			);
@@ -121,9 +127,10 @@
 		775D0A261C5EAD070030AC9C /* Flicker */ = {
 			isa = PBXGroup;
 			children = (
-				7756E4C91C559E3400480651 /* Image.swift */,
 				775D0A271C5EAD5E0030AC9C /* Flickr.swift */,
 				775D0A291C5EAEBB0030AC9C /* Flickr-Constants.swift */,
+				77B676801CA31ACA00E27BF0 /* Image+CoreDataProperties.swift */,
+				77B676811CA31ACA00E27BF0 /* Image.swift */,
 			);
 			name = Flicker;
 			sourceTree = "<group>";
@@ -133,6 +140,8 @@
 			children = (
 				77B676691CA1A22800E27BF0 /* Wikipedia.swift */,
 				77B6766B1CA1A23800E27BF0 /* Wikipedia-Constants.swift */,
+				77B676821CA31ACA00E27BF0 /* Article+CoreDataProperties.swift */,
+				77B676831CA31ACA00E27BF0 /* Article.swift */,
 			);
 			name = Wikipedia;
 			sourceTree = "<group>";
@@ -216,8 +225,9 @@
 				77B6766C1CA1A23800E27BF0 /* Wikipedia-Constants.swift in Sources */,
 				775C9E2E1C4EBFCC00D45730 /* VTAnnotation.swift in Sources */,
 				77B6766A1CA1A22800E27BF0 /* Wikipedia.swift in Sources */,
-				7756E4CB1C559E3400480651 /* Image.swift in Sources */,
 				775D0A281C5EAD5E0030AC9C /* Flickr.swift in Sources */,
+				77B676861CA31ACA00E27BF0 /* Article+CoreDataProperties.swift in Sources */,
+				77B676851CA31ACA00E27BF0 /* Image.swift in Sources */,
 				77C31C761CA09F0800ED68F2 /* SiteTableViewController.swift in Sources */,
 				771A696A1C53F43F00973CA6 /* PhotoAlbumViewController.swift in Sources */,
 				77B6766F1CA1AC8C00E27BF0 /* Model.swift in Sources */,
@@ -226,7 +236,9 @@
 				77C31C741CA09EFA00ED68F2 /* LocationsMapViewController.swift in Sources */,
 				77C31C7C1CA0A14B00ED68F2 /* Model.xcdatamodel in Sources */,
 				7703CAC11C77DD19000D9F34 /* VTCollectionViewCell.swift in Sources */,
+				77B676871CA31ACA00E27BF0 /* Article.swift in Sources */,
 				775C9E511C4F492A00D45730 /* CoreDataStackManager.swift in Sources */,
+				77B676841CA31ACA00E27BF0 /* Image+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -325,7 +325,8 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
             // not found, download and save to documents directory, then display in cell
             cell.activity.startAnimating()
             cell.backgroundView = UIImageView(image: placeholder)
-            Flickr.sharedInstance().getCellImageConvenience(image.thumbnailUrl, completion: { (data) -> Void in
+            if let thumbnailUrl = image.thumbnailUrl {
+            Flickr.sharedInstance().getCellImageConvenience(thumbnailUrl, completion: { (data) -> Void in
                 dispatch_async(dispatch_get_main_queue()){
                     let img = UIImage(data: data)!
                     cell.backgroundView = UIImageView(image: img)
@@ -337,6 +338,9 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
                     } catch {}
                 }
             })
+            } else {
+                print("image.thumbnailURL is nill")
+            }
         }
         return cell
     }
