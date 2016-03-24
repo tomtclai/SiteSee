@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		772B7DD61CA3943100849896 /* SSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DD51CA3943100849896 /* SSTableViewCell.swift */; };
 		7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1C71CA33F8100D893B7 /* AppDelegate.swift */; };
 		7793B1CD1CA33F8100D893B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CB1CA33F8100D893B7 /* Main.storyboard */; };
 		7793B1CF1CA33F8100D893B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CE1CA33F8100D893B7 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		772B7DD51CA3943100849896 /* SSTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewCell.swift; sourceTree = "<group>"; };
 		7793B1C41CA33F8100D893B7 /* SiteSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiteSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7793B1C71CA33F8100D893B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7793B1CC1CA33F8100D893B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -109,6 +111,16 @@
 			name = Wikipedia;
 			sourceTree = "<group>";
 		};
+		772B7DD21CA393F000849896 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7793B1CB1CA33F8100D893B7 /* Main.storyboard */,
+				7793B1D01CA33F8100D893B7 /* LaunchScreen.storyboard */,
+				772B7DD51CA3943100849896 /* SSTableViewCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		7793B1BB1CA33F8100D893B7 = {
 			isa = PBXGroup;
 			children = (
@@ -130,9 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				7793B1C71CA33F8100D893B7 /* AppDelegate.swift */,
-				7793B1CB1CA33F8100D893B7 /* Main.storyboard */,
+				772B7DD21CA393F000849896 /* View */,
 				7793B1CE1CA33F8100D893B7 /* Assets.xcassets */,
-				7793B1D01CA33F8100D893B7 /* LaunchScreen.storyboard */,
 				7793B1D31CA33F8100D893B7 /* Info.plist */,
 				7793B1E51CA3400900D893B7 /* CoreDataStackManager.swift */,
 				772B7DCE1CA3409400849896 /* Model */,
@@ -220,6 +231,7 @@
 				7793B1F91CA3401D00D893B7 /* Model.xcdatamodeld in Sources */,
 				7793B1F61CA3400900D893B7 /* VTCollectionViewCell.swift in Sources */,
 				7793B1EC1CA3400900D893B7 /* Wikipedia.swift in Sources */,
+				772B7DD61CA3943100849896 /* SSTableViewCell.swift in Sources */,
 				7793B1F51CA3400900D893B7 /* Flickr-Constants.swift in Sources */,
 				7793B1EE1CA3400900D893B7 /* PhotoAlbumViewController.swift in Sources */,
 				7793B1EB1CA3400900D893B7 /* Image.swift in Sources */,

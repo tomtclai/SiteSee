@@ -107,29 +107,48 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="plainTableCell" textLabel="Deo-ea-aYD" detailTextLabel="biR-ph-cNI" style="IBUITableViewCellStyleSubtitle" id="oZ0-ML-3Jt">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="plainTableCell" rowHeight="75" id="oZ0-ML-3Jt" customClass="SSTableViewCell" customModule="SiteSee" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oZ0-ML-3Jt" id="jf1-ZR-omH">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="74"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Deo-ea-aYD">
-                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZK-xi-Yyp">
+                                            <rect key="frame" x="20" y="5" width="527" height="20"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="biR-ph-cNI">
-                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fza-V5-irY">
+                                            <rect key="frame" x="20" y="27" width="527" height="39"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="iZK-xi-Yyp" secondAttribute="trailing" constant="20" id="97i-zB-QBO"/>
+                                        <constraint firstAttribute="topMargin" secondItem="iZK-xi-Yyp" secondAttribute="top" constant="20" id="9FC-Hy-9vI"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Fza-V5-irY" secondAttribute="bottom" id="BMk-8Y-qmx"/>
+                                        <constraint firstItem="iZK-xi-Yyp" firstAttribute="leading" secondItem="jf1-ZR-omH" secondAttribute="leading" constant="20" id="eVz-ka-hwb"/>
+                                        <constraint firstItem="iZK-xi-Yyp" firstAttribute="top" secondItem="jf1-ZR-omH" secondAttribute="top" constant="5" id="luS-Ss-Izx"/>
+                                        <constraint firstItem="Fza-V5-irY" firstAttribute="top" secondItem="iZK-xi-Yyp" secondAttribute="bottom" id="nun-zz-6Ba"/>
+                                        <constraint firstAttribute="trailing" secondItem="Fza-V5-irY" secondAttribute="trailing" constant="20" id="ofO-pS-Xto"/>
+                                        <constraint firstItem="Fza-V5-irY" firstAttribute="leading" secondItem="jf1-ZR-omH" secondAttribute="leading" constant="20" id="r7g-It-Lc4"/>
+                                        <constraint firstItem="Fza-V5-irY" firstAttribute="top" secondItem="iZK-xi-Yyp" secondAttribute="bottom" constant="2" id="waA-eY-dfC"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="9FC-Hy-9vI"/>
+                                            <exclude reference="nun-zz-6Ba"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="subtitleLabel" destination="Fza-V5-irY" id="G9R-1x-kJz"/>
+                                    <outlet property="titleLabel" destination="iZK-xi-Yyp" id="weP-hm-wSD"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

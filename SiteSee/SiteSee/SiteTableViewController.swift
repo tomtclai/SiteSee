@@ -24,7 +24,8 @@ class SiteTableViewController: UITableViewController {
             fatalError("Fetch failed: \(error)")
         }
         searchWikipediaForArticles(keyword)
-        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 160
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -38,7 +39,8 @@ class SiteTableViewController: UITableViewController {
             "format" : Wikipedia.Constants.format,
             "list" : Wikipedia.List.search,
             "utf-8" : 1,
-            "srsearch" : keyword
+            "srsearch" : keyword,
+            "srlimit" : 3
         ]
 
         Wikipedia.sharedInstance().getListOfArticles(metthodArguments) { (title, subtitle, error) -> Void in
@@ -83,24 +85,25 @@ class SiteTableViewController: UITableViewController {
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath)
-
-        if let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article {
-            guard let title = cell.textLabel else {
-                print("cell does not have a textLabel")
-                return cell
-            }
-            guard let subtitle = cell.detailTextLabel else {
-                print("cell does not have a detailTextLabel")
-                return cell
-            }
-            title.text = article.title
-            subtitle.text = article.subtitle
-            
-        } else {
-            print("fetched result not an article")
+        guard let cell = tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath) as? SSTableViewCell else {
+            print("cell isn't SSTableViewCell")
+            return tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath)
         }
         
+        guard let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article  else {
+            print("fetched result not an article")
+            return cell
+        }
+        guard let title = cell.titleLabel else {
+            print("cell does not have a titleLabel")
+            return cell
+        }
+        guard let subtitle = cell.subtitleLabel else {
+            print("cell does not have a subtitleLabel")
+            return cell
+        }
+        title.text = article.title
+        subtitle.text = article.subtitle
 
         return cell
     }
