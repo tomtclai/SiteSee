@@ -156,6 +156,7 @@
                             <outlet property="delegate" destination="PdO-hf-DUK" id="7af-4F-WDg"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="npc-Nw-96Z"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lUT-go-zeE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

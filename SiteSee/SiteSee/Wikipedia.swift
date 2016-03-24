@@ -78,20 +78,12 @@ class Wikipedia : Model {
                 return
             }
             
-            
             /* GUARD: Did Wiki return query? */
             guard let queryDict = parsedResult["query"] as? NSDictionary else {
                 print("Cannot find key 'query'")
                 completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query' in \(parsedResult)"]))
                 return
             }
-            
-            /* GUARD: Did Wiki return 0 hits? */
-//            guard let stat = queryDict["query.searchinfo.totalhits"] as? Int where stat > 0 else {
-//                print("Wiki API returned 0 hits.")
-//                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Wiki API returned 0 hits. \(parsedResult)"]))
-//                return
-//            }
             
             /* GUARD: Is "search" key in the query? */
             guard let searchDictionary = queryDict["search"] as? NSArray else {

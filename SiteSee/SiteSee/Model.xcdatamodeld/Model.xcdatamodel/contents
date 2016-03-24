@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="Article" representedClassName=".Article" syncable="YES">
+        <attribute name="sortOrder" attributeType="Double" defaultValueString="0" syncable="YES"/>
         <attribute name="subtitle" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,8 +23,8 @@
         <relationship name="images" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Image" inverseName="pin" inverseEntity="Image" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Article" positionX="108" positionY="-72" width="128" height="105"/>
         <element name="Image" positionX="-63" positionY="0" width="128" height="103"/>
-        <element name="VTAnnotation" positionX="286" positionY="15" width="128" height="148"/>
+        <element name="VTAnnotation" positionX="286" positionY="15" width="128" height="150"/>
+        <element name="Article" positionX="117" positionY="45" width="128" height="120"/>
     </elements>
 </model>

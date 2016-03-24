@@ -10,6 +10,7 @@ import Foundation
 extension Wikipedia {
     struct Constants {
         // TODO: consider changing language based on region setting
+        static let userBaseUrl = "https://en.wikipedia.org/wiki/"
         static let baseUrl = "https://en.wikipedia.org/w/api.php"
         static let format = "json"
     }

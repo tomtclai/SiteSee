@@ -2,7 +2,7 @@
 //  Article+CoreDataProperties.swift
 //  SiteSee
 //
-//  Created by Tom Lai on 3/23/16.
+//  Created by Tom Lai on 3/24/16.
 //  Copyright © 2016 Lai. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,6 +14,7 @@ import CoreData
 
 extension Article {
 
+    @NSManaged var sortOrder: NSNumber?
     @NSManaged var subtitle: String?
     @NSManaged var title: String?
     @NSManaged var url: String?

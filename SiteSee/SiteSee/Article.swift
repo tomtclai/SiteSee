@@ -16,6 +16,7 @@ class Article: NSManagedObject {
         static let Title = "title"
         static let Subtitle = "subtitle"
         static let Url = "url"
+        static let SortOrder = "sortOrder"
     }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
@@ -29,5 +30,6 @@ class Article: NSManagedObject {
         title = dictionary[Keys.Title] as? String
         subtitle = dictionary[Keys.Subtitle] as? String
         url = dictionary[Keys.Url] as? String
+        sortOrder = dictionary[Keys.SortOrder] as? NSNumber
     }
 }
