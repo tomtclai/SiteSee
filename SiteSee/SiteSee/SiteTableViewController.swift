@@ -68,22 +68,42 @@ class SiteTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController.sections!.count
+        if let sections = fetchedResultsController.sections {
+            return sections.count
+        }
+        return 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.sections![section].numberOfObjects
+        if let sections = fetchedResultsController.sections {
+            return sections[section].numberOfObjects
+        }
+        return 0
     }
 
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
 
-        // Configure the cell...
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath)
+
+        if let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article {
+            guard let title = cell.textLabel else {
+                print("cell does not have a textLabel")
+                return cell
+            }
+            guard let subtitle = cell.detailTextLabel else {
+                print("cell does not have a detailTextLabel")
+                return cell
+            }
+            title.text = article.title
+            subtitle.text = article.subtitle
+            
+        } else {
+            print("fetched result not an article")
+        }
+        
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -158,15 +178,18 @@ class SiteTableViewController: UITableViewController {
 }
 // MARK: NSFetchedResultsControllerDelegate
 extension SiteTableViewController : NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        tableView.beginUpdates()
+    }
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.reloadData()
+        tableView.endUpdates()
     }
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
         case .Delete:
-            tableView.deleteRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
+            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
         case .Update:
             tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
         case .Move:
@@ -180,6 +203,9 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
             tableView.insertSections(set, withRowAnimation: .Automatic)
         case .Delete:
             tableView.deleteSections(set, withRowAnimation: .Automatic)
+        case .Update:
+            tableView.reloadSections(set, withRowAnimation: .Automatic)
+            
         default: break
         }
     }
