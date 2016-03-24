@@ -125,11 +125,12 @@ extension Wikipedia {
                     completionHandler(title: nil, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no title in \(resultDict)"]))
                     return
                 }
-                guard let subtitle = resultDict["snippet"] as? String else {
+                guard var subtitle = resultDict["snippet"] as? String else {
                     print("no subtitle")
                     completionHandler(title: title, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no subtitle in \(resultDict)"]))
                     return
                 }
+                subtitle = self.stripHTMLTags(subtitle)
                 
                 completionHandler(title: title, subtitle: subtitle, error: nil)
                 
