@@ -107,14 +107,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="photosCell" rowHeight="110" id="56J-dj-jiW" customClass="SSTableViewPhotosCell" customModule="SiteSee" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="110"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="photosCell" id="56J-dj-jiW" customClass="SSTableViewPhotosCell" customModule="SiteSee" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56J-dj-jiW" id="aL4-Kc-7ea">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="109"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="56J-dj-jiW" id="aL4-Kc-7ea">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-Gb-7rg">
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-Gb-7rg">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <constraints>
@@ -159,7 +159,7 @@
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="top" secondItem="aL4-Kc-7ea" secondAttribute="top" id="8YX-Bc-81v"/>
                                         <constraint firstAttribute="trailing" secondItem="mXr-Gb-7rg" secondAttribute="trailing" id="cwc-3a-Dk6"/>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="leading" secondItem="aL4-Kc-7ea" secondAttribute="leading" id="mqg-ds-nRd"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" constant="1" id="ul9-4k-YzR"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" id="ul9-4k-YzR"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
@@ -169,7 +169,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="plainTableCell" rowHeight="75" id="oZ0-ML-3Jt" customClass="SSTableViewCell" customModule="SiteSee" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="202" width="600" height="75"/>
+                                <rect key="frame" x="0.0" y="136" width="600" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oZ0-ML-3Jt" id="jf1-ZR-omH">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="74"/>
