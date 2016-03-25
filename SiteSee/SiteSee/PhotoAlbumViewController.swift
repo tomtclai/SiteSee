@@ -10,7 +10,8 @@ import UIKit
 import MapKit
 import CoreData
 import Foundation
-
+// TODO: i dont want tap to delete. i want tap to enlarge...
+// TODO: long tap to display a menu that says delete
 class PhotoAlbumViewController: UIViewController {
     var annotation: VTAnnotation!
     var blockOperations: [NSBlockOperation] = []
@@ -265,7 +266,7 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
     }
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         
-        UIView.animateWithDuration(0.25) { () -> Void in
+//        UIView.animateWithDuration(0.25) { () -> Void in
             self.collectionView.performBatchUpdates({ () -> Void in
                 for op : NSBlockOperation in self.blockOperations {
                     op.start()
@@ -275,7 +276,7 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
                     self.blockOperations.removeAll(keepCapacity: false)
                     
             }
-        }
+//        }
         
     }
 }
