@@ -38,7 +38,7 @@ class PhotoAlbumViewController: UIViewController {
         do {
             try sharedContext.save()
         } catch {}
-        searchPhotosByLatLon(lastPageNumber + 1)
+        searchPhotosByText("\(annotation.title!) \(annotation.subtitle!)", pageNumber: lastPageNumber + 1)
     }
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         let point = sender.locationInView(self.collectionView)
@@ -70,9 +70,8 @@ class PhotoAlbumViewController: UIViewController {
         }
         catch
         {}
-        print("top\(topLayoutGuide.topAnchor), bottom\(topLayoutGuide.bottomAnchor), height\(topLayoutGuide.heightAnchor)")
         
-        searchPhotosByLatLon(lastPageNumber)
+        searchPhotosByText("\(annotation.title!) \(annotation.subtitle!)", pageNumber: lastPageNumber)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -80,27 +79,10 @@ class PhotoAlbumViewController: UIViewController {
     }
 
     // MARK: Flickr API
-    let EXTRAS = "url_b,url_q"
-    let SAFE_SEARCH = "1"
-    let DATA_FORMAT = "json"
-    let NO_JSON_CALLBACK = "1"
-    let BOUNDING_BOX_HALF_WIDTH = 1.0
-    let BOUNDING_BOX_HALF_HEIGHT = 1.0
-    let LAT_MIN = -90.0
-    let LAT_MAX = 90.0
-    let LON_MIN = -180.0
-    let LON_MAX = 180.0
-    func searchPhotosByLatLon(pageNumber: Int) {
-        let methodArguments : [String:AnyObject] = [
-            "method": Flickr.Resources.search,
-            "api_key": Flickr.Constants.apiKey,
-            "safe_search": SAFE_SEARCH,
-            "extras": EXTRAS,
-            "format": DATA_FORMAT,
-            "nojsoncallback": NO_JSON_CALLBACK,
-            "text": "\(annotation!.title!) \(annotation!.subtitle!)",
-            "per_page": 21
-        ]
+
+    func searchPhotosByText(text:String, pageNumber: Int) {
+        let methodArguments = Flickr.sharedInstance().getSearchMethodArgumentsConvenience(text, perPage: 21)
+        
         Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
             guard error == nil else {
                 print(error?.localizedDescription)
@@ -113,64 +95,35 @@ class PhotoAlbumViewController: UIViewController {
                 } else if self.collectionView.numberOfItemsInSection(0) == 0 {
                     self.lastPageNumber = pageNumber % pageLimit
                 } else if self.lastPageNumber == pageNumber { // do not download the same page again
+                    // TODO: change this for infinite scroll
                         return
                 }
-            
-                Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
+                var sortOrder: Double = 0.0
+                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (thumbnailUrl, imageUrl, error) in
                     guard error == nil else {
-                        print(error?.localizedDescription)
-                        return
-                    }
-                    
-                    if totalPhotosVal > 0 {
-                        print("photos");
-                        /* GUARD: Is the "photo" key in photosDictionary? */
-                        guard let photosArray = photosDictionary!["photo"] as? [[String: AnyObject]] else {
-                            print("Cannot find key 'photo' in \(photosDictionary)")
-                            return
-                        }
-                        var sortOrder : Double = 0.0
-                        var images = [Image]()
-                        for photoDictionary in photosArray {
-                            
-                            /* GUARD: Does our photo have a key for 'url_m'? */
-                            guard let thumbnailUrlStr = photoDictionary["url_q"] as? String else {
-                                print("Cannot find key 'url_q' in \(photoDictionary)")
-                                return
-                            }
-                            
-                            let request = NSFetchRequest(entityName: "Image")
-                            request.predicate = NSPredicate(format: "thumbnailUrl == %@", thumbnailUrlStr)
-                            
-                            guard let imageUrlStr = photoDictionary["url_q"] as? String else {
-                                print("Cannot find key 'url_s' in \(photoDictionary)")
-                                return
-                            }
-                            
-                            // add thumbnail url to core data
-                            // add medium url to core data
-                            let imageDictionary : [String: AnyObject] = [
-                                Image.Keys.ThumbnailUrl : thumbnailUrlStr,
-                                Image.Keys.ImageUrl : imageUrlStr,
-                                Image.Keys.SortOrder : NSNumber(double: sortOrder)
-                            ]
-                            sortOrder += 1.0
-                            
-                            dispatch_async(dispatch_get_main_queue()){
-                                let image = Image(dictionary: imageDictionary, context: self.sharedContext)
-                                image.pin = self.annotation
-                                images.append(image)
-                                self.saveContext()
-                            }
-                        }
-                    } else {
                         print("no photos")
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.newCollection.enabled = false;
                             self.noPhotosLabel.hidden = false;
                         })
+                        return
+                    }
+                    // add thumbnail url to core data
+                    // add medium url to core data
+                    let imageDictionary : [String: AnyObject] = [
+                        Image.Keys.ThumbnailUrl : thumbnailUrl!,
+                        Image.Keys.ImageUrl : imageUrl!,
+                        Image.Keys.SortOrder : NSNumber(double: sortOrder)
+                    ]
+                    sortOrder += 1.0
+                    
+                    dispatch_async(dispatch_get_main_queue()){
+                        let image = Image(dictionary: imageDictionary, context: self.sharedContext)
+                        image.pin = self.annotation
+                        self.saveContext()
                     }
                 })
+                
             }
         }
     }
@@ -215,9 +168,7 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
         case .Insert:
             blockOperations.append(
                 NSBlockOperation(block: { () -> Void in
-                    
                     self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
-                    
                 })
             )
         case .Delete:
@@ -265,8 +216,6 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
         }
     }
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        
-//        UIView.animateWithDuration(0.25) { () -> Void in
             self.collectionView.performBatchUpdates({ () -> Void in
                 for op : NSBlockOperation in self.blockOperations {
                     op.start()
@@ -276,8 +225,6 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
                     self.blockOperations.removeAll(keepCapacity: false)
                     
             }
-//        }
-        
     }
 }
 // MARK: UICollectionViewDelegateFlowLayout
@@ -287,7 +234,6 @@ extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
         let padding:CGFloat = 5
         let photoSide = (collectionView.bounds.width / itemsPerRow) - padding
         return CGSize(width: photoSide, height: photoSide)
-
     }
 }
 // MARK: UICollectionViewDataSource

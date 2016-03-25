@@ -86,7 +86,7 @@ class Flickr : Model {
                 return
             }
             
-            /* Pick a random page! */
+            /* Pick a page! */
             completionHandler(stat: stat, photosDict: photosDictionary, totalPages: totalPages, error: nil)
             
         }
@@ -180,6 +180,60 @@ class Flickr : Model {
 }
 // Convenience methods
 extension Flickr {
+    func getSearchMethodArgumentsConvenience(text: String, perPage:Int) -> [String:AnyObject]{
+        let EXTRAS = "url_b,url_q"
+        let SAFE_SEARCH = "1"
+        let DATA_FORMAT = "json"
+        let NO_JSON_CALLBACK = "1"
+        let methodArguments : [String:AnyObject] = [
+            "method": Flickr.Resources.search,
+            "api_key": Flickr.Constants.apiKey,
+            "safe_search": SAFE_SEARCH,
+            "extras": EXTRAS,
+            "format": DATA_FORMAT,
+            "nojsoncallback": NO_JSON_CALLBACK,
+            "text": text,
+            "per_page": perPage
+        ]
+        return methodArguments
+    }
+    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, imageUrl: String?, error: NSError?)->Void) {
+        Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: pageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
+            guard error == nil else {
+                print(error?.localizedDescription)
+                return
+            }
+            
+            if totalPhotosVal > 0 {
+                print("photos");
+                /* GUARD: Is the "photo" key in photosDictionary? */
+                guard let photosArray = photosDictionary!["photo"] as? [[String: AnyObject]] else {
+                    print("Cannot find key 'photo' in \(photosDictionary)")
+                    return
+                }
+                for photoDictionary in photosArray {
+                    
+                    /* GUARD: Does our photo have a key for 'url_m'? */
+                    guard let thumbnailUrlStr = photoDictionary["url_q"] as? String else {
+                        print("Cannot find key 'url_q' in \(photoDictionary)")
+                        return
+                    }
+                    
+                    
+                    guard let imageUrlStr = photoDictionary["url_q"] as? String else {
+                        print("Cannot find key 'url_s' in \(photoDictionary)")
+                        return
+                    }
+
+                    completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, error: nil)
+
+                }
+            } else {
+                completionHandler(thumbnailUrl: nil, imageUrl: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo: nil))
+
+            }
+        })
+    }
     func getCellImageConvenience(url:String, completion: ((data: NSData) -> Void)) {
         self.downloadImage(url, completion: { (data, response, error) -> Void in
             /* GUARD: Was there an error? */
