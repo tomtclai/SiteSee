@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		772B7DD61CA3943100849896 /* SSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DD51CA3943100849896 /* SSTableViewCell.swift */; };
-		772B7DD81CA4592900849896 /* NewYorkTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DD71CA4592900849896 /* NewYorkTimes.swift */; };
-		772B7DDC1CA4597500849896 /* NweYorkTimes-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DDB1CA4597500849896 /* NweYorkTimes-Constants.swift */; };
+		772B7DDE1CA47A0900849896 /* SSTableViewPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */; };
 		7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1C71CA33F8100D893B7 /* AppDelegate.swift */; };
 		7793B1CD1CA33F8100D893B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CB1CA33F8100D893B7 /* Main.storyboard */; };
 		7793B1CF1CA33F8100D893B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CE1CA33F8100D893B7 /* Assets.xcassets */; };
@@ -34,8 +33,7 @@
 
 /* Begin PBXFileReference section */
 		772B7DD51CA3943100849896 /* SSTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewCell.swift; sourceTree = "<group>"; };
-		772B7DD71CA4592900849896 /* NewYorkTimes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewYorkTimes.swift; sourceTree = "<group>"; };
-		772B7DDB1CA4597500849896 /* NweYorkTimes-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NweYorkTimes-Constants.swift"; sourceTree = "<group>"; };
+		772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewPhotosCell.swift; sourceTree = "<group>"; };
 		7793B1C41CA33F8100D893B7 /* SiteSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiteSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7793B1C71CA33F8100D893B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7793B1CC1CA33F8100D893B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -77,7 +75,6 @@
 				7793B1E21CA3400900D893B7 /* Model.swift */,
 				7793B1E41CA3400900D893B7 /* VTAnnotation.swift */,
 				772B7DDA1CA4595500849896 /* Entities */,
-				772B7DD91CA4593200849896 /* NYTimes */,
 				772B7DD11CA340B900849896 /* Wikipedia */,
 				772B7DD01CA340AB00849896 /* Flickr */,
 			);
@@ -117,19 +114,11 @@
 			isa = PBXGroup;
 			children = (
 				7793B1CB1CA33F8100D893B7 /* Main.storyboard */,
+				772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */,
 				7793B1D01CA33F8100D893B7 /* LaunchScreen.storyboard */,
 				772B7DD51CA3943100849896 /* SSTableViewCell.swift */,
 			);
 			name = View;
-			sourceTree = "<group>";
-		};
-		772B7DD91CA4593200849896 /* NYTimes */ = {
-			isa = PBXGroup;
-			children = (
-				772B7DD71CA4592900849896 /* NewYorkTimes.swift */,
-				772B7DDB1CA4597500849896 /* NweYorkTimes-Constants.swift */,
-			);
-			name = NYTimes;
 			sourceTree = "<group>";
 		};
 		772B7DDA1CA4595500849896 /* Entities */ = {
@@ -247,13 +236,12 @@
 			files = (
 				7793B1E91CA3400900D893B7 /* Article+CoreDataProperties.swift in Sources */,
 				7793B1F01CA3400900D893B7 /* Flickr.swift in Sources */,
-				772B7DDC1CA4597500849896 /* NweYorkTimes-Constants.swift in Sources */,
 				7793B1F21CA3400900D893B7 /* LocationsMapViewController.swift in Sources */,
 				7793B1EF1CA3400900D893B7 /* Image+CoreDataProperties.swift in Sources */,
 				7793B1F11CA3400900D893B7 /* Model.swift in Sources */,
 				7793B1F91CA3401D00D893B7 /* Model.xcdatamodeld in Sources */,
+				772B7DDE1CA47A0900849896 /* SSTableViewPhotosCell.swift in Sources */,
 				7793B1F61CA3400900D893B7 /* VTCollectionViewCell.swift in Sources */,
-				772B7DD81CA4592900849896 /* NewYorkTimes.swift in Sources */,
 				7793B1EC1CA3400900D893B7 /* Wikipedia.swift in Sources */,
 				772B7DD61CA3943100849896 /* SSTableViewCell.swift in Sources */,
 				7793B1F51CA3400900D893B7 /* Flickr-Constants.swift in Sources */,

@@ -150,6 +150,42 @@
                                     <outlet property="titleLabel" destination="iZK-xi-Yyp" id="weP-hm-wSD"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="photosCell" rowHeight="120" id="56J-dj-jiW" customClass="SSTableViewPhotosCell" customModule="SiteSee" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="167" width="600" height="120"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56J-dj-jiW" id="aL4-Kc-7ea">
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="119"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-Gb-7rg">
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="119"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Mxh-bs-J9b">
+                                                <size key="itemSize" width="50" height="50"/>
+                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            </collectionViewFlowLayout>
+                                            <cells>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="nOv-lR-Lz9">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </view>
+                                                </collectionViewCell>
+                                            </cells>
+                                        </collectionView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="mXr-Gb-7rg" secondAttribute="trailing" id="cwc-3a-Dk6"/>
+                                        <constraint firstItem="mXr-Gb-7rg" firstAttribute="leading" secondItem="aL4-Kc-7ea" secondAttribute="leading" id="mqg-ds-nRd"/>
+                                        <constraint firstAttribute="bottom" secondItem="mXr-Gb-7rg" secondAttribute="bottom" id="qQn-oc-LZT"/>
+                                        <constraint firstItem="mXr-Gb-7rg" firstAttribute="top" secondItem="aL4-Kc-7ea" secondAttribute="top" id="qeJ-Mx-g3D"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="PdO-hf-DUK" id="2eQ-j8-CuA"/>
