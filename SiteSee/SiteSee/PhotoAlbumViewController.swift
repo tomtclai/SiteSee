@@ -13,14 +13,12 @@ import Foundation
 
 class PhotoAlbumViewController: UIViewController {
     var annotation: VTAnnotation!
-    var span: MKCoordinateSpan!
     var blockOperations: [NSBlockOperation] = []
     let placeholder = UIImage(named: "placeholder")!
     @IBOutlet var tapGesture: UITapGestureRecognizer!
     @IBOutlet weak var newCollection: UIBarButtonItem!
-    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var noPhotosLabel: UILabel!
+    @IBOutlet weak var noPhotosLabel: UILabel! // TODO: remove if everything works. verify there is no way to get to this view controller if no photos is at this location
     var lastPageNumber : Int {
         set {
             annotation.pageNumber = newValue
@@ -33,7 +31,8 @@ class PhotoAlbumViewController: UIViewController {
         }
     }
     @IBAction func newCollectionTapped(sender: AnyObject) {
-        removeAllPhotosAtThisLocation()
+        
+        removeAllPhotosAtThisLocation()// TODO: comment out if everything works
 
         do {
             try sharedContext.save()
@@ -65,16 +64,11 @@ class PhotoAlbumViewController: UIViewController {
     
     override func viewDidLoad() {
         navigationController?.navigationBarHidden = false
-        mapView.clipsToBounds = false
         do {
             try self.fetchedResultsController.performFetch()
         }
         catch
         {}
-        mapView.addAnnotation(annotation)
-        mapView.userInteractionEnabled = false
-        let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-        mapView.setRegion(region, animated: false)
         print("top\(topLayoutGuide.topAnchor), bottom\(topLayoutGuide.bottomAnchor), height\(topLayoutGuide.heightAnchor)")
         
         searchPhotosByLatLon(lastPageNumber)
@@ -103,8 +97,7 @@ class PhotoAlbumViewController: UIViewController {
             "extras": EXTRAS,
             "format": DATA_FORMAT,
             "nojsoncallback": NO_JSON_CALLBACK,
-            "lat": annotation.latitude.doubleValue,
-            "lon": annotation.longitude.doubleValue,
+            "text": "\(annotation!.title!) \(annotation!.subtitle!)",
             "per_page": 21
         ]
         Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
@@ -135,7 +128,7 @@ class PhotoAlbumViewController: UIViewController {
                             print("Cannot find key 'photo' in \(photosDictionary)")
                             return
                         }
-                        
+                        var sortOrder : Double = 0.0
                         var images = [Image]()
                         for photoDictionary in photosArray {
                             
@@ -158,7 +151,9 @@ class PhotoAlbumViewController: UIViewController {
                             let imageDictionary : [String: AnyObject] = [
                                 Image.Keys.ThumbnailUrl : thumbnailUrlStr,
                                 Image.Keys.ImageUrl : imageUrlStr,
+                                Image.Keys.SortOrder : NSNumber(double: sortOrder)
                             ]
+                            sortOrder += 1.0
                             
                             dispatch_async(dispatch_get_main_queue()){
                                 let image = Image(dictionary: imageDictionary, context: self.sharedContext)
@@ -191,7 +186,7 @@ class PhotoAlbumViewController: UIViewController {
     lazy var fetchedResultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Image")
         request.predicate = NSPredicate(format: "pin == %@", self.annotation)
-        request.sortDescriptors = [NSSortDescriptor(key: "thumbnailUrl", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "sortOrder", ascending: true)]
         
         let fetched =  NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         fetched.delegate = self
@@ -287,10 +282,11 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
 // MARK: UICollectionViewDelegateFlowLayout
 extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let screenRect = UIScreen.mainScreen().bounds
-        let width = screenRect.size.width
-        let itemEdge = width / 3.0
-        return CGSizeMake(itemEdge, itemEdge)
+        let itemsPerRow:CGFloat = 3
+        let padding:CGFloat = 5
+        let photoSide = (collectionView.bounds.width / itemsPerRow) - padding
+        return CGSize(width: photoSide, height: photoSide)
+
     }
 }
 // MARK: UICollectionViewDataSource

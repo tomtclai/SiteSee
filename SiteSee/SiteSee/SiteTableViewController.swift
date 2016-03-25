@@ -80,29 +80,35 @@ class SiteTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let sections = fetchedResultsController.sections {
-            return sections.count
-        }
-        return 0
+//        if let sections = fetchedResultsController.sections {
+//            return sections.count + 1
+//        }
+        return 2
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = fetchedResultsController.sections {
-            return sections[section].numberOfObjects
+        switch section {
+        case 0:
+            return fetchedResultsController.sections![section].numberOfObjects
+        case 1:
+            return 1
+        default:
+            return 0
         }
-        return 0
     }
 
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "Wikipedia"
+        case 1:
+            return "Flickr"
         default:
             return ""
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func dequeuePlainTableCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath) as? SSTableViewCell else {
             print("cell isn't SSTableViewCell")
             return tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath)
@@ -122,11 +128,42 @@ class SiteTableViewController: UITableViewController {
         }
         title.text = article.title
         subtitle.text = article.subtitle
-
         return cell
     }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    
+    func dequeuePhotoTableCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCellWithIdentifier("photosCell", forIndexPath: indexPath) as? SSTableViewPhotosCell else {
+            print("cell isn't SSTableViewPhotosCell")
+            return tableView.dequeueReusableCellWithIdentifier("photosCell", forIndexPath: indexPath)
+        }
+//        guard let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article  else {
+//            print("fetched result not an article")
+//            return cell
+//        }
+//        guard let title = cell.titleLabel else {
+//            print("cell does not have a titleLabel")
+//            return cell
+//        }
+//        guard let subtitle = cell.subtitleLabel else {
+//            print("cell does not have a subtitleLabel")
+//            return cell
+//        }
+//        title.text = article.title
+//        subtitle.text = article.subtitle
+        return cell
+    }
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            return dequeuePlainTableCell(tableView, indexPath: indexPath)
+        case 1:
+            return dequeuePhotoTableCell(tableView, indexPath: indexPath)
+        default:
+            print("Unexpected section in cellForRowAtIndexPath")
+            return UITableViewCell()
+        }
+    }
+    func gotoArticle(indexPath: NSIndexPath) {
         guard let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article  else {
             print("fetched result not an article")
             return
@@ -147,6 +184,18 @@ class SiteTableViewController: UITableViewController {
         }
         
         pushSafariViewController(url)
+    }
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section {
+        case 0:
+            gotoArticle(indexPath)
+        case 1:
+            return // handled by
+        default:
+            print("Unexpected section in didSelectRowAtIndexPath")
+            return
+        }
+
         
     }
     func pushSafariViewController(url: NSURL) {
@@ -158,8 +207,15 @@ class SiteTableViewController: UITableViewController {
     
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        switch indexPath.section {
+        case 0:
+            return true
+        case 1:
+            return false
+        default:
+            print("Unexpected section in canEditRowAtIndexPath")
+            return false
+        }
     }
  
 
@@ -228,15 +284,22 @@ class SiteTableViewController: UITableViewController {
         }
         return proposedDestinationIndexPath
     }
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "photoAlbumViewController" {
+            if let pavc = segue.destinationViewController as? PhotoAlbumViewController {
+                pavc.annotation = annotation
+            } else {
+                print("unexpected view controller in prepareForSegue")
+            }
+        }
     }
-    */
+ 
     // MARK: - Core Data Convenience
     func saveContext() {
         CoreDataStackManager.sharedInstance().saveContext()
@@ -303,5 +366,25 @@ extension SiteTableViewController : SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(controller: SFSafariViewController) {
         navigationController?.popViewControllerAnimated(true)
         navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+}
+
+extension SiteTableViewController : UICollectionViewDataSource {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 12
+    }
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath)
+        return cell
+    }
+}
+
+extension SiteTableViewController : UICollectionViewDelegateFlowLayout {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let itemsPerRow:CGFloat = 4
+        let padding:CGFloat = 5
+        let photoWidth = (collectionView.bounds.width / itemsPerRow) - padding
+        let photoHeight = collectionView.bounds.height - (2 * padding)
+        return CGSize(width: photoWidth, height: photoHeight)
     }
 }

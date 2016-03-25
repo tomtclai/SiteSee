@@ -16,6 +16,7 @@ class Image: NSManagedObject {
         static let ImageUrl = "imageUrl"
         static let ThumbnailUrl = "thumbnailUrl"
         static let UUID = "uuid"
+        static let SortOrder = "sortOrder"
     }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
@@ -29,6 +30,7 @@ class Image: NSManagedObject {
         imageUrl = dictionary[Keys.ImageUrl] as? String
         thumbnailUrl = dictionary[Keys.ThumbnailUrl] as? String
         uuid = dictionary[Keys.UUID] as? String
+        sortOrder = dictionary[Keys.SortOrder] as? Double
     }
     
     override func prepareForDeletion() {
