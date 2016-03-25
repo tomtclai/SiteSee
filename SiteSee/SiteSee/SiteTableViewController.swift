@@ -44,7 +44,7 @@ class SiteTableViewController: UITableViewController {
             "list" : Wikipedia.List.search,
             "utf-8" : 1,
             "srsearch" : keyword,
-            "srlimit" : 10
+            "srlimit" : 5
         ]
         var sortOrder : Double = 0.0
         Wikipedia.sharedInstance().getListOfArticles(metthodArguments) { (title, subtitle, error) -> Void in
