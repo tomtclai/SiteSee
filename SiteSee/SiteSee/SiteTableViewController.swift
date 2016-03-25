@@ -14,7 +14,7 @@ class SiteTableViewController: UITableViewController {
     var blockOperations: [NSBlockOperation] = []
     let placeholder = UIImage(named: "placeholder")!
     var collectionView: UICollectionView {
-        let flickrCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 1)) as! SSTableViewPhotosCell
+        let flickrCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! SSTableViewPhotosCell
         return flickrCell.collectionView
     }
     override func viewDidLoad() {
@@ -40,9 +40,9 @@ class SiteTableViewController: UITableViewController {
         tableView.estimatedRowHeight = 160
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
-
+        
     }
     func locationIsLoadedKey(keyword: String) -> String {
         return "locationIsLoaded: " + keyword
@@ -62,7 +62,7 @@ class SiteTableViewController: UITableViewController {
                     guard error == nil else {
                         print("no photos")
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.deleteSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
+                            self.tableView.deleteSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
                         })
                         return
                     }
@@ -84,7 +84,7 @@ class SiteTableViewController: UITableViewController {
                 
             }
         }
-
+        
         
     }
     func searchWikipediaForArticles(keyword: String) {
@@ -121,47 +121,47 @@ class SiteTableViewController: UITableViewController {
         }
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: locationIsLoadedKey(keyword))
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-            return 2
+        return 2
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return fetchedArticlesController.sections![section].numberOfObjects
-        case 1:
             return 1
+        case 1:
+            return fetchedArticlesController.sections![0].numberOfObjects
         default:
             return 0
         }
     }
-
+    
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Wikipedia"
-        case 1:
             return "Flickr"
+        case 1:
+            return "Wikipedia"
         default:
             return ""
         }
     }
-
+    
     func dequeuePlainTableCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath) as? SSTableViewCell else {
             print("cell isn't SSTableViewCell")
             return tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath)
         }
-        
-        guard let article = fetchedArticlesController.objectAtIndexPath(indexPath) as? Article  else {
+        let fetchedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: 0)
+        guard let article = fetchedArticlesController.objectAtIndexPath(fetchedIndexPath) as? Article  else {
             print("fetched result not an article")
             return cell
         }
@@ -183,35 +183,36 @@ class SiteTableViewController: UITableViewController {
             print("cell isn't SSTableViewPhotosCell")
             return tableView.dequeueReusableCellWithIdentifier("photosCell", forIndexPath: indexPath)
         }
-//        guard let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article  else {
-//            print("fetched result not an article")
-//            return cell
-//        }
-//        guard let title = cell.titleLabel else {
-//            print("cell does not have a titleLabel")
-//            return cell
-//        }
-//        guard let subtitle = cell.subtitleLabel else {
-//            print("cell does not have a subtitleLabel")
-//            return cell
-//        }
-//        title.text = article.title
-//        subtitle.text = article.subtitle
+        //        guard let article = fetchedResultsController.objectAtIndexPath(indexPath) as? Article  else {
+        //            print("fetched result not an article")
+        //            return cell
+        //        }
+        //        guard let title = cell.titleLabel else {
+        //            print("cell does not have a titleLabel")
+        //            return cell
+        //        }
+        //        guard let subtitle = cell.subtitleLabel else {
+        //            print("cell does not have a subtitleLabel")
+        //            return cell
+        //        }
+        //        title.text = article.title
+        //        subtitle.text = article.subtitle
         return cell
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            return dequeuePlainTableCell(tableView, indexPath: indexPath)
-        case 1:
             return dequeuePhotoTableCell(tableView, indexPath: indexPath)
+        case 1:
+            return dequeuePlainTableCell(tableView, indexPath: indexPath)
         default:
             print("Unexpected section in cellForRowAtIndexPath")
             return UITableViewCell()
         }
     }
     func gotoArticle(indexPath: NSIndexPath) {
-        guard let article = fetchedArticlesController.objectAtIndexPath(indexPath) as? Article  else {
+        let fetchedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: 0)
+        guard let article = fetchedArticlesController.objectAtIndexPath(fetchedIndexPath) as? Article  else {
             print("fetched result not an article")
             return
         }
@@ -235,9 +236,9 @@ class SiteTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 0:
-            gotoArticle(indexPath)
-        case 1:
             performSegueWithIdentifier("photoAlbumViewController", sender: tableView)
+        case 1:
+            gotoArticle(indexPath)
         default:
             print("Unexpected section in didSelectRowAtIndexPath")
             return
@@ -254,20 +255,21 @@ class SiteTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         switch indexPath.section {
         case 0:
-            return true
-        case 1:
             return false
+        case 1:
+            return true
         default:
             print("Unexpected section in canEditRowAtIndexPath")
             return false
         }
     }
- 
-
+    
+    
     
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let object = fetchedArticlesController.objectAtIndexPath(indexPath) as? NSManagedObject else {
+        let fetchedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: 0)
+        guard let object = fetchedArticlesController.objectAtIndexPath(fetchedIndexPath) as? NSManagedObject else {
             print("fetchedResultsController returned non NSManagedObject")
             return
         }
@@ -277,30 +279,32 @@ class SiteTableViewController: UITableViewController {
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             print("Insertion is not supported")
-        }    
+        }
     }
-
+    
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         let targetSortOrder : Double
-        guard let objectToMove = fetchedArticlesController.objectAtIndexPath(fromIndexPath) as? Article else {
+        let fetchedFromIndexPath = NSIndexPath(forRow: fromIndexPath.row, inSection: 0)
+        let fetchedToIndexPath = NSIndexPath(forRow: toIndexPath.row, inSection: 0)
+        guard let objectToMove = fetchedArticlesController.objectAtIndexPath(fetchedFromIndexPath) as? Article else {
             print("objectToMove isn't an Article")
             return
         }
         
-        guard let objectToDisplace = fetchedArticlesController.objectAtIndexPath(toIndexPath) as? Article else {
+        guard let objectToDisplace = fetchedArticlesController.objectAtIndexPath(fetchedToIndexPath) as? Article else {
             print("objectToDisplace isn't an Article")
             return
         }
         if toIndexPath.row == 0 {
             // move to top
             targetSortOrder = objectToDisplace.sortOrder!.doubleValue - 1.0
-        } else if toIndexPath.row == fetchedArticlesController.sections![fromIndexPath.section].numberOfObjects - 1 {
+        } else if toIndexPath.row == fetchedArticlesController.sections![fetchedFromIndexPath.section].numberOfObjects - 1 {
             // move to bottom
             targetSortOrder = objectToDisplace.sortOrder!.doubleValue + 1.0
         } else {
             // move to middle
-            let auxIndexPath = NSIndexPath(forRow: toIndexPath.row-1, inSection: toIndexPath.section)
+            let auxIndexPath = NSIndexPath(forRow: toIndexPath.row-1, inSection: fetchedToIndexPath.section)
             guard let objectBeforeDest = fetchedArticlesController.objectAtIndexPath(auxIndexPath) as? Article else {
                 print("objectBeforeDest isn't an Article")
                 return
@@ -309,16 +313,16 @@ class SiteTableViewController: UITableViewController {
         }
         objectToMove.sortOrder = targetSortOrder
         do { try sharedContext.save() } catch {}
-    
+        
     }
-
+    
     
     // Override to support conditional rearranging of the table view.
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
     }
- 
+    
     override func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
             var row = 0
@@ -331,7 +335,7 @@ class SiteTableViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
@@ -344,7 +348,7 @@ class SiteTableViewController: UITableViewController {
             }
         }
     }
- 
+    
     // MARK: - Core Data Convenience
     func saveContext() {
         CoreDataStackManager.sharedInstance().saveContext()
@@ -380,7 +384,7 @@ class SiteTableViewController: UITableViewController {
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
         super.decodeRestorableStateWithCoder(coder)
     }
-
+    
 }
 // MARK: NSFetchedResultsControllerDelegate
 extension SiteTableViewController : NSFetchedResultsControllerDelegate {
@@ -539,7 +543,7 @@ extension SiteTableViewController : UICollectionViewDataSource {
             }
         }
         return cell
-
+        
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
