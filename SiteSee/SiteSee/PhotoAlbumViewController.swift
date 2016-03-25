@@ -31,7 +31,7 @@ class PhotoAlbumViewController: UIViewController {
             return annotation.pageNumber.integerValue
         }
     }
-    @IBAction func newCollectionTapped(sender: AnyObject) {
+    @IBAction func newCollectionTapped(sender: AnyObject) { // TODO: call this for infinite scrolling
         
         removeAllPhotosAtThisLocation()// TODO: comment out if everything works
 
