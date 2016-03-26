@@ -10,9 +10,9 @@ import UIKit
 import MapKit
 import CoreData
 import Foundation
-// TODO: i dont want tap to delete. i want tap to enlarge...
 // TODO: long tap to display a menu that says delete
 class PhotoAlbumViewController: UIViewController {
+    var selectedIndexPath: NSIndexPath?
     var annotation: VTAnnotation! {
         didSet{
             let keyword =  annotation.keyword()
@@ -36,29 +36,45 @@ class PhotoAlbumViewController: UIViewController {
             return annotation.pageNumber.integerValue
         }
     }
-    @IBAction func newCollectionTapped(sender: AnyObject) { // TODO: call this for infinite scrolling
-        
-        removeAllPhotosAtThisLocation()// TODO: comment out if everything works
-
-        do {
-            try sharedContext.save()
-        } catch {}
-        searchPhotosByText(annotation.keyword(), pageNumber: lastPageNumber + 1)
-    }
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         let point = sender.locationInView(self.collectionView)
+        
         if let indexPath = self.collectionView.indexPathForItemAtPoint(point)
         {
-            let img = fetchedResultsController.objectAtIndexPath(indexPath) as! Image
-            sharedContext.deleteObject(img)
-            do {
-                try sharedContext.save()
-            } catch {}
-        }
-        if self.collectionView.numberOfItemsInSection(0) == 0 {
-            newCollectionTapped(sender)
+            selectedIndexPath = indexPath
+            performSegueWithIdentifier("PhotoViewController", sender: self)
         }
     }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PhotoViewController" {
+            guard let zoomInSegue = segue as? ZoomInSegue else {
+                print("segue isnt ZoomInSegue")
+                return
+            }
+            guard let indexPath = selectedIndexPath else {
+                print("selectedIndexPath is nil")
+                return
+            }
+            guard let cell = self.collectionView.cellForItemAtIndexPath(indexPath) else {
+                print("no cellForItemAtIndexPath")
+                return
+            }
+            let cellRect = cell.frame
+            
+            zoomInSegue.animateFromRect = collectionView.convertRect(cellRect, toView: collectionView.superview)
+            guard let destVc = segue.destinationViewController as? PhotoViewController else {
+                print("destVc isnt PhotoViewController")
+                return
+            }
+            guard let image = fetchedResultsController.objectAtIndexPath(indexPath) as? Image else {
+                print("objectAtIndexPath isn't Image")
+                return
+            }
+            destVc.image = image
+        }
+    }
+
     func removeAllPhotosAtThisLocation() {
         for object in fetchedResultsController.fetchedObjects! {
             if let obj = object as? NSManagedObject {
@@ -75,6 +91,7 @@ class PhotoAlbumViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.addGestureRecognizer(tapGesture)
+        
     }
 
     // MARK: Flickr API
@@ -98,16 +115,18 @@ class PhotoAlbumViewController: UIViewController {
                         return
                 }
                 var sortOrder: Double = 0.0
-                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (thumbnailUrl, imageUrl, error) in
+                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (thumbnailUrl, imageUrl, origImageUrl, error) in
                     guard error == nil else {
                         return
                     }
                     // add thumbnail url to core data
                     // add medium url to core data
-                    let imageDictionary : [String: AnyObject] = [
+                    let imageDictionary : [String: AnyObject?] = [
                         Image.Keys.ThumbnailUrl : thumbnailUrl!,
                         Image.Keys.ImageUrl : imageUrl!,
+                        Image.Keys.OrigImageUrl : origImageUrl,
                         Image.Keys.SortOrder : NSNumber(double: sortOrder)
+                        
                     ]
                     sortOrder += 1.0
                     
@@ -297,12 +316,12 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
 
 }
 
-////MARK: UIViewControllerRestoration
-//extension PhotoAlbumViewController : UIViewControllerRestoration {
-//    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-//        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
-//    }
-//}
+//MARK: UIViewControllerRestoration
+extension PhotoAlbumViewController : UIViewControllerRestoration {
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
+    }
+}
 
 //Mark: documents directory
 extension PhotoAlbumViewController  {

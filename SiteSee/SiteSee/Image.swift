@@ -17,13 +17,14 @@ class Image: NSManagedObject {
         static let ThumbnailUrl = "thumbnailUrl"
         static let UUID = "uuid"
         static let SortOrder = "sortOrder"
+        static let OrigImageUrl = "origImageUrl"
     }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    init(dictionary: [String:AnyObject], context: NSManagedObjectContext) {
+    init(dictionary: [String:AnyObject?], context: NSManagedObjectContext) {
         let entity = NSEntityDescription.entityForName("Image", inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
@@ -31,6 +32,7 @@ class Image: NSManagedObject {
         thumbnailUrl = dictionary[Keys.ThumbnailUrl] as? String
         uuid = dictionary[Keys.UUID] as? String
         sortOrder = dictionary[Keys.SortOrder] as? Double
+        origImageUrl = dictionary[Keys.OrigImageUrl] as? String
     }
     
     override func prepareForDeletion() {

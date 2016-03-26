@@ -181,7 +181,7 @@ class Flickr : Model {
 // Convenience methods
 extension Flickr {
     func getSearchMethodArgumentsConvenience(text: String, perPage:Int) -> [String:AnyObject]{
-        let EXTRAS = "url_b,url_q"
+        let EXTRAS = "url_b,url_q,url_o"
         let SAFE_SEARCH = "1"
         let DATA_FORMAT = "json"
         let NO_JSON_CALLBACK = "1"
@@ -197,7 +197,7 @@ extension Flickr {
         ]
         return methodArguments
     }
-    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, imageUrl: String?, error: NSError?)->Void) {
+    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, imageUrl: String?, origImageUrl: String?, error: NSError?)->Void) {
         Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: pageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
             guard error == nil else {
                 print(error?.localizedDescription)
@@ -221,15 +221,20 @@ extension Flickr {
                     
                     
                     guard let imageUrlStr = photoDictionary["url_q"] as? String else {
-                        print("Cannot find key 'url_s' in \(photoDictionary)")
+                        print("Cannot find key 'url_q' in \(photoDictionary)")
                         return
                     }
+                    
+                    guard let originalImageUrlStr = photoDictionary["url_o"] as? String else {
+                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: nil, error: nil)
+                        return 
+                    }
 
-                    completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, error: nil)
+                    completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: originalImageUrlStr, error: nil)
 
                 }
             } else {
-                completionHandler(thumbnailUrl: nil, imageUrl: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo: nil))
+                completionHandler(thumbnailUrl: nil, imageUrl: nil, origImageUrl: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo: nil))
 
             }
         })

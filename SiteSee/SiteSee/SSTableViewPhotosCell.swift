@@ -10,6 +10,7 @@ import UIKit
 
 class SSTableViewPhotosCell: UITableViewCell {
 
+    @IBOutlet weak var noPhotosLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 }
 

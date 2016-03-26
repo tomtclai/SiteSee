@@ -154,11 +154,19 @@
                                                 <outlet property="delegate" destination="PdO-hf-DUK" id="Rsl-S0-zNo"/>
                                             </connections>
                                         </collectionView>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No Photos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MkY-eO-5mQ">
+                                            <rect key="frame" x="0.0" y="11" width="600" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="top" secondItem="aL4-Kc-7ea" secondAttribute="top" id="8YX-Bc-81v"/>
+                                        <constraint firstItem="MkY-eO-5mQ" firstAttribute="centerY" secondItem="aL4-Kc-7ea" secondAttribute="centerY" id="DN6-w0-Rhw"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" constant="-65" id="GZ3-he-qHQ"/>
                                         <constraint firstAttribute="trailing" secondItem="mXr-Gb-7rg" secondAttribute="trailing" id="cwc-3a-Dk6"/>
+                                        <constraint firstItem="MkY-eO-5mQ" firstAttribute="centerX" secondItem="aL4-Kc-7ea" secondAttribute="centerX" id="e0W-zi-qL1"/>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="leading" secondItem="aL4-Kc-7ea" secondAttribute="leading" id="mqg-ds-nRd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" id="ul9-4k-YzR"/>
                                     </constraints>
@@ -171,6 +179,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="collectionView" destination="mXr-Gb-7rg" id="4Ui-hl-NFd"/>
+                                    <outlet property="noPhotosLabel" destination="MkY-eO-5mQ" id="s4y-l7-Wny"/>
                                     <segue destination="TTA-qT-qmZ" kind="show" identifier="photoAlbumViewController" id="Dwg-IT-frt"/>
                                 </connections>
                             </tableViewCell>
@@ -224,7 +233,7 @@
         <!--Photo Album View Controller-->
         <scene sceneID="orv-WM-eRj">
             <objects>
-                <viewController storyboardIdentifier="PhotoAlbumViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TTA-qT-qmZ" customClass="PhotoAlbumViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoAlbumViewController" id="TTA-qT-qmZ" customClass="PhotoAlbumViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K1C-QX-Qup"/>
                         <viewControllerLayoutGuide type="bottom" id="Rxa-sL-tcF"/>
@@ -241,11 +250,11 @@
                                     <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="64" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionViewCell" id="rlh-gF-urq" customClass="VTCollectionViewCell" customModule="SiteSee" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="128" width="150" height="150"/>
+                                        <rect key="frame" x="0.0" y="64" width="150" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
@@ -271,27 +280,50 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="92m-nP-cMX" firstAttribute="top" secondItem="s84-eY-zwK" secondAttribute="topMargin" id="EvD-bk-cpZ"/>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="leading" secondItem="s84-eY-zwK" secondAttribute="leading" id="FMd-1c-Tl0"/>
                             <constraint firstItem="Rxa-sL-tcF" firstAttribute="top" secondItem="92m-nP-cMX" secondAttribute="bottom" id="Ief-HI-NS6"/>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="top" secondItem="s84-eY-zwK" secondAttribute="topMargin" id="N1F-dt-m0B"/>
                             <constraint firstAttribute="trailing" secondItem="92m-nP-cMX" secondAttribute="trailing" id="s8Z-q3-xAx"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="N1F-dt-m0B"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="dEs-Zj-uxv"/>
                     <connections>
                         <outlet property="collectionView" destination="92m-nP-cMX" id="1Ku-Zj-tHn"/>
-                        <outlet property="tapGesture" destination="eqi-4P-sw1" id="zUK-EN-OH3"/>
+                        <outlet property="tapGesture" destination="Tfh-6z-Dap" id="60K-Gf-kGA"/>
+                        <segue destination="8Wy-8B-cpa" kind="custom" identifier="PhotoViewController" customClass="ZoomInSegue" customModule="SiteSee" customModuleProvider="target" id="FU3-U8-dgK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ByE-3u-DLw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="eqi-4P-sw1">
+                <tapGestureRecognizer id="Tfh-6z-Dap">
                     <connections>
-                        <action selector="didTap:" destination="TTA-qT-qmZ" id="Tjr-SE-R77"/>
-                        <outlet property="delegate" destination="TTA-qT-qmZ" id="nA9-oo-X6g"/>
+                        <action selector="didTap:" destination="TTA-qT-qmZ" id="vd3-aq-N5Z"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2669" y="464"/>
+        </scene>
+        <!--Photo View Controller-->
+        <scene sceneID="QfQ-Ht-eDv">
+            <objects>
+                <viewController id="8Wy-8B-cpa" customClass="PhotoViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
+                    <imageView key="view" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hX1-cF-CV9">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </imageView>
+                    <connections>
+                        <outlet property="imageView" destination="hX1-cF-CV9" id="L1z-au-HjE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6ed-jO-B6b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3354" y="464"/>
         </scene>
     </scenes>
     <resources>

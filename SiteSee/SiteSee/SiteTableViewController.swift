@@ -29,7 +29,7 @@ class SiteTableViewController: UITableViewController {
             } catch {
                 fatalError("Fetch failed: \(error)")
             }
-            if !NSUserDefaults.standardUserDefaults().boolForKey(locationIsLoadedKey(keyword)) {
+            if !NSUserDefaults.standardUserDefaults().boolForKey(locationIsLoadedKey()) {
                 searchWikipediaForArticles(keyword)
                 searchFlickrForPhotos(keyword)
             }
@@ -49,11 +49,8 @@ class SiteTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
         
     }
-
-    
-    
-    func locationIsLoadedKey(keyword: String) -> String {
-        return "locationIsLoaded: " + keyword
+    func locationIsLoadedKey() -> String {
+        return "locationIsLoaded: \(annotation.latitude) \(annotation.longitude)"
     }
     
     func searchFlickrForPhotos(text:String) {
@@ -66,19 +63,18 @@ class SiteTableViewController: UITableViewController {
             }
             dispatch_async(dispatch_get_main_queue()){
                 var sortOrder: Double = 0.0
-                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: 0, completionHandler: { (thumbnailUrl, imageUrl, error) in
+                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: 0, completionHandler: { (thumbnailUrl, imageUrl, origImageUrl, error) in
                     guard error == nil else {
                         print("no photos")
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.deleteSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
-                        })
                         return
                     }
+                    
                     // add thumbnail url to core data
                     // add medium url to core data
-                    let imageDictionary : [String: AnyObject] = [
+                    let imageDictionary : [String: AnyObject?] = [
                         Image.Keys.ThumbnailUrl : thumbnailUrl!,
                         Image.Keys.ImageUrl : imageUrl!,
+                        Image.Keys.OrigImageUrl : origImageUrl,
                         Image.Keys.SortOrder : NSNumber(double: sortOrder)
                     ]
                     sortOrder += 1.0
@@ -128,7 +124,7 @@ class SiteTableViewController: UITableViewController {
                 print ("no title")
             }
         }
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: locationIsLoadedKey(keyword))
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: locationIsLoadedKey())
     }
     
     override func didReceiveMemoryWarning() {
@@ -203,6 +199,11 @@ class SiteTableViewController: UITableViewController {
             print("cell isn't SSTableViewPhotosCell")
             return tableView.dequeueReusableCellWithIdentifier("photosCell", forIndexPath: indexPath)
         }
+
+        if fetchedImagesController.fetchedObjects?.count == 0{
+            cell.noPhotosLabel.hidden = false
+        }
+        
         return cell
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -416,6 +417,11 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         if controller == fetchedArticlesController {
             tableView.endUpdates()
+        } else if controller == fetchedImagesController {
+            if fetchedImagesController.fetchedObjects?.count != 0{
+                let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! SSTableViewPhotosCell
+                cell.noPhotosLabel.hidden = true
+            }
         }
     }
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
