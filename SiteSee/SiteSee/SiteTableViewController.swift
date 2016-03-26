@@ -10,39 +10,48 @@ import UIKit
 import CoreData
 import SafariServices
 class SiteTableViewController: UITableViewController {
-    var annotation: VTAnnotation!
+    let flickerSection = 0
+    let wikiSection = 1
+    
+    var annotation: VTAnnotation! {
+        didSet {
+            self.navigationItem.rightBarButtonItem = self.editButtonItem()
+            var keyword = annotation.title!
+            if let subtitle = annotation.subtitle {
+                keyword += ", \(subtitle)"
+                navigationItem.title = keyword
+            }
+            fetchedArticlesController.delegate = self
+            fetchedImagesController.delegate = self
+            do {
+                try fetchedArticlesController.performFetch()
+                try fetchedImagesController.performFetch()
+            } catch {
+                fatalError("Fetch failed: \(error)")
+            }
+            if !NSUserDefaults.standardUserDefaults().boolForKey(locationIsLoadedKey(keyword)) {
+                searchWikipediaForArticles(keyword)
+                searchFlickrForPhotos(keyword)
+            }
+        }
+    }
     let placeholder = UIImage(named: "placeholder")!
     var collectionView: UICollectionView {
-        let flickrCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! SSTableViewPhotosCell
+        let flickrCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: flickerSection)) as! SSTableViewPhotosCell
         return flickrCell.collectionView
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        var keyword = annotation.title!
-        if let subtitle = annotation.subtitle {
-            keyword += ", \(subtitle)"
-            navigationItem.title = keyword
-        }
-        fetchedArticlesController.delegate = self
-        fetchedImagesController.delegate = self
-        do {
-            try fetchedArticlesController.performFetch()
-            try fetchedImagesController.performFetch()
-        } catch {
-            fatalError("Fetch failed: \(error)")
-        }
-        if !NSUserDefaults.standardUserDefaults().boolForKey(locationIsLoadedKey(keyword)) {
-            searchWikipediaForArticles(keyword)
-            searchFlickrForPhotos(keyword)
-        }
+
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
     }
+
+    
+    
     func locationIsLoadedKey(keyword: String) -> String {
         return "locationIsLoaded: " + keyword
     }
@@ -93,7 +102,7 @@ class SiteTableViewController: UITableViewController {
             "list" : Wikipedia.List.search,
             "utf-8" : 1,
             "srsearch" : keyword,
-            "srlimit" : 5
+            "srlimit" : 8
         ]
         var sortOrder : Double = 0.0
         Wikipedia.sharedInstance().getListOfArticles(metthodArguments) { (title, subtitle, error) -> Void in
@@ -111,6 +120,7 @@ class SiteTableViewController: UITableViewController {
                 sortOrder += 1.0
                 
                 Article(dictionary: articleDict, context: self.sharedContext).pin = self.annotation
+                
                 do {
                     try self.sharedContext.save()
                 } catch {}
@@ -134,10 +144,13 @@ class SiteTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0:
-            return 1
-        case 1:
-            return fetchedArticlesController.sections![0].numberOfObjects
+        case flickerSection:
+                return 1
+        case wikiSection:
+            if let sections = fetchedArticlesController.sections {
+                return sections[0].numberOfObjects
+            }
+            return 0
         default:
             return 0
         }
@@ -145,9 +158,9 @@ class SiteTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0:
+        case flickerSection:
             return "Flickr"
-        case 1:
+        case wikiSection:
             return "Wikipedia"
         default:
             return ""
@@ -371,12 +384,25 @@ class SiteTableViewController: UITableViewController {
     }()
     
     // MARK: state restoration
+    let longitudeKey = "longitude"
+    let latitudeKey = "latitude"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
+        coder.encodeObject(annotation.longitude, forKey: longitudeKey)
+        coder.encodeObject(annotation.latitude, forKey: latitudeKey)
     }
-    
+
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
         super.decodeRestorableStateWithCoder(coder)
+        let long = coder.decodeObjectForKey(longitudeKey) as! NSNumber
+        let lat = coder.decodeObjectForKey(latitudeKey) as! NSNumber
+        
+        let request = NSFetchRequest(entityName: "VTAnnotation")
+        request.predicate = NSPredicate(format: "latitude == %f AND longitude == %f", argumentArray: [lat.doubleValue, long.doubleValue])
+        request.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
+        
+        do { annotation = try sharedContext.executeFetchRequest(request).first as! VTAnnotation} catch {}
+        
     }
     
 }
@@ -394,8 +420,8 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
     }
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         if controller == fetchedImagesController {
-            let ti = indexPathWithSection(indexPath, section: 0)
-            let tni = indexPathWithSection(newIndexPath, section: 0)
+            let ti = indexPathWithSection(indexPath, section: flickerSection)
+            let tni = indexPathWithSection(newIndexPath, section: flickerSection)
             switch type {
             case .Insert:
                 collectionView.insertItemsAtIndexPaths([tni!])
@@ -407,8 +433,8 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
                 collectionView.moveItemAtIndexPath(ti!, toIndexPath: tni!)
             }
         } else if controller == fetchedArticlesController {
-            let ti = indexPathWithSection(indexPath, section: 1)
-            let tni = indexPathWithSection(newIndexPath, section: 1)
+            let ti = indexPathWithSection(indexPath, section: wikiSection)
+            let tni = indexPathWithSection(newIndexPath, section: wikiSection)
             switch type {
             case .Insert:
                 tableView.insertRowsAtIndexPaths([tni!], withRowAnimation: .Automatic)
@@ -518,3 +544,12 @@ extension SiteTableViewController : UICollectionViewDelegateFlowLayout {
         return CGSize(width: photoSide, height: photoSide)
     }
 }
+
+//MARK: UIViewControllerRestoration
+extension SiteTableViewController : UIViewControllerRestoration {
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("SiteTableViewController")
+    }
+}
+
+

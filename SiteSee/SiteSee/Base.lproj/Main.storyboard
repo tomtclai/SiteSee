@@ -9,7 +9,7 @@
         <!--Navigation Controller-->
         <scene sceneID="na1-6I-Tlz">
             <objects>
-                <navigationController id="Lal-ki-qG9" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Lal-ki-qG9" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iWY-X0-oSC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -101,7 +101,7 @@
         <!--Site Table View Controller-->
         <scene sceneID="XVn-hi-AMK">
             <objects>
-                <tableViewController id="PdO-hf-DUK" customClass="SiteTableViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SiteTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PdO-hf-DUK" customClass="SiteTableViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mLk-hP-ptB">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -157,10 +157,16 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="top" secondItem="aL4-Kc-7ea" secondAttribute="top" id="8YX-Bc-81v"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" constant="-65" id="GZ3-he-qHQ"/>
                                         <constraint firstAttribute="trailing" secondItem="mXr-Gb-7rg" secondAttribute="trailing" id="cwc-3a-Dk6"/>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="leading" secondItem="aL4-Kc-7ea" secondAttribute="leading" id="mqg-ds-nRd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" id="ul9-4k-YzR"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="GZ3-he-qHQ"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
                                 <connections>
@@ -218,7 +224,7 @@
         <!--Photo Album View Controller-->
         <scene sceneID="orv-WM-eRj">
             <objects>
-                <viewController id="TTA-qT-qmZ" customClass="PhotoAlbumViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoAlbumViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TTA-qT-qmZ" customClass="PhotoAlbumViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K1C-QX-Qup"/>
                         <viewControllerLayoutGuide type="bottom" id="Rxa-sL-tcF"/>
@@ -227,13 +233,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Photos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klB-84-xxd">
-                                <rect key="frame" x="199" y="271" width="202" height="58"/>
-                                <gestureRecognizers/>
-                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="48"/>
-                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="92m-nP-cMX">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -246,7 +245,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionViewCell" id="rlh-gF-urq" customClass="VTCollectionViewCell" customModule="SiteSee" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="150" height="150"/>
+                                        <rect key="frame" x="0.0" y="128" width="150" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
@@ -272,18 +271,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="klB-84-xxd" firstAttribute="centerY" secondItem="s84-eY-zwK" secondAttribute="centerY" id="9nA-2t-wbd"/>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="leading" secondItem="s84-eY-zwK" secondAttribute="leading" id="FMd-1c-Tl0"/>
                             <constraint firstItem="Rxa-sL-tcF" firstAttribute="top" secondItem="92m-nP-cMX" secondAttribute="bottom" id="Ief-HI-NS6"/>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="top" secondItem="s84-eY-zwK" secondAttribute="topMargin" id="N1F-dt-m0B"/>
-                            <constraint firstItem="klB-84-xxd" firstAttribute="centerX" secondItem="s84-eY-zwK" secondAttribute="centerX" id="SEf-SA-fIl"/>
                             <constraint firstAttribute="trailing" secondItem="92m-nP-cMX" secondAttribute="trailing" id="s8Z-q3-xAx"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dEs-Zj-uxv"/>
                     <connections>
                         <outlet property="collectionView" destination="92m-nP-cMX" id="1Ku-Zj-tHn"/>
-                        <outlet property="noPhotosLabel" destination="klB-84-xxd" id="Lfm-Te-kbh"/>
                         <outlet property="tapGesture" destination="eqi-4P-sw1" id="zUK-EN-OH3"/>
                     </connections>
                 </viewController>

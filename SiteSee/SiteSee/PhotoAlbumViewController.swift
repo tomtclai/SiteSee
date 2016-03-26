@@ -13,13 +13,18 @@ import Foundation
 // TODO: i dont want tap to delete. i want tap to enlarge...
 // TODO: long tap to display a menu that says delete
 class PhotoAlbumViewController: UIViewController {
-    var annotation: VTAnnotation!
+    var annotation: VTAnnotation! {
+        didSet{
+            let keyword =  annotation.keyword()
+            do { try self.fetchedResultsController.performFetch() }  catch {}
+            searchPhotosByText(keyword, pageNumber: lastPageNumber)
+        }
+    }
     var blockOperations: [NSBlockOperation] = []
     let placeholder = UIImage(named: "placeholder")!
     @IBOutlet var tapGesture: UITapGestureRecognizer!
-    @IBOutlet weak var newCollection: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var noPhotosLabel: UILabel! // TODO: remove if everything works. verify there is no way to get to this view controller if no photos is at this location
+    //verify there is no way to get to this view controller if no photos is at this location
     var lastPageNumber : Int {
         set {
             annotation.pageNumber = newValue
@@ -38,7 +43,7 @@ class PhotoAlbumViewController: UIViewController {
         do {
             try sharedContext.save()
         } catch {}
-        searchPhotosByText("\(annotation.title!) \(annotation.subtitle!)", pageNumber: lastPageNumber + 1)
+        searchPhotosByText(annotation.keyword(), pageNumber: lastPageNumber + 1)
     }
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         let point = sender.locationInView(self.collectionView)
@@ -65,13 +70,7 @@ class PhotoAlbumViewController: UIViewController {
     
     override func viewDidLoad() {
         navigationController?.navigationBarHidden = false
-        do {
-            try self.fetchedResultsController.performFetch()
-        }
-        catch
-        {}
-        
-        searchPhotosByText("\(annotation.title!) \(annotation.subtitle!)", pageNumber: lastPageNumber)
+
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -101,11 +100,6 @@ class PhotoAlbumViewController: UIViewController {
                 var sortOrder: Double = 0.0
                 Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (thumbnailUrl, imageUrl, error) in
                     guard error == nil else {
-                        print("no photos")
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.newCollection.enabled = false;
-                            self.noPhotosLabel.hidden = false;
-                        })
                         return
                     }
                     // add thumbnail url to core data
@@ -148,12 +142,25 @@ class PhotoAlbumViewController: UIViewController {
     }()
     
     // MARK: state restoration
+    let longitudeKey = "longitude"
+    let latitudeKey = "latitude"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
+        coder.encodeObject(annotation.longitude, forKey: longitudeKey)
+        coder.encodeObject(annotation.latitude, forKey: latitudeKey)
     }
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
         super.decodeRestorableStateWithCoder(coder)
+        let long = coder.decodeObjectForKey(longitudeKey) as! NSNumber
+        let lat = coder.decodeObjectForKey(latitudeKey) as! NSNumber
+        
+        let request = NSFetchRequest(entityName: "VTAnnotation")
+        request.predicate = NSPredicate(format: "latitude == %f AND longitude == %f", argumentArray: [lat.doubleValue, long.doubleValue])
+        request.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
+        
+        do { annotation = try sharedContext.executeFetchRequest(request).first as! VTAnnotation} catch {}
+        
     }
     
 }
@@ -290,12 +297,12 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
 
 }
 
-//MARK: UIViewControllerRestoration
-extension PhotoAlbumViewController : UIViewControllerRestoration {
-    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
-    }
-}
+////MARK: UIViewControllerRestoration
+//extension PhotoAlbumViewController : UIViewControllerRestoration {
+//    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+//        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
+//    }
+//}
 
 //Mark: documents directory
 extension PhotoAlbumViewController  {

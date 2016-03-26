@@ -36,6 +36,13 @@ class VTAnnotation: NSManagedObject, MKAnnotation {
         }
     }
     
+    func keyword() -> String {
+        var keyword = title!
+        if let subtitle = subtitle {
+            keyword += subtitle
+        }
+        return keyword
+    }
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }

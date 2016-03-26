@@ -202,7 +202,10 @@ class LocationsMapViewController: UIViewController {
 // MARK: UIViewControllerRestoration
 extension LocationsMapViewController : UIViewControllerRestoration {
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LocationsMapViewController")
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LocationsMapViewController")
+        vc.restorationClass = LocationsMapViewController.self
+        vc.restorationIdentifier = (identifierComponents.last as! String)
+        return vc
     }
 }
 
@@ -249,7 +252,6 @@ extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
 }
 
 extension LocationsMapViewController : CLLocationManagerDelegate {
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        startTrackingLocation()
-    }
 }
+
+
