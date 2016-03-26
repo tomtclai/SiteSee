@@ -37,7 +37,9 @@ class PhotoViewController: UIViewController {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { (data) -> Void in
             dispatch_async(dispatch_get_main_queue()){
-                self.imageView.image = UIImage(data: data)!
+                UIView.animateWithDuration(0.5, animations: { 
+                    self.imageView.image = UIImage(data: data)!
+                })
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
         })

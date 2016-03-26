@@ -65,7 +65,6 @@ class SiteTableViewController: UITableViewController {
                 var sortOrder: Double = 0.0
                 Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: 0, completionHandler: { (thumbnailUrl, imageUrl, origImageUrl, error) in
                     guard error == nil else {
-                        print("no photos")
                         return
                     }
                     

@@ -31,7 +31,7 @@ class LocationsMapViewController: UIViewController {
         locationManager.delegate = self
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(fetchedResultsController.fetchedObjects as! [MKAnnotation])
-        
+        locationManager.requestWhenInUseAuthorization()
     }
     
     @IBAction func locationTapped(sender: UIBarButtonItem) {
@@ -73,7 +73,16 @@ class LocationsMapViewController: UIViewController {
         }
     }
     
+    @IBAction func didLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .Ended {
+            addPin()
+        }
+    }
     @IBAction func addButtonTapped(sender: UIBarButtonItem) {
+        addPin()
+    }
+    
+    func addPin()  {
         geocoder.reverseGeocodeLocation(CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)) { (placemarks, error) -> Void in
             if let placemark = placemarks?.first {
                 var locationNames = self.locationNames(placemark, altitude:self.mapView.camera.altitude)
@@ -93,7 +102,6 @@ class LocationsMapViewController: UIViewController {
                 }
             }
         }
-
     }
     
     // MARK: - state restoration
@@ -101,12 +109,15 @@ class LocationsMapViewController: UIViewController {
     let mapViewLong = "MapViewLong"
     let mapViewSpanLatDelta = "MapViewSpanLatDelta"
     let mapViewSpanLongDelta = "MapViewSpanLongDelta"
+    let mapTypeKey = "MapType"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
         coder.encodeDouble(mapView.region.center.latitude, forKey: mapViewLat)
         coder.encodeDouble(mapView.region.center.longitude, forKey: mapViewLong)
         coder.encodeDouble(mapView.region.span.latitudeDelta, forKey: mapViewSpanLatDelta)
         coder.encodeDouble(mapView.region.span.longitudeDelta, forKey: mapViewSpanLongDelta)
+        
+        coder.encodeInt( Int32 (mapView.mapType.rawValue), forKey: mapTypeKey)
     }
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
@@ -124,6 +135,7 @@ class LocationsMapViewController: UIViewController {
         let region = MKCoordinateRegion(center: center, span: span)
         
         mapView.setRegion(region, animated: true)
+        mapView.mapType = MKMapType(rawValue: UInt(coder.decodeIntForKey(mapTypeKey)))!
     }
     
     // MARK: Segue
@@ -230,6 +242,12 @@ extension LocationsMapViewController : MKMapViewDelegate {
             performSegueWithIdentifier(siteTableViewControllerSegueID, sender: self)
         }
     }
+    func mapViewWillStartLoadingMap(mapView: MKMapView) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    }
+    func mapViewDidFinishLoadingMap(mapView: MKMapView) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
 }
 
 // MARK: NSFetchedResultsControllerDelegate
@@ -252,6 +270,14 @@ extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
 }
 
 extension LocationsMapViewController : CLLocationManagerDelegate {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse || status == .AuthorizedAlways {
+            if !NSUserDefaults.standardUserDefaults().boolForKey("firstTimeLaunching") {
+                startTrackingLocation()
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstTimeLaunching")
+            }
+        }
+    }
 }
 
 

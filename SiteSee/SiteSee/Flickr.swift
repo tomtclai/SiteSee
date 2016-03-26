@@ -205,7 +205,6 @@ extension Flickr {
             }
             
             if totalPhotosVal > 0 {
-                print("photos");
                 /* GUARD: Is the "photo" key in photosDictionary? */
                 guard let photosArray = photosDictionary!["photo"] as? [[String: AnyObject]] else {
                     print("Cannot find key 'photo' in \(photosDictionary)")

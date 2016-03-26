@@ -39,6 +39,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="rsY-fQ-LbW" id="xfS-ep-PkO"/>
+                                    <outletCollection property="gestureRecognizers" destination="E7k-QT-wRg" appends="YES" id="UJe-pr-wHq"/>
                                 </connections>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qc2-Ev-WcM">
@@ -85,9 +86,7 @@
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="width" secondItem="5DQ-7v-uvS" secondAttribute="width" id="zuR-k5-McG"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="SiteSee" id="K9d-rU-GhD">
-                        <barButtonItem key="rightBarButtonItem" image="List" id="OZ3-Jt-lCg"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="SiteSee" id="K9d-rU-GhD"/>
                     <connections>
                         <outlet property="locationButton" destination="3BX-99-c6V" id="kxk-g4-X9F"/>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>
@@ -95,6 +94,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xzv-hL-eit" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="E7k-QT-wRg">
+                    <connections>
+                        <action selector="didLongPress:" destination="rsY-fQ-LbW" id="jX2-PT-xdr"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1250" y="464"/>
         </scene>
@@ -328,6 +332,5 @@
     </scenes>
     <resources>
         <image name="GPS" width="22" height="22"/>
-        <image name="List" width="22" height="22"/>
     </resources>
 </document>
