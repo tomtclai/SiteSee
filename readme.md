@@ -1,5 +1,5 @@
 # SiteSee
-Learn about the neighborhoods, cities and countries around the world!
+Learn about the neighborhoods, cities, countries (and seas!) around the world
 
 <!-- Screenshots here -->
 
