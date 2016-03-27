@@ -86,7 +86,13 @@
                             <constraint firstItem="Ukb-5Z-8QF" firstAttribute="width" secondItem="5DQ-7v-uvS" secondAttribute="width" id="zuR-k5-McG"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="SiteSee" id="K9d-rU-GhD"/>
+                    <navigationItem key="navigationItem" title="SiteSee" id="K9d-rU-GhD">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="trash" id="6qZ-JD-5Op">
+                            <connections>
+                                <action selector="trashButtonTapped:" destination="rsY-fQ-LbW" id="ekx-eO-GDR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="locationButton" destination="3BX-99-c6V" id="kxk-g4-X9F"/>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>

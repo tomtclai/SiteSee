@@ -90,6 +90,18 @@ class LocationsMapViewController: UIViewController {
     @IBAction func addButtonTapped(sender: UIBarButtonItem) {
         addPin()
     }
+    @IBAction func trashButtonTapped(sender: UIBarButtonItem) {
+        let uac = UIAlertController(title: "Delete All Pins", message: "Are you sure you want to delete all pins?", preferredStyle: .ActionSheet)
+        uac.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: { (uac) in
+            if let objects = self.fetchedResultsController.fetchedObjects as? [NSManagedObject] {
+                for object in objects {
+                    self.sharedContext.deleteObject(object)
+                }
+            }
+        }))
+        uac.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
+        presentViewController(uac, animated: true, completion: nil)
+    }
     
     func addPin()  {
         geocoder.reverseGeocodeLocation(CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)) { (placemarks, error) -> Void in
