@@ -3,10 +3,10 @@ Learn about the neighborhoods, cities and countries around the world!
 
 <!-- Screenshots here -->
 
-![](images/0.jpg) |![](images/1.jpg) | ![](images/2.jpg) |
+![](Images/0.jpg) |![](Images/1.jpg) | ![](Images/2.jpg) |
 |---|---|---
-|![](images/3.jpg) | ![](images/4.jpg) |![](images/5.jpg)  
-![](images/6.jpg) | ![](images/7.jpg)  |  |
+|![](Images/3.jpg) | ![](Images/4.jpg) |![](Images/5.jpg)  
+![](Images/6.jpg) | ![](Images/7.jpg)  |  |
 
 ### Development environment setup
 
