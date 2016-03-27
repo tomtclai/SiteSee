@@ -24,7 +24,6 @@ class PhotoViewController: UIViewController {
 
         loadFullSizeImage()
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -37,9 +36,10 @@ class PhotoViewController: UIViewController {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { (data) -> Void in
             dispatch_async(dispatch_get_main_queue()){
-                UIView.animateWithDuration(0.5, animations: { 
+                
+                UIView.transitionWithView(self.imageView, duration:0.2, options: .TransitionCrossDissolve, animations: {
                     self.imageView.image = UIImage(data: data)!
-                })
+                    }, completion: nil)
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
         })

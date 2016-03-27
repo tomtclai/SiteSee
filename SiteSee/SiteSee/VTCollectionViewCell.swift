@@ -9,6 +9,13 @@
 import UIKit
 
 class VTCollectionViewCell: UICollectionViewCell {
-    
+    var delegate: VTCollectionViewCellDelegate!
     @IBOutlet weak var activity: UIActivityIndicatorView!
+    func deleteImage() {
+        delegate.deleteSelectedImage()
+    }
+}
+
+protocol VTCollectionViewCellDelegate {
+    func deleteSelectedImage()
 }

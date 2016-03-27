@@ -17,6 +17,7 @@ class LocationsMapViewController: UIViewController {
     var locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
     
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var locationButton: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -110,6 +111,7 @@ class LocationsMapViewController: UIViewController {
     let mapViewSpanLatDelta = "MapViewSpanLatDelta"
     let mapViewSpanLongDelta = "MapViewSpanLongDelta"
     let mapTypeKey = "MapType"
+    let segmentedControlKey = "SegmentedControl"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
         coder.encodeDouble(mapView.region.center.latitude, forKey: mapViewLat)
@@ -118,6 +120,7 @@ class LocationsMapViewController: UIViewController {
         coder.encodeDouble(mapView.region.span.longitudeDelta, forKey: mapViewSpanLongDelta)
         
         coder.encodeInt( Int32 (mapView.mapType.rawValue), forKey: mapTypeKey)
+        coder.encodeInt( Int32 (segmentedControl.selectedSegmentIndex), forKey: segmentedControlKey)
     }
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
@@ -136,6 +139,7 @@ class LocationsMapViewController: UIViewController {
         
         mapView.setRegion(region, animated: true)
         mapView.mapType = MKMapType(rawValue: UInt(coder.decodeIntForKey(mapTypeKey)))!
+        segmentedControl.selectedSegmentIndex = Int(coder.decodeIntForKey(segmentedControlKey))
     }
     
     // MARK: Segue

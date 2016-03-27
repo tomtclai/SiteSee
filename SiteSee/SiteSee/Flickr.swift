@@ -224,12 +224,11 @@ extension Flickr {
                         return
                     }
                     
-                    guard let originalImageUrlStr = photoDictionary["url_o"] as? String else {
+                    if let originalImageUrlStr = photoDictionary["url_o"] as? String {
+                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: originalImageUrlStr, error: nil)
+                    } else {
                         completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: nil, error: nil)
-                        return 
                     }
-
-                    completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: originalImageUrlStr, error: nil)
 
                 }
             } else {

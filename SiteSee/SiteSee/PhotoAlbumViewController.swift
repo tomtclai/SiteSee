@@ -10,7 +10,6 @@ import UIKit
 import MapKit
 import CoreData
 import Foundation
-// TODO: long tap to display a menu that says delete
 class PhotoAlbumViewController: UIViewController {
     var selectedIndexPath: NSIndexPath?
     var annotation: VTAnnotation! {
@@ -24,7 +23,6 @@ class PhotoAlbumViewController: UIViewController {
     let placeholder = UIImage(named: "placeholder")!
     @IBOutlet var tapGesture: UITapGestureRecognizer!
     @IBOutlet weak var collectionView: UICollectionView!
-    //verify there is no way to get to this view controller if no photos is at this location
     var lastPageNumber : Int {
         set {
             annotation.pageNumber = newValue
@@ -46,6 +44,14 @@ class PhotoAlbumViewController: UIViewController {
         }
     }
 
+    override func canBecomeFirstResponder() -> Bool {
+        print("canBecomeFirstResponder")
+        return true
+    }
+    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+        print("canPerformAction")
+        return action == #selector(VTCollectionViewCell.deleteImage)
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PhotoViewController" {
             guard let zoomInSegue = segue as? ZoomInSegue else {
@@ -93,7 +99,6 @@ class PhotoAlbumViewController: UIViewController {
         collectionView.addGestureRecognizer(tapGesture)
         
     }
-
     // MARK: Flickr API
 
     func searchPhotosByText(text:String, pageNumber: Int) {
@@ -262,6 +267,28 @@ extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
         return CGSize(width: photoSide, height: photoSide)
     }
 }
+// MARK: UICollectionViewDelegate
+extension PhotoAlbumViewController : UICollectionViewDelegate {
+    func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        print("collectionView shouldShowMenuForItemAtIndexPath")
+        selectedIndexPath = indexPath
+        
+        var targetFrame = collectionView.cellForItemAtIndexPath(indexPath)!.frame
+        targetFrame = collectionView.convertRect(targetFrame, toView: collectionView.superview)
+        
+        UIMenuController.sharedMenuController().setTargetRect(targetFrame, inView: collectionView.superview!)
+        let deleteMenuItem = UIMenuItem(title: "Delete", action: #selector(VTCollectionViewCell.deleteImage))
+        
+        UIMenuController.sharedMenuController().menuItems = [deleteMenuItem]
+        return true
+    }
+    func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+        return action==#selector(VTCollectionViewCell.deleteImage)
+    }
+    func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+        print("collectionView performAction")
+    }
+}
 // MARK: UICollectionViewDataSource
 extension PhotoAlbumViewController : UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -279,6 +306,7 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! VTCollectionViewCell
         cell.activity.hidesWhenStopped = true
+        cell.delegate = self
         let image = fetchedResultsController.objectAtIndexPath(indexPath) as! Image
         
         // look for local path, if not found, download and save to documents directory
@@ -332,4 +360,18 @@ extension PhotoAlbumViewController  {
 }
 //MARK: UIGestureRecognizerDelegate
 extension PhotoAlbumViewController : UIGestureRecognizerDelegate {
+}
+extension PhotoAlbumViewController : VTCollectionViewCellDelegate {
+    func deleteSelectedImage() {
+        if let selected = selectedIndexPath {
+            if let object = fetchedResultsController.objectAtIndexPath(selected) as? NSManagedObject {
+                sharedContext.deleteObject(object)
+                do{ try sharedContext.save() } catch {}
+            } else {
+                print("objectAtIndexPath isn't NSmanaged object")
+            }
+        } else {
+            print("selectedIndexPath is nil")
+        }
+    }
 }

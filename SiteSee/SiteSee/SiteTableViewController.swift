@@ -386,10 +386,12 @@ class SiteTableViewController: UITableViewController {
     // MARK: state restoration
     let longitudeKey = "longitude"
     let latitudeKey = "latitude"
+    let tableScrollPosition = "tableScrollPosition"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
         coder.encodeObject(annotation.longitude, forKey: longitudeKey)
         coder.encodeObject(annotation.latitude, forKey: latitudeKey)
+        coder.encodeObject(tableView.contentOffset.y, forKey: tableScrollPosition)
     }
 
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
@@ -403,6 +405,7 @@ class SiteTableViewController: UITableViewController {
         
         do { annotation = try sharedContext.executeFetchRequest(request).first as! VTAnnotation} catch {}
         
+        tableView.contentOffset.y = coder.decodeObjectForKey(tableScrollPosition) as! CGFloat
     }
     
 }

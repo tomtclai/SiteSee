@@ -90,6 +90,7 @@
                     <connections>
                         <outlet property="locationButton" destination="3BX-99-c6V" id="kxk-g4-X9F"/>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>
+                        <outlet property="segmentedControl" destination="EZp-Kx-ALo" id="w3q-p5-wnI"/>
                         <segue destination="PdO-hf-DUK" kind="show" identifier="SiteTableViewController" id="QqW-F6-WCl"/>
                     </connections>
                 </viewController>
@@ -283,6 +284,7 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="top" secondItem="s84-eY-zwK" secondAttribute="topMargin" id="EvD-bk-cpZ"/>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="leading" secondItem="s84-eY-zwK" secondAttribute="leading" id="FMd-1c-Tl0"/>
