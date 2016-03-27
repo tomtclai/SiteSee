@@ -51,21 +51,6 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dq4-tD-lhs"/>
-                                    <barButtonItem style="plain" id="enh-5h-WxO">
-                                        <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="EZp-Kx-ALo">
-                                            <rect key="frame" x="205" y="7" width="189" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <segments>
-                                                <segment title="Map"/>
-                                                <segment title="Hybrid"/>
-                                                <segment title="Satellite"/>
-                                            </segments>
-                                            <connections>
-                                                <action selector="segmentedControlTapped:" destination="rsY-fQ-LbW" eventType="valueChanged" id="Ahu-3e-kpD"/>
-                                            </connections>
-                                        </segmentedControl>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="UGM-2t-DBC"/>
                                     <barButtonItem style="plain" systemItem="add" id="eAW-cm-Wmi">
                                         <connections>
                                             <action selector="addButtonTapped:" destination="rsY-fQ-LbW" id="LKy-EO-FMt"/>
@@ -87,6 +72,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="SiteSee" id="K9d-rU-GhD">
+                        <barButtonItem key="leftBarButtonItem" image="Layers" id="oVH-Yz-bcm">
+                            <connections>
+                                <action selector="layersButtonTapped:" destination="rsY-fQ-LbW" id="YLm-4H-xP9"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="trash" id="6qZ-JD-5Op">
                             <connections>
                                 <action selector="trashButtonTapped:" destination="rsY-fQ-LbW" id="ekx-eO-GDR"/>
@@ -96,7 +86,6 @@
                     <connections>
                         <outlet property="locationButton" destination="3BX-99-c6V" id="kxk-g4-X9F"/>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>
-                        <outlet property="segmentedControl" destination="EZp-Kx-ALo" id="w3q-p5-wnI"/>
                         <segue destination="PdO-hf-DUK" kind="show" identifier="SiteTableViewController" id="QqW-F6-WCl"/>
                     </connections>
                 </viewController>
@@ -340,5 +329,6 @@
     </scenes>
     <resources>
         <image name="GPS" width="22" height="22"/>
+        <image name="Layers" width="22" height="22"/>
     </resources>
 </document>

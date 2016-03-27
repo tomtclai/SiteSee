@@ -16,8 +16,11 @@ class LocationsMapViewController: UIViewController {
     var annotation: VTAnnotation!
     var locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
-    
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    var dictionaryStateNames = NSDictionary(objects:
+        ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"] ,
+                                            forKeys:
+        ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"])
+
     @IBOutlet weak var locationButton: UIBarButtonItem!
     
     // MARK: View Controller Life Cycle
@@ -66,20 +69,19 @@ class LocationsMapViewController: UIViewController {
             
         }
     }
-    @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
-        let Map = 0
-        let Hybrid = 1
-        let Satellite = 2
-        switch(sender.selectedSegmentIndex){
-        case Map:
-            mapView.mapType = .Standard
-        case Hybrid:
-            mapView.mapType = .Hybrid
-        case Satellite:
-            mapView.mapType = .Satellite
-        default:
-            print("Wrong Index in segmented control")
-        }
+    @IBAction func layersButtonTapped(sender: UIBarButtonItem) {
+        let uac = UIAlertController(title: "Change Map Type", message: nil, preferredStyle: .ActionSheet)
+        uac.addAction(UIAlertAction(title: "Standard", style: .Default, handler: { (uac) in
+            self.mapView.mapType = .Standard
+        }))
+        uac.addAction(UIAlertAction(title: "Hybrid", style: .Default, handler: { (uac) in
+            self.mapView.mapType = .Hybrid
+        }))
+        uac.addAction(UIAlertAction(title: "Satellite", style: .Default, handler: { (uac) in
+            self.mapView.mapType = .Satellite
+        }))
+        uac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        presentViewController(uac, animated: true, completion: nil)
     }
     
     @IBAction func didLongPress(sender: UILongPressGestureRecognizer) {
@@ -131,7 +133,6 @@ class LocationsMapViewController: UIViewController {
     let mapViewSpanLatDelta = "MapViewSpanLatDelta"
     let mapViewSpanLongDelta = "MapViewSpanLongDelta"
     let mapTypeKey = "MapType"
-    let segmentedControlKey = "SegmentedControl"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
         coder.encodeDouble(mapView.region.center.latitude, forKey: mapViewLat)
@@ -140,7 +141,6 @@ class LocationsMapViewController: UIViewController {
         coder.encodeDouble(mapView.region.span.longitudeDelta, forKey: mapViewSpanLongDelta)
         
         coder.encodeInt( Int32 (mapView.mapType.rawValue), forKey: mapTypeKey)
-        coder.encodeInt( Int32 (segmentedControl.selectedSegmentIndex), forKey: segmentedControlKey)
     }
     
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
@@ -159,7 +159,6 @@ class LocationsMapViewController: UIViewController {
         
         mapView.setRegion(region, animated: true)
         mapView.mapType = MKMapType(rawValue: UInt(coder.decodeIntForKey(mapTypeKey)))!
-        segmentedControl.selectedSegmentIndex = Int(coder.decodeIntForKey(segmentedControlKey))
     }
     
     // MARK: Navigation
@@ -204,7 +203,11 @@ class LocationsMapViewController: UIViewController {
         
         if altitude < 1000000 {
             if let administrativeArea = placemark.administrativeArea {
-                names.append(administrativeArea)
+                if let name = dictionaryStateNames[administrativeArea] as? String{
+                    names.append(name)
+                } else {
+                    names.append(administrativeArea)
+                }
             }
         }
 
