@@ -110,15 +110,15 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="photosCell" id="56J-dj-jiW" customClass="SSTableViewPhotosCell" customModule="SiteSee" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="56J-dj-jiW" id="aL4-Kc-7ea">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56J-dj-jiW" id="aL4-Kc-7ea">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-Gb-7rg">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-Gb-7rg">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="35"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="100" id="QAq-rR-3cV"/>
+                                                <constraint firstAttribute="height" priority="750" constant="100" id="QAq-rR-3cV"/>
                                             </constraints>
                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="5" id="Mxh-bs-J9b">
                                                 <size key="itemSize" width="50" height="50"/>
@@ -128,7 +128,7 @@
                                             </collectionViewFlowLayout>
                                             <cells>
                                                 <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionViewCell" id="nOv-lR-Lz9" customClass="VTCollectionViewCell" customModule="SiteSee" customModuleProvider="target">
-                                                    <rect key="frame" x="5" y="25" width="50" height="50"/>
+                                                    <rect key="frame" x="5" y="-8" width="50" height="50"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -154,8 +154,8 @@
                                                 <outlet property="delegate" destination="PdO-hf-DUK" id="Rsl-S0-zNo"/>
                                             </connections>
                                         </collectionView>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No Photos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MkY-eO-5mQ">
-                                            <rect key="frame" x="0.0" y="11" width="600" height="21"/>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Photos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MkY-eO-5mQ">
+                                            <rect key="frame" x="260" y="11" width="80" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -164,17 +164,11 @@
                                     <constraints>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="top" secondItem="aL4-Kc-7ea" secondAttribute="top" id="8YX-Bc-81v"/>
                                         <constraint firstItem="MkY-eO-5mQ" firstAttribute="centerY" secondItem="aL4-Kc-7ea" secondAttribute="centerY" id="DN6-w0-Rhw"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" constant="-65" id="GZ3-he-qHQ"/>
                                         <constraint firstAttribute="trailing" secondItem="mXr-Gb-7rg" secondAttribute="trailing" id="cwc-3a-Dk6"/>
                                         <constraint firstItem="MkY-eO-5mQ" firstAttribute="centerX" secondItem="aL4-Kc-7ea" secondAttribute="centerX" id="e0W-zi-qL1"/>
                                         <constraint firstItem="mXr-Gb-7rg" firstAttribute="leading" secondItem="aL4-Kc-7ea" secondAttribute="leading" id="mqg-ds-nRd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="mXr-Gb-7rg" secondAttribute="bottom" id="ul9-4k-YzR"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="GZ3-he-qHQ"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
                                 <connections>

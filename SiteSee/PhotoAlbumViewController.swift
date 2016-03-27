@@ -57,11 +57,9 @@ class PhotoAlbumViewController: UIViewController {
     }
 
     override func canBecomeFirstResponder() -> Bool {
-        print("canBecomeFirstResponder")
         return true
     }
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
-        print("canPerformAction")
         return action == #selector(VTCollectionViewCell.deleteImage)
     }
     
@@ -273,7 +271,6 @@ extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
 // MARK: UICollectionViewDelegate
 extension PhotoAlbumViewController : UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        print("collectionView shouldShowMenuForItemAtIndexPath")
         selectedIndexPath = indexPath
         
         var targetFrame = collectionView.cellForItemAtIndexPath(indexPath)!.frame
@@ -289,7 +286,6 @@ extension PhotoAlbumViewController : UICollectionViewDelegate {
         return action==#selector(VTCollectionViewCell.deleteImage)
     }
     func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-        print("collectionView performAction")
     }
 }
 // MARK: UICollectionViewDataSource
