@@ -34,6 +34,18 @@ class PhotoAlbumViewController: UIViewController {
             return annotation.pageNumber.integerValue
         }
     }
+    // MARK: View Controller Life Cycle
+    override func viewDidLoad() {
+        navigationController?.navigationBarHidden = false
+        
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    // MARK: User Iteraction
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         let point = sender.locationInView(self.collectionView)
         
@@ -52,6 +64,8 @@ class PhotoAlbumViewController: UIViewController {
         print("canPerformAction")
         return action == #selector(VTCollectionViewCell.deleteImage)
     }
+    
+    // MARK: Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PhotoViewController" {
             guard let zoomInSegue = segue as? ZoomInSegue else {
@@ -80,25 +94,7 @@ class PhotoAlbumViewController: UIViewController {
             destVc.image = image
         }
     }
-
-    func removeAllPhotosAtThisLocation() {
-        for object in fetchedResultsController.fetchedObjects! {
-            if let obj = object as? NSManagedObject {
-                sharedContext.deleteObject(obj)
-            }
-        }
-    }
-
     
-    override func viewDidLoad() {
-        navigationController?.navigationBarHidden = false
-
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.addGestureRecognizer(tapGesture)
-        
-    }
     // MARK: Flickr API
 
     func searchPhotosByText(text:String, pageNumber: Int) {
@@ -165,7 +161,7 @@ class PhotoAlbumViewController: UIViewController {
         return fetched
     }()
     
-    // MARK: state restoration
+    // MARK: State Restoration
     let longitudeKey = "longitude"
     let latitudeKey = "latitude"
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
@@ -173,7 +169,7 @@ class PhotoAlbumViewController: UIViewController {
         coder.encodeObject(annotation.longitude, forKey: longitudeKey)
         coder.encodeObject(annotation.latitude, forKey: latitudeKey)
     }
-    
+
     override func decodeRestorableStateWithCoder(coder: NSCoder) {
         super.decodeRestorableStateWithCoder(coder)
         let long = coder.decodeObjectForKey(longitudeKey) as! NSNumber
@@ -187,6 +183,11 @@ class PhotoAlbumViewController: UIViewController {
         
     }
     
+    // Mark: Documents Directory
+    static func photoURL(uniqueFileName: String) -> NSURL {
+        let documentsDirectoryURL: NSURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        return documentsDirectoryURL.URLByAppendingPathComponent(uniqueFileName)
+    }
 }
 // MARK: NSFetchedResultsControllerDelegate
 extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
@@ -348,14 +349,6 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
 extension PhotoAlbumViewController : UIViewControllerRestoration {
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
-    }
-}
-
-//Mark: documents directory
-extension PhotoAlbumViewController  {
-    static func photoURL(uniqueFileName: String) -> NSURL {
-        let documentsDirectoryURL: NSURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-        return documentsDirectoryURL.URLByAppendingPathComponent(uniqueFileName)
     }
 }
 //MARK: UIGestureRecognizerDelegate

@@ -20,6 +20,7 @@ class LocationsMapViewController: UIViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var locationButton: UIBarButtonItem!
     
+    // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
@@ -35,6 +36,7 @@ class LocationsMapViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
     }
     
+    // MARK: User Interaction
     @IBAction func locationTapped(sender: UIBarButtonItem) {
         startTrackingLocation()
     }
@@ -105,7 +107,7 @@ class LocationsMapViewController: UIViewController {
         }
     }
     
-    // MARK: - state restoration
+    // MARK: - State Restoration
     let mapViewLat = "MapViewLat"
     let mapViewLong = "MapViewLong"
     let mapViewSpanLatDelta = "MapViewSpanLatDelta"
@@ -142,7 +144,7 @@ class LocationsMapViewController: UIViewController {
         segmentedControl.selectedSegmentIndex = Int(coder.decodeIntForKey(segmentedControlKey))
     }
     
-    // MARK: Segue
+    // MARK: Navigation
     let siteTableViewControllerSegueID = "SiteTableViewController"
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == siteTableViewControllerSegueID {
@@ -155,6 +157,7 @@ class LocationsMapViewController: UIViewController {
         }
     }
     
+    // MARK: Core Data Convenience
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
@@ -164,6 +167,7 @@ class LocationsMapViewController: UIViewController {
         return NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
     }()
     
+    // MARK: Helpers
     func locationNames(placemark: CLPlacemark, altitude: CLLocationDistance) -> [String] {
         var names = [String]()
         

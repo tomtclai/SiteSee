@@ -15,7 +15,6 @@ class Model : NSObject {
         super.init()
     }
     // MARK: Escape HTML Parameters
-    
     func escapedParameters(parameters: [String : AnyObject]) -> String {
         
         var urlVars = [String]()
@@ -35,6 +34,7 @@ class Model : NSObject {
         
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
+    // MARK: Convenience
     func getDataFromUrl(url: NSURL, completion: ((data:NSData?, response: NSURLResponse?, error: NSError?) ->Void)) {
         NSURLSession.sharedSession().dataTaskWithURL(url) {
             completion(data: $0, response: $1, error: $2)

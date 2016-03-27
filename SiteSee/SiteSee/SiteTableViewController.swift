@@ -40,19 +40,64 @@ class SiteTableViewController: UITableViewController {
         let flickrCell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: flickerSection)) as! SSTableViewPhotosCell
         return flickrCell.collectionView
     }
+
+    
+    // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
     }
+
+    // MARK: Helpers
     func locationIsLoadedKey() -> String {
         return "locationIsLoaded: \(annotation.latitude) \(annotation.longitude)"
     }
+    func convertIndexPathForFetchedResultsController(indexPath: NSIndexPath) -> NSIndexPath {
+        return setSectionForIndexPath(indexPath, section: 0)!
+    }
+    func setSectionForIndexPath(indexPath: NSIndexPath?, section:Int) -> NSIndexPath? {
+        guard let ip = indexPath else {
+            return nil
+        }
+        return NSIndexPath(forRow: ip.row, inSection: section)
+    }
+    func gotoArticle(indexPath: NSIndexPath) {
+        let fi = convertIndexPathForFetchedResultsController(indexPath)
+        guard let article = fetchedArticlesController.objectAtIndexPath(fi) as? Article  else {
+            print("fetched result not an article")
+            return
+        }
+        guard let title = article.title else {
+            print("article does not have a title")
+            return
+        }
+        guard let urlEncodedTitle = title.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLUserAllowedCharacterSet()) else {
+            print("title did not encode: \(title)")
+            return
+        }
+        let urlStr = Wikipedia.Constants.userBaseUrl + urlEncodedTitle
+        
+        guard let url = NSURL(string: urlStr) else {
+            print("\(urlStr) is not a valid url")
+            return
+        }
+        
+        pushSafariViewController(url)
+    }
     
+    func pushSafariViewController(url: NSURL) {
+        let sfVc = SFSafariViewController(URL: url)
+        sfVc.delegate = self
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.pushViewController(sfVc, animated: true)
+    }
+
+    // MARK: Flickr Client
     func searchFlickrForPhotos(text:String) {
         let methodArguments = Flickr.sharedInstance().getSearchMethodArgumentsConvenience(text, perPage: 21)
         
@@ -126,13 +171,7 @@ class SiteTableViewController: UITableViewController {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: locationIsLoadedKey())
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    // MARK: - Table view data source
-    
+    // MARK: - Table View Data Source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
@@ -161,21 +200,23 @@ class SiteTableViewController: UITableViewController {
             return ""
         }
     }
-    func fetchedIndexPath(indexPath: NSIndexPath) -> NSIndexPath {
-        return indexPathWithSection(indexPath, section: 0)!
-    }
-    func indexPathWithSection(indexPath: NSIndexPath?, section:Int) -> NSIndexPath? {
-        guard let ip = indexPath else {
-            return nil
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            return dequeuePhotoTableCell(tableView, indexPath: indexPath)
+        case 1:
+            return dequeuePlainTableCell(tableView, indexPath: indexPath)
+        default:
+            print("Unexpected section in cellForRowAtIndexPath")
+            return UITableViewCell()
         }
-        return NSIndexPath(forRow: ip.row, inSection: section)
     }
     func dequeuePlainTableCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath) as? SSTableViewCell else {
             print("cell isn't SSTableViewCell")
             return tableView.dequeueReusableCellWithIdentifier("plainTableCell", forIndexPath: indexPath)
         }
-        let fi = fetchedIndexPath(indexPath)
+        let fi = convertIndexPathForFetchedResultsController(indexPath)
         guard let article = fetchedArticlesController.objectAtIndexPath(fi) as? Article  else {
             print("fetched result not an article")
             return cell
@@ -205,40 +246,7 @@ class SiteTableViewController: UITableViewController {
         
         return cell
     }
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            return dequeuePhotoTableCell(tableView, indexPath: indexPath)
-        case 1:
-            return dequeuePlainTableCell(tableView, indexPath: indexPath)
-        default:
-            print("Unexpected section in cellForRowAtIndexPath")
-            return UITableViewCell()
-        }
-    }
-    func gotoArticle(indexPath: NSIndexPath) {
-        let fi = fetchedIndexPath(indexPath)
-        guard let article = fetchedArticlesController.objectAtIndexPath(fi) as? Article  else {
-            print("fetched result not an article")
-            return
-        }
-        guard let title = article.title else {
-            print("article does not have a title")
-            return
-        }
-        guard let urlEncodedTitle = title.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLUserAllowedCharacterSet()) else {
-            print("title did not encode: \(title)")
-            return
-        }
-        let urlStr = Wikipedia.Constants.userBaseUrl + urlEncodedTitle
-        
-        guard let url = NSURL(string: urlStr) else {
-            print("\(urlStr) is not a valid url")
-            return
-        }
-        
-        pushSafariViewController(url)
-    }
+   
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case 0:
@@ -249,12 +257,6 @@ class SiteTableViewController: UITableViewController {
             print("Unexpected section in didSelectRowAtIndexPath")
             return
         }
-    }
-    func pushSafariViewController(url: NSURL) {
-        let sfVc = SFSafariViewController(URL: url)
-        sfVc.delegate = self
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        navigationController?.pushViewController(sfVc, animated: true)
     }
     
     // Override to support conditional editing of the table view.
@@ -269,12 +271,10 @@ class SiteTableViewController: UITableViewController {
             return false
         }
     }
-    
-    
-    
+
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        let fi = fetchedIndexPath(indexPath)
+        let fi = convertIndexPathForFetchedResultsController(indexPath)
         guard let object = fetchedArticlesController.objectAtIndexPath(fi) as? NSManagedObject else {
             print("fetchedResultsController returned non NSManagedObject")
             return
@@ -291,8 +291,8 @@ class SiteTableViewController: UITableViewController {
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         let targetSortOrder : Double
-        let ffi = fetchedIndexPath(fromIndexPath)
-        let fti = fetchedIndexPath(toIndexPath)
+        let ffi = convertIndexPathForFetchedResultsController(fromIndexPath)
+        let fti = convertIndexPathForFetchedResultsController(toIndexPath)
         guard let objectToMove = fetchedArticlesController.objectAtIndexPath(ffi) as? Article else {
             print("objectToMove isn't an Article")
             return
@@ -311,7 +311,7 @@ class SiteTableViewController: UITableViewController {
         } else {
             // move to middle
             let auxIndexPath = NSIndexPath(forRow: toIndexPath.row-1, inSection: fti.section)
-            let fi = fetchedIndexPath(auxIndexPath)
+            let fi = convertIndexPathForFetchedResultsController(auxIndexPath)
             guard let objectBeforeDest = fetchedArticlesController.objectAtIndexPath(fi) as? Article else {
                 print("objectBeforeDest isn't an Article")
                 return
@@ -322,11 +322,8 @@ class SiteTableViewController: UITableViewController {
         do { try sharedContext.save() } catch {}
         
     }
-    
-    
-    // Override to support conditional rearranging of the table view.
+
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
         return true
     }
     
@@ -342,11 +339,8 @@ class SiteTableViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "photoAlbumViewController" {
             if let pavc = segue.destinationViewController as? PhotoAlbumViewController {
                 pavc.annotation = annotation
@@ -428,8 +422,8 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
     }
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         if controller == fetchedImagesController {
-            let ti = indexPathWithSection(indexPath, section: flickerSection)
-            let tni = indexPathWithSection(newIndexPath, section: flickerSection)
+            let ti = setSectionForIndexPath(indexPath, section: flickerSection)
+            let tni = setSectionForIndexPath(newIndexPath, section: flickerSection)
             switch type {
             case .Insert:
                 collectionView.insertItemsAtIndexPaths([tni!])
@@ -441,8 +435,8 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
                 collectionView.moveItemAtIndexPath(ti!, toIndexPath: tni!)
             }
         } else if controller == fetchedArticlesController {
-            let ti = indexPathWithSection(indexPath, section: wikiSection)
-            let tni = indexPathWithSection(newIndexPath, section: wikiSection)
+            let ti = setSectionForIndexPath(indexPath, section: wikiSection)
+            let tni = setSectionForIndexPath(newIndexPath, section: wikiSection)
             switch type {
             case .Insert:
                 tableView.insertRowsAtIndexPaths([tni!], withRowAnimation: .Automatic)
@@ -502,7 +496,7 @@ extension SiteTableViewController : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! VTCollectionViewCell
         cell.activity.hidesWhenStopped = true
-        let fi = fetchedIndexPath(indexPath)
+        let fi = convertIndexPathForFetchedResultsController(indexPath)
         let image = fetchedImagesController.objectAtIndexPath(fi) as! Image
         
         // look for local path, if not found, download and save to documents directory

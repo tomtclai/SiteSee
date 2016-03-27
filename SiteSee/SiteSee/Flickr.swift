@@ -5,6 +5,8 @@
 //  Created by Tom Lai on 1/31/16.
 //  Copyright © 2016 Lai. All rights reserved.
 //
+// Input : Name of location
+// Output : list of images
 
 import Foundation
 
@@ -178,7 +180,7 @@ class Flickr : Model {
 
 
 }
-// Convenience methods
+// MARK: Convenience methods
 extension Flickr {
     func getSearchMethodArgumentsConvenience(text: String, perPage:Int) -> [String:AnyObject]{
         let EXTRAS = "url_b,url_q,url_o"

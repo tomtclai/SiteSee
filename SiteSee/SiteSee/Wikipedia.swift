@@ -5,11 +5,13 @@
 //  Created by Tom Lai on 3/22/16.
 //  Copyright © 2016 Lai. All rights reserved.
 //
+// Input : Name of location
+// Output : list of articles with title, link and description
+
 
 import Foundation
 import UIKit
-// Input : coordinates
-// Output : list of articles with title and link and description
+
 class Wikipedia : Model {
 
     // MARK: Shared Instance
@@ -99,7 +101,7 @@ class Wikipedia : Model {
         task.resume()
     }
 }
-// MARK: Convenience
+// MARK: Convenience methods
 extension Wikipedia {
     func getListOfArticles(methodArguments: [String : AnyObject], completionHandler: (title: String?, subtitle: String?, error: NSError?) -> Void) {
         searchWikipediaByKeywords(methodArguments) { (resultsDict, error) in
