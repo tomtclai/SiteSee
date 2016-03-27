@@ -45,25 +45,25 @@ class Wikipedia : Model {
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                print("There was an error with your request: \(error)")
+                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 if let response = response as? NSHTTPURLResponse {
-                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
+                    completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: response.description]))
                 } else if let response = response {
-                    print("Your request returned an invalid response! Response: \(response)!")
+                    completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: response.description]))
                 } else {
-                    print("Your request returned an invalid response!")
+                    completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server returned an invalid response"]))
                 }
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                print("No data was returned by the request!")
+                completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request"]))
                 return
             }
             
@@ -74,28 +74,23 @@ class Wikipedia : Model {
                 parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
             } catch {
                 parsedResult = nil
-                print("Could not parse the data as JSON: '\(data)'")
-                
                 completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
             }
             
             /* GUARD: Did Wiki return query? */
             guard let queryDict = parsedResult["query"] as? NSDictionary else {
-                print("Cannot find key 'query'")
                 completionHandler(resultsDict: nil , error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query' in \(parsedResult)"]))
                 return
             }
             
             /* GUARD: Is "search" key in the query? */
             guard let searchDictionary = queryDict["search"] as? NSArray else {
-                print("Cannot find key 'query.search' in \(queryDict)")
                 completionHandler(resultsDict: nil, error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0,  userInfo: [NSLocalizedDescriptionKey: "Cannot find key 'query.search' in \(queryDict)"]))
                 return
             }
             
             completionHandler(resultsDict: searchDictionary, error: error)
-            
 
         }
         task.resume()
@@ -107,10 +102,12 @@ extension Wikipedia {
         searchWikipediaByKeywords(methodArguments) { (resultsDict, error) in
             guard error == nil else {
                 print(error)
+                completionHandler(title: nil, subtitle: nil, error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
                 return
             }
             guard let resultsDict = resultsDict else {
                 print("resultsDict is nil")
+                completionHandler(title: nil, subtitle: nil, error: NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
                 return
             }
             for resultDict in resultsDict {

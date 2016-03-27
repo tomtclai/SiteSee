@@ -46,7 +46,13 @@ class LocationsMapViewController: UIViewController {
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .Denied:
-            presentViewController(UIAlertController(title: "Location Service is disabled", message: "Please enable location services for SiteSee from Settings > Privacy", preferredStyle: UIAlertControllerStyle.Alert), animated: true, completion: nil)
+            let uac = UIAlertController(title: "Enable Location Services to Allow SiteSee to Determine Your Location", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+            uac.addAction(UIAlertAction(title: "Settings", style: .Default, handler: { (action) in
+                UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!);
+            }))
+            uac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+
+            presentViewController(uac, animated: true, completion: nil)
             
         case .Restricted:
             locationButton.enabled = false
@@ -248,6 +254,18 @@ extension LocationsMapViewController : MKMapViewDelegate {
         if let annotation = view.annotation as? VTAnnotation {
             self.annotation = annotation
             performSegueWithIdentifier(siteTableViewControllerSegueID, sender: self)
+        }
+    }
+    func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
+        for annView in views
+        {
+            if annView.isKindOfClass(MKPinAnnotationView) {
+                let endFrame = annView.frame;
+                annView.frame = CGRectOffset(endFrame, 0, -500);
+                UIView.animateWithDuration(0.3, animations: {
+                    annView.frame = endFrame
+                })
+            }
         }
     }
     func mapViewWillStartLoadingMap(mapView: MKMapView) {

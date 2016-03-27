@@ -147,7 +147,10 @@ class SiteTableViewController: UITableViewController {
         var sortOrder : Double = 0.0
         Wikipedia.sharedInstance().getListOfArticles(metthodArguments) { (title, subtitle, error) -> Void in
             guard error == nil else {
-                print(error)
+                let uac = UIAlertController(title: error!.localizedDescription, message: nil, preferredStyle: .Alert)
+                uac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                self.presentViewController(uac, animated: true, completion: nil)
+                NSUserDefaults.standardUserDefaults().setBool(false, forKey: self.locationIsLoadedKey())
                 return
             }
             if let title = title {

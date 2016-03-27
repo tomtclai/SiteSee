@@ -102,7 +102,9 @@ class PhotoAlbumViewController: UIViewController {
         
         Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
             guard error == nil else {
-                print(error?.localizedDescription)
+                let uac = UIAlertController(title: error!.localizedDescription, message: nil, preferredStyle: .Alert)
+                uac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                self.presentViewController(uac, animated: true, completion: nil)
                 return
             }
             let pageLimit = min(totalPages!, 40)
