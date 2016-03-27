@@ -118,10 +118,10 @@
 		772B7DD21CA393F000849896 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7793B1E71CA3400900D893B7 /* VTCollectionViewCell.swift */,
 				7793B1CB1CA33F8100D893B7 /* Main.storyboard */,
-				772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */,
 				7793B1D01CA33F8100D893B7 /* LaunchScreen.storyboard */,
+				7793B1E71CA3400900D893B7 /* VTCollectionViewCell.swift */,
+				772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */,
 				772B7DD51CA3943100849896 /* SSTableViewCell.swift */,
 			);
 			name = View;
