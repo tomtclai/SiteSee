@@ -85,7 +85,7 @@ class LocationsMapViewController: UIViewController {
     }
     
     @IBAction func didLongPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == .Ended {
+        if sender.state == .Began {
             addPin()
         }
     }
