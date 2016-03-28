@@ -50,6 +50,21 @@
                                             <action selector="locationTapped:" destination="rsY-fQ-LbW" id="jd9-9k-rtE"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Sgt-ge-weE"/>
+                                    <barButtonItem style="plain" id="YJb-BV-c5k">
+                                        <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="fCe-mm-FUa">
+                                            <rect key="frame" x="181" y="7" width="237" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <segments>
+                                                <segment title="Standard"/>
+                                                <segment title="Hybrid"/>
+                                                <segment title="Satellite"/>
+                                            </segments>
+                                            <connections>
+                                                <action selector="segmentedControlTapped:" destination="rsY-fQ-LbW" eventType="valueChanged" id="iLQ-d3-0MV"/>
+                                            </connections>
+                                        </segmentedControl>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dq4-tD-lhs"/>
                                     <barButtonItem style="plain" systemItem="add" id="eAW-cm-Wmi">
                                         <connections>
@@ -86,6 +101,7 @@
                     <connections>
                         <outlet property="locationButton" destination="3BX-99-c6V" id="kxk-g4-X9F"/>
                         <outlet property="mapView" destination="Ukb-5Z-8QF" id="6Wl-m2-Gn6"/>
+                        <outlet property="segmentedControl" destination="fCe-mm-FUa" id="xQa-Wy-mOY"/>
                         <segue destination="PdO-hf-DUK" kind="show" identifier="SiteTableViewController" id="QqW-F6-WCl"/>
                     </connections>
                 </viewController>
