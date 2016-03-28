@@ -16,6 +16,7 @@ class LocationsMapViewController: UIViewController {
     var annotation: VTAnnotation!
     var locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     var dictionaryStateNames = NSDictionary(objects:
         ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba", "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador"] ,
                                             forKeys:
@@ -37,9 +38,47 @@ class LocationsMapViewController: UIViewController {
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(fetchedResultsController.fetchedObjects as! [MKAnnotation])
         locationManager.requestWhenInUseAuthorization()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LocationsMapViewController.mapTypeChanged(_:)), name: NSUserDefaultsDidChangeNotification, object: nil)
     }
     
     // MARK: User Interaction
+    func mapTypeChanged(notification: NSNotification) {
+
+        if let rawValue = NSUserDefaults.standardUserDefaults().objectForKey("mapType") as? UInt {
+            if let mapType = MKMapType(rawValue: rawValue) {
+                switch(mapType){
+                case .Standard:
+                    segmentedControl.selectedSegmentIndex = 0
+                case .Hybrid:
+                    segmentedControl.selectedSegmentIndex = 1
+                case .Satellite:
+                    segmentedControl.selectedSegmentIndex = 2
+                default:
+                    return
+                }
+            }
+        }
+    }
+    
+    @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
+        let Map = 0
+        let Hybrid = 1
+        let Satellite = 2
+        switch(sender.selectedSegmentIndex){
+        case Map:
+            mapView.mapType = .Standard
+            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Standard.rawValue, forKey: "mapType")
+        case Hybrid:
+            mapView.mapType = .Hybrid
+            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Hybrid.rawValue, forKey: "mapType")
+        case Satellite:
+            mapView.mapType = .Satellite
+            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Satellite.rawValue, forKey: "mapType")
+        default:
+            print("Wrong Index in segmented control")
+        }
+    }
+    
     @IBAction func locationTapped(sender: UIBarButtonItem) {
         startTrackingLocation()
     }
@@ -73,12 +112,15 @@ class LocationsMapViewController: UIViewController {
         let uac = UIAlertController(title: "Change Map Type", message: nil, preferredStyle: .ActionSheet)
         uac.addAction(UIAlertAction(title: "Standard", style: .Default, handler: { (uac) in
             self.mapView.mapType = .Standard
+            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Standard.rawValue, forKey: "mapType")
         }))
         uac.addAction(UIAlertAction(title: "Hybrid", style: .Default, handler: { (uac) in
             self.mapView.mapType = .Hybrid
+            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Hybrid.rawValue, forKey: "mapType")
         }))
         uac.addAction(UIAlertAction(title: "Satellite", style: .Default, handler: { (uac) in
             self.mapView.mapType = .Satellite
+            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Satellite.rawValue, forKey: "mapType")
         }))
         uac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         presentViewController(uac, animated: true, completion: nil)
@@ -86,11 +128,13 @@ class LocationsMapViewController: UIViewController {
     
     @IBAction func didLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .Began {
-            addPin()
+            let location = sender.locationInView(mapView)
+            let coor = mapView.convertPoint(location, toCoordinateFromView: mapView)
+            addPin(coor)
         }
     }
     @IBAction func addButtonTapped(sender: UIBarButtonItem) {
-        addPin()
+        addPin(mapView.centerCoordinate)
     }
     @IBAction func trashButtonTapped(sender: UIBarButtonItem) {
         let uac = UIAlertController(title: "Delete All Pins", message: "Are you sure you want to delete all pins?", preferredStyle: .ActionSheet)
@@ -105,23 +149,30 @@ class LocationsMapViewController: UIViewController {
         presentViewController(uac, animated: true, completion: nil)
     }
     
-    func addPin()  {
-        geocoder.reverseGeocodeLocation(CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)) { (placemarks, error) -> Void in
-            if let placemark = placemarks?.first {
-                var locationNames = self.locationNames(placemark, altitude:self.mapView.camera.altitude)
-                var annotationDictionary : [String:AnyObject]
-                annotationDictionary = [
-                    VTAnnotation.Keys.Longitude : NSNumber(double: self.mapView.centerCoordinate.longitude),
-                    VTAnnotation.Keys.Latitude : NSNumber(double: self.mapView.centerCoordinate.latitude),
-                    VTAnnotation.Keys.Title : locationNames[0],
-                    VTAnnotation.Keys.Page : NSNumber(integer: 1)
-                ]
-                if locationNames.count > 1 {
-                    annotationDictionary[VTAnnotation.Keys.Subtitle] = locationNames[1]
-                }
-                dispatch_async(dispatch_get_main_queue()){
-                    let _ = VTAnnotation(dictionary: annotationDictionary, context: self.sharedContext)
-                    CoreDataStackManager.sharedInstance().saveContext()
+    func addPin(coordinate: CLLocationCoordinate2D)  {
+        geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { (placemarks, error) -> Void in
+            if let geoCodeError = error {
+                let uac = UIAlertController(title: geoCodeError.localizedDescription, message: "Please make sure the internet is connected", preferredStyle: .Alert)
+                uac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                self.presentViewController(uac, animated: true, completion: nil)
+                return
+            } else {
+                if let placemark = placemarks?.first {
+                    var locationNames = self.locationNames(placemark, altitude:self.mapView.camera.altitude)
+                    var annotationDictionary : [String:AnyObject]
+                    annotationDictionary = [
+                        VTAnnotation.Keys.Longitude : NSNumber(double: coordinate.longitude),
+                        VTAnnotation.Keys.Latitude : NSNumber(double: coordinate.latitude),
+                        VTAnnotation.Keys.Title : locationNames[0],
+                        VTAnnotation.Keys.Page : NSNumber(integer: 1)
+                    ]
+                    if locationNames.count > 1 {
+                        annotationDictionary[VTAnnotation.Keys.Subtitle] = locationNames[1]
+                    }
+                    dispatch_async(dispatch_get_main_queue()){
+                        let _ = VTAnnotation(dictionary: annotationDictionary, context: self.sharedContext)
+                        CoreDataStackManager.sharedInstance().saveContext()
+                    }
                 }
             }
         }
@@ -189,19 +240,19 @@ class LocationsMapViewController: UIViewController {
         var names = [String]()
         
         
-        if altitude < 100000 {
+        if altitude < 200000 {
             if let subLocality = placemark.subLocality {
                 names.append(subLocality)
             }
         }
         
-        if altitude < 300000 {
+        if altitude < 400000 {
             if let locality = placemark.locality {
                 names.append(locality)
             }
         }
         
-        if altitude < 1000000 {
+        if altitude < 10000000 {
             if let administrativeArea = placemark.administrativeArea {
                 if let name = dictionaryStateNames[administrativeArea] as? String{
                     names.append(name)
