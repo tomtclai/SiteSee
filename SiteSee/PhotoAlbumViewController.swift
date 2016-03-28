@@ -26,9 +26,11 @@ class PhotoAlbumViewController: UIViewController {
     var lastPageNumber : Int {
         set {
             annotation.pageNumber = newValue
-            do {
-                try sharedContext.save()
-            } catch {}
+            dispatch_async(dispatch_get_main_queue()) {
+                do {
+                    try self.sharedContext.save()
+                } catch {}
+            }
         }
         get {
             return annotation.pageNumber.integerValue
@@ -356,8 +358,10 @@ extension PhotoAlbumViewController : VTCollectionViewCellDelegate {
     func deleteSelectedImage() {
         if let selected = selectedIndexPath {
             if let object = fetchedResultsController.objectAtIndexPath(selected) as? NSManagedObject {
-                sharedContext.deleteObject(object)
-                do{ try sharedContext.save() } catch {}
+                dispatch_async(dispatch_get_main_queue(), { 
+                    self.sharedContext.deleteObject(object)
+                    do{ try self.sharedContext.save() } catch {}
+                })
             } else {
                 print("objectAtIndexPath isn't NSmanaged object")
             }

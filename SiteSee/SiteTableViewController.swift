@@ -161,12 +161,12 @@ class SiteTableViewController: UITableViewController {
                     Article.Keys.SortOrder : NSNumber(double: sortOrder)
                 ]
                 sortOrder += 1.0
-                
-                Article(dictionary: articleDict, context: self.sharedContext).pin = self.annotation
-                
-                do {
-                    try self.sharedContext.save()
-                } catch {}
+                dispatch_async(dispatch_get_main_queue(), {
+                    Article(dictionary: articleDict, context: self.sharedContext).pin = self.annotation
+                    do {
+                        try self.sharedContext.save()
+                    } catch {}
+                })
             } else {
                 print ("no title")
             }
@@ -283,8 +283,10 @@ class SiteTableViewController: UITableViewController {
             return
         }
         if editingStyle == .Delete {
-            sharedContext.deleteObject(object)
-            do { try sharedContext.save() } catch {}
+            dispatch_async(dispatch_get_main_queue(), { 
+                self.sharedContext.deleteObject(object)
+                do { try self.sharedContext.save() } catch {}
+            })
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             print("Insertion is not supported")
@@ -322,7 +324,9 @@ class SiteTableViewController: UITableViewController {
             targetSortOrder = (objectBeforeDest.sortOrder!.doubleValue + objectToDisplace.sortOrder!.doubleValue) / 2
         }
         objectToMove.sortOrder = targetSortOrder
-        do { try sharedContext.save() } catch {}
+        dispatch_async(dispatch_get_main_queue()) {
+            do { try self.sharedContext.save() } catch {}
+        }
         
     }
 
