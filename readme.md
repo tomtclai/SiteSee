@@ -3,10 +3,19 @@ Learn about the neighborhoods, cities and countries around the world!
 
 <!-- Screenshots here -->
 
-![](Images/0.jpg) |![](Images/1.jpg) | ![](Images/2.jpg) |
-|---|---|---
-|![](Images/3.jpg) | ![](Images/4.jpg) |![](Images/5.jpg)  
-| | ![](Images/6.jpg) | ![](Images/7.jpg)  |
+##User Guide
+
+###Start using the application
+ ![](Images/0.jpg) |![](Images/1.jpg)  
+----|----
+ ![](Images/2.jpg) | ![](Images/3.jpg)
+
+
+###Managing media at a location
+
+ ![](Images/4.jpg) |![](Images/5.jpg)  
+----|----
+ ![](Images/6.jpg) | ![](Images/7.jpg)
 
 ### Development environment setup
 
