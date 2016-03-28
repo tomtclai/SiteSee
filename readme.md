@@ -27,7 +27,7 @@ Button | What it does
 ###Managing media for a location
 
 - Swipe to delete articles tied to the location
-- Tap on the row of pictures to see expand the view
+- Tap on the row of pictures to expand the view
 - Long Press to delete any photos you don't want 
 
 
