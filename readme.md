@@ -1,4 +1,7 @@
+
 # SiteSee
+![add](Images/Icon.png) 
+
 Learn about the neighborhoods, cities and countries around the world!
 
 <!-- Screenshots here -->
