@@ -191,7 +191,8 @@ extension Flickr {
             "format": DATA_FORMAT,
             "nojsoncallback": NO_JSON_CALLBACK,
             "text": text,
-            "per_page": perPage
+            "per_page": perPage,
+            "license": "6,7,8"
         ]
         return methodArguments
     }

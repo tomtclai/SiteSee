@@ -68,21 +68,10 @@ class PhotoAlbumViewController: UIViewController {
     // MARK: Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PhotoViewController" {
-            guard let zoomInSegue = segue as? ZoomInSegue else {
-                print("segue isnt ZoomInSegue")
-                return
-            }
             guard let indexPath = selectedIndexPath else {
                 print("selectedIndexPath is nil")
                 return
             }
-            guard let cell = self.collectionView.cellForItemAtIndexPath(indexPath) else {
-                print("no cellForItemAtIndexPath")
-                return
-            }
-            let cellRect = cell.frame
-            
-            zoomInSegue.animateFromRect = collectionView.convertRect(cellRect, toView: collectionView.superview)
             guard let destVc = segue.destinationViewController as? PhotoViewController else {
                 print("destVc isnt PhotoViewController")
                 return

@@ -32,7 +32,6 @@
 		7793B1F91CA3401D00D893B7 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1F71CA3401D00D893B7 /* Model.xcdatamodeld */; };
 		77F0CA7E1CACCFF400D4CD95 /* SSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F0CA7D1CACCFF400D4CD95 /* SSUITests.swift */; };
 		77F7AA461CA6E94D00658273 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F7AA451CA6E94D00658273 /* PhotoViewController.swift */; };
-		77F7AA4A1CA6EA3D00658273 /* ZoomInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F7AA491CA6EA3D00658273 /* ZoomInSegue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +75,6 @@
 		77F0CA771CACCF7400D4CD95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		77F0CA7D1CACCFF400D4CD95 /* SSUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSUITests.swift; sourceTree = "<group>"; };
 		77F7AA451CA6E94D00658273 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
-		77F7AA491CA6EA3D00658273 /* ZoomInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomInSegue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +110,6 @@
 		772B7DCF1CA3409C00849896 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				77F7AA491CA6EA3D00658273 /* ZoomInSegue.swift */,
 				77F7AA451CA6E94D00658273 /* PhotoViewController.swift */,
 				7793B1DB1CA3400900D893B7 /* SiteTableViewController.swift */,
 				7793B1DF1CA3400900D893B7 /* PhotoAlbumViewController.swift */,
@@ -331,7 +328,6 @@
 				7793B1EE1CA3400900D893B7 /* PhotoAlbumViewController.swift in Sources */,
 				7793B1EB1CA3400900D893B7 /* Image.swift in Sources */,
 				7793B1F41CA3400900D893B7 /* CoreDataStackManager.swift in Sources */,
-				77F7AA4A1CA6EA3D00658273 /* ZoomInSegue.swift in Sources */,
 				7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */,
 				7793B1ED1CA3400900D893B7 /* Wikipedia-Constants.swift in Sources */,
 				7793B1EA1CA3400900D893B7 /* SiteTableViewController.swift in Sources */,

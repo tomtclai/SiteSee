@@ -307,7 +307,7 @@
                     <connections>
                         <outlet property="collectionView" destination="92m-nP-cMX" id="1Ku-Zj-tHn"/>
                         <outlet property="tapGesture" destination="Tfh-6z-Dap" id="60K-Gf-kGA"/>
-                        <segue destination="8Wy-8B-cpa" kind="custom" identifier="PhotoViewController" customClass="ZoomInSegue" customModule="SiteSee" customModuleProvider="target" id="FU3-U8-dgK"/>
+                        <segue destination="8Wy-8B-cpa" kind="show" identifier="PhotoViewController" id="HSS-I2-aso"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ByE-3u-DLw" userLabel="First Responder" sceneMemberID="firstResponder"/>

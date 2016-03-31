@@ -11,7 +11,7 @@ import Foundation
 extension Flickr {
     struct Constants {
         static let baseUrl = "https://api.flickr.com/services/rest/"
-        static let apiKey = "fbb0f7411bc2751b84e6d44d7b806c4f"
+        static let apiKey = "81576fa64477ffdb64887f30f9370e7f"
     }
     
     struct Resources {
