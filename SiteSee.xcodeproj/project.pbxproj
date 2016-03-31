@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		772B7DD61CA3943100849896 /* SSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DD51CA3943100849896 /* SSTableViewCell.swift */; };
 		772B7DDE1CA47A0900849896 /* SSTableViewPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */; };
+		777DE3AA1CACDB8B007A81FC /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777DE3A91CACDB8B007A81FC /* SnapshotHelper.swift */; };
 		7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1C71CA33F8100D893B7 /* AppDelegate.swift */; };
 		7793B1CD1CA33F8100D893B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CB1CA33F8100D893B7 /* Main.storyboard */; };
 		7793B1CF1CA33F8100D893B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CE1CA33F8100D893B7 /* Assets.xcassets */; };
@@ -29,13 +30,25 @@
 		7793B1F51CA3400900D893B7 /* Flickr-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1E61CA3400900D893B7 /* Flickr-Constants.swift */; };
 		7793B1F61CA3400900D893B7 /* VTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1E71CA3400900D893B7 /* VTCollectionViewCell.swift */; };
 		7793B1F91CA3401D00D893B7 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1F71CA3401D00D893B7 /* Model.xcdatamodeld */; };
+		77F0CA7E1CACCFF400D4CD95 /* SSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F0CA7D1CACCFF400D4CD95 /* SSUITests.swift */; };
 		77F7AA461CA6E94D00658273 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F7AA451CA6E94D00658273 /* PhotoViewController.swift */; };
 		77F7AA4A1CA6EA3D00658273 /* ZoomInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F7AA491CA6EA3D00658273 /* ZoomInSegue.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		77F0CA781CACCF7400D4CD95 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7793B1BC1CA33F8100D893B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7793B1C31CA33F8100D893B7;
+			remoteInfo = SiteSee;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		772B7DD51CA3943100849896 /* SSTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewCell.swift; sourceTree = "<group>"; };
 		772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewPhotosCell.swift; sourceTree = "<group>"; };
+		777DE3A91CACDB8B007A81FC /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		7793B1C41CA33F8100D893B7 /* SiteSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiteSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7793B1C71CA33F8100D893B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7793B1CC1CA33F8100D893B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -58,12 +71,23 @@
 		7793B1E61CA3400900D893B7 /* Flickr-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Flickr-Constants.swift"; sourceTree = "<group>"; };
 		7793B1E71CA3400900D893B7 /* VTCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTCollectionViewCell.swift; sourceTree = "<group>"; };
 		7793B1F81CA3401D00D893B7 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		77F0CA731CACCF7400D4CD95 /* SiteSeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SiteSeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		77F0CA751CACCF7400D4CD95 /* SiteSeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSeeUITests.swift; sourceTree = "<group>"; };
+		77F0CA771CACCF7400D4CD95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77F0CA7D1CACCFF400D4CD95 /* SSUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSUITests.swift; sourceTree = "<group>"; };
 		77F7AA451CA6E94D00658273 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		77F7AA491CA6EA3D00658273 /* ZoomInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomInSegue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7793B1C11CA33F8100D893B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		77F0CA701CACCF7400D4CD95 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -143,7 +167,9 @@
 			children = (
 				7793B1F71CA3401D00D893B7 /* Model.xcdatamodeld */,
 				7793B1C61CA33F8100D893B7 /* SiteSee */,
+				77F0CA741CACCF7400D4CD95 /* SiteSeeUITests */,
 				7793B1C51CA33F8100D893B7 /* Products */,
+				77F0CA6E1CACCF2200D4CD95 /* UITest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -151,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				7793B1C41CA33F8100D893B7 /* SiteSee.app */,
+				77F0CA731CACCF7400D4CD95 /* SiteSeeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +194,24 @@
 				772B7DCF1CA3409C00849896 /* ViewController */,
 			);
 			path = SiteSee;
+			sourceTree = "<group>";
+		};
+		77F0CA6E1CACCF2200D4CD95 /* UITest */ = {
+			isa = PBXGroup;
+			children = (
+				777DE3A91CACDB8B007A81FC /* SnapshotHelper.swift */,
+				77F0CA7D1CACCFF400D4CD95 /* SSUITests.swift */,
+			);
+			name = UITest;
+			sourceTree = "<group>";
+		};
+		77F0CA741CACCF7400D4CD95 /* SiteSeeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				77F0CA751CACCF7400D4CD95 /* SiteSeeUITests.swift */,
+				77F0CA771CACCF7400D4CD95 /* Info.plist */,
+			);
+			path = SiteSeeUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,6 +234,24 @@
 			productReference = 7793B1C41CA33F8100D893B7 /* SiteSee.app */;
 			productType = "com.apple.product-type.application";
 		};
+		77F0CA721CACCF7400D4CD95 /* SiteSeeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 77F0CA7A1CACCF7400D4CD95 /* Build configuration list for PBXNativeTarget "SiteSeeUITests" */;
+			buildPhases = (
+				77F0CA6F1CACCF7400D4CD95 /* Sources */,
+				77F0CA701CACCF7400D4CD95 /* Frameworks */,
+				77F0CA711CACCF7400D4CD95 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				77F0CA791CACCF7400D4CD95 /* PBXTargetDependency */,
+			);
+			name = SiteSeeUITests;
+			productName = SiteSeeUITests;
+			productReference = 77F0CA731CACCF7400D4CD95 /* SiteSeeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -202,6 +265,10 @@
 					7793B1C31CA33F8100D893B7 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = DPRFY9YDG3;
+					};
+					77F0CA721CACCF7400D4CD95 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 7793B1C31CA33F8100D893B7;
 					};
 				};
 			};
@@ -219,6 +286,7 @@
 			projectRoot = "";
 			targets = (
 				7793B1C31CA33F8100D893B7 /* SiteSee */,
+				77F0CA721CACCF7400D4CD95 /* SiteSeeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -231,6 +299,13 @@
 				7793B1D21CA33F8100D893B7 /* LaunchScreen.storyboard in Resources */,
 				7793B1CF1CA33F8100D893B7 /* Assets.xcassets in Resources */,
 				7793B1CD1CA33F8100D893B7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		77F0CA711CACCF7400D4CD95 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,7 +340,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		77F0CA6F1CACCF7400D4CD95 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				777DE3AA1CACDB8B007A81FC /* SnapshotHelper.swift in Sources */,
+				77F0CA7E1CACCFF400D4CD95 /* SSUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		77F0CA791CACCF7400D4CD95 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7793B1C31CA33F8100D893B7 /* SiteSee */;
+			targetProxy = 77F0CA781CACCF7400D4CD95 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7793B1CB1CA33F8100D893B7 /* Main.storyboard */ = {
@@ -400,6 +492,28 @@
 			};
 			name = Release;
 		};
+		77F0CA7B1CACCF7400D4CD95 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SiteSeeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lai.SiteSeeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SiteSee;
+			};
+			name = Debug;
+		};
+		77F0CA7C1CACCF7400D4CD95 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SiteSeeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lai.SiteSeeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SiteSee;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -417,6 +531,15 @@
 			buildConfigurations = (
 				7793B1D71CA33F8100D893B7 /* Debug */,
 				7793B1D81CA33F8100D893B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77F0CA7A1CACCF7400D4CD95 /* Build configuration list for PBXNativeTarget "SiteSeeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77F0CA7B1CACCF7400D4CD95 /* Debug */,
+				77F0CA7C1CACCF7400D4CD95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
