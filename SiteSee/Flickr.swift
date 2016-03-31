@@ -179,7 +179,7 @@ class Flickr : Model {
 // MARK: Convenience methods
 extension Flickr {
     func getSearchMethodArgumentsConvenience(text: String, perPage:Int) -> [String:AnyObject]{
-        let EXTRAS = "url_b,url_q,url_o"
+        let EXTRAS = "url_b,url_q,url_o,license"
         let SAFE_SEARCH = "1"
         let DATA_FORMAT = "json"
         let NO_JSON_CALLBACK = "1"
