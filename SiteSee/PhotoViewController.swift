@@ -34,7 +34,9 @@ class PhotoViewController: UIViewController {
         imageView.image = UIImage(contentsOfFile: Image.imgPath(uuid))
         attribution.setTitle(attributionStr(image.license!.integerValue, ownerName:image.ownerName!), forState: .Normal)
         attribution.titleLabel?.textAlignment = .Center
-        attributionLabel.text = "Copyright © \(image.ownerName!).\n No changes were made."
+        attributionLabel.text = "Copyright © \(image.ownerName!). No changes were made."
+        attributionLabel.textColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+        attribution.titleLabel?.textColor = UIColor.blueColor().colorWithAlphaComponent(0.7)
         loadFullSizeImage()
     }
     

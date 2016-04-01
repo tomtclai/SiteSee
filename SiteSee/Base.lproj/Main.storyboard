@@ -338,38 +338,54 @@
                                     <outletCollection property="gestureRecognizers" destination="uO5-D4-gdg" appends="YES" id="cV0-TU-7Vi"/>
                                 </connections>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4AC-Uv-PfF">
-                                <rect key="frame" x="0.0" y="572" width="600" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title="attribution"/>
-                                <connections>
-                                    <action selector="attributionTapped:" destination="8Wy-8B-cpa" eventType="touchUpInside" id="D3c-Ya-kRB"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KdN-0B-Wb5">
-                                <rect key="frame" x="0.0" y="536" width="600" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2b-GV-D72">
+                                <rect key="frame" x="0.0" y="532" width="600" height="68"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Raz-c0-XAy">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="68"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ili-jP-EO5">
+                                            <rect key="frame" x="0.0" y="8" width="600" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-sQ-Ghm">
+                                            <rect key="frame" x="0.0" y="40" width="600" height="28"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="attribution"/>
+                                            <connections>
+                                                <action selector="attributionTapped:" destination="8Wy-8B-cpa" eventType="touchUpInside" id="ejJ-L9-WtJ"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Ili-jP-EO5" firstAttribute="top" secondItem="Raz-c0-XAy" secondAttribute="top" constant="8" id="9QA-5Q-NGW"/>
+                                        <constraint firstAttribute="bottom" secondItem="3JT-sQ-Ghm" secondAttribute="bottom" id="Jmk-Ja-00B"/>
+                                        <constraint firstItem="3JT-sQ-Ghm" firstAttribute="top" secondItem="Ili-jP-EO5" secondAttribute="bottom" constant="16" id="gYr-sk-hsd"/>
+                                        <constraint firstAttribute="trailing" secondItem="3JT-sQ-Ghm" secondAttribute="trailing" id="jQ4-ZC-gyl"/>
+                                        <constraint firstItem="Ili-jP-EO5" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" id="jm7-rr-Utm"/>
+                                        <constraint firstItem="3JT-sQ-Ghm" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" id="kyc-X9-Jfk"/>
+                                        <constraint firstAttribute="trailing" secondItem="Ili-jP-EO5" secondAttribute="trailing" id="oVe-jJ-agN"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="KdN-0B-Wb5" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="7yN-GP-M4n"/>
                             <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="pbX-Mp-fz3" secondAttribute="bottom" id="F1b-cP-yfB"/>
-                            <constraint firstItem="4AC-Uv-PfF" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="JNl-MJ-G1m"/>
-                            <constraint firstItem="4AC-Uv-PfF" firstAttribute="top" secondItem="KdN-0B-Wb5" secondAttribute="bottom" constant="20" id="Me0-p2-KdU"/>
                             <constraint firstItem="pbX-Mp-fz3" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="OEB-NJ-dnJ"/>
-                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="4AC-Uv-PfF" secondAttribute="bottom" id="TXw-IF-GDx"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="KdN-0B-Wb5" secondAttribute="trailing" constant="-20" id="WHs-se-uTD"/>
+                            <constraint firstAttribute="trailing" secondItem="j2b-GV-D72" secondAttribute="trailing" id="X2a-Do-6OD"/>
                             <constraint firstItem="pbX-Mp-fz3" firstAttribute="top" secondItem="mna-DO-vwQ" secondAttribute="bottom" constant="-64" id="cYJ-9S-Mhb"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="4AC-Uv-PfF" secondAttribute="trailing" constant="-20" id="tpE-fH-nPX"/>
+                            <constraint firstItem="j2b-GV-D72" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leading" id="lcw-35-J82"/>
+                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="j2b-GV-D72" secondAttribute="bottom" id="uQw-vp-DsP"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pbX-Mp-fz3" secondAttribute="trailing" constant="-20" id="y4n-bM-lq1"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="attribution" destination="4AC-Uv-PfF" id="W8h-vn-yiR"/>
-                        <outlet property="attributionLabel" destination="KdN-0B-Wb5" id="HAn-Of-a1j"/>
+                        <outlet property="attribution" destination="3JT-sQ-Ghm" id="RqG-fT-V3w"/>
+                        <outlet property="attributionLabel" destination="Ili-jP-EO5" id="bdR-RO-X6S"/>
                         <outlet property="imageView" destination="pbX-Mp-fz3" id="PXP-4y-79r"/>
                     </connections>
                 </viewController>
