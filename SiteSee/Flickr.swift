@@ -18,7 +18,65 @@ class Flickr : Model {
         }
         return Singleton.sharedInstance
     }
-    
+    func getRealName(methodArguments: [String : AnyObject], completionHandler: (stat: String?, realname: String?, error: NSError?)-> Void) {
+        let session = NSURLSession.sharedSession()
+        let urlString = Constants.baseUrl + escapedParameters(methodArguments)
+        let url = NSURL(string: urlString)!
+        let request = NSURLRequest(URL: url)
+        
+        let task = session.dataTaskWithRequest(request) { (data, response, error) in
+            guard error == nil else {
+                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey:error!.localizedDescription]))
+                return
+            }
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                if let response = response as? NSHTTPURLResponse {
+                    completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: response.description]))
+                } else if let response = response {
+                    completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: response.description]))
+                } else {
+                    completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Server returned an invalid response"]))
+                }
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request"]))
+                return
+            }
+            
+            /* Parse the data! */
+            let parsedResult: AnyObject!
+            
+            do {
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            } catch {
+                parsedResult = nil
+                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
+                return
+            }
+            
+            
+            /* GUARD: Did Flickr return an error (stat != ok)? */
+            guard let stat = parsedResult["stat"] as? String where stat == "ok" else {
+                completionHandler(stat: parsedResult["stat"] as? String, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Flickr API returned an error. See error code and message in \(parsedResult)"]))
+                
+                return
+            }
+            
+            /* GUARD: Is the "photos" key in our result? */
+            guard let realName = parsedResult["realname"] as? String else {
+                
+                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Cannot find key 'realname' in \(parsedResult)"]))
+                return
+            }
+            
+            completionHandler(stat: stat, realname: realName, error: nil)
+        }
+        task.resume()
+    }
     /* Function makes first request to get a random page, then it makes a request to get an image with the random page */
     func getImageFromFlickrBySearch(methodArguments: [String : AnyObject], completionHandler: (stat:String?, photosDict:NSDictionary?, totalPages:Int?, error:NSError?) -> Void) {
         
@@ -178,13 +236,13 @@ class Flickr : Model {
 }
 // MARK: Convenience methods
 extension Flickr {
-    func getSearchMethodArgumentsConvenience(text: String, perPage:Int) -> [String:AnyObject]{
+    func getSearchPhotoMethodArgumentsConvenience(text: String, perPage:Int) -> [String:AnyObject]{
         let EXTRAS = "url_b,url_q,url_o,license"
         let SAFE_SEARCH = "1"
         let DATA_FORMAT = "json"
         let NO_JSON_CALLBACK = "1"
         let methodArguments : [String:AnyObject] = [
-            "method": Flickr.Resources.search,
+            "method": Flickr.Resources.searchPhotos,
             "api_key": Flickr.Constants.apiKey,
             "safe_search": SAFE_SEARCH,
             "extras": EXTRAS,
@@ -196,7 +254,20 @@ extension Flickr {
         ]
         return methodArguments
     }
-    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, imageUrl: String?, origImageUrl: String?, error: NSError?)->Void) {
+    func getPeopleSearchArgumentsConvenience(userId: String) -> [String:AnyObject]{
+        let DATA_FORMAT = "json"
+        let NO_JSON_CALLBACK = "1"
+        let methodArguments : [String:AnyObject] = [
+            "method": Flickr.Resources.getPeopleInfo,
+            "api_key": Flickr.Constants.apiKey,
+            "user_id": userId,
+            "format": DATA_FORMAT,
+            "nojsoncallback": NO_JSON_CALLBACK,
+
+        ]
+        return methodArguments
+    }
+    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, imageUrl: String?, origImageUrl: String?, flickrPageUrl: String?, ownerName: String?, error: NSError?)->Void) {
         Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: pageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
             guard error == nil else {
                 print(error?.localizedDescription)
@@ -223,15 +294,27 @@ extension Flickr {
                         return
                     }
                     
+                    //use owner ID to find owner real name
+                    guard let ownerIDStr = photoDictionary["owner"] as? String else {
+                        print("Cannot find key 'owner' in \(photoDictionary)")
+                        return
+                    }
+                    
+                    // use Photo ID and OwnerID to make URL
+                    guard let photoID = photoDictionary["id"] as? String else {
+                        print("Cannot find key 'id' in \(photoDictionary)")
+                        return
+                    }
+                    
                     if let originalImageUrlStr = photoDictionary["url_o"] as? String {
-                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: originalImageUrlStr, error: nil)
+//                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: originalImageUrlStr, ownerID: ownerIDStr, error: nil)
                     } else {
-                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: nil, error: nil)
+//                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: nil, ownerID: ownerIDStr, error: nil)
                     }
                     
                 }
             } else {
-                completionHandler(thumbnailUrl: nil, imageUrl: nil, origImageUrl: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo: nil))
+//                completionHandler(thumbnailUrl: nil, imageUrl: nil, origImageUrl: nil, ownerID: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo: nil))
                 
             }
         })

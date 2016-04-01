@@ -13,9 +13,9 @@ import CoreData
 class Image: NSManagedObject {
 
     struct Keys {
-        static let ImageUrl = "imageUrl"
         static let ThumbnailUrl = "thumbnailUrl"
         static let UUID = "uuid"
+        static let FlickrPageUrl = "flickrPageUrl"
         static let SortOrder = "sortOrder"
         static let OrigImageUrl = "origImageUrl"
     }
@@ -28,8 +28,8 @@ class Image: NSManagedObject {
         let entity = NSEntityDescription.entityForName("Image", inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
-        imageUrl = dictionary[Keys.ImageUrl] as? String
         thumbnailUrl = dictionary[Keys.ThumbnailUrl] as? String
+        flickrPageUrl = dictionary[Keys.FlickrPageUrl] as? String
         uuid = dictionary[Keys.UUID] as? String
         sortOrder = dictionary[Keys.SortOrder] as? Double
         origImageUrl = dictionary[Keys.OrigImageUrl] as? String

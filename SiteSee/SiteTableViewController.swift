@@ -117,7 +117,6 @@ class SiteTableViewController: UITableViewController {
                     // add medium url to core data
                     let imageDictionary : [String: AnyObject?] = [
                         Image.Keys.ThumbnailUrl : thumbnailUrl!,
-                        Image.Keys.ImageUrl : imageUrl!,
                         Image.Keys.OrigImageUrl : origImageUrl,
                         Image.Keys.SortOrder : NSNumber(double: sortOrder)
                     ]
