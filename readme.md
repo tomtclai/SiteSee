@@ -1,6 +1,6 @@
 
 # SiteSee
-![add](Images/Icon.png) 
+![add](Images/Icon-76@2x.png) 
 
 Learn about the neighborhoods, cities and countries around the world!
 
