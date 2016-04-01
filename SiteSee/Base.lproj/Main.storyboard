@@ -323,16 +323,63 @@
         <scene sceneID="QfQ-Ht-eDv">
             <objects>
                 <viewController id="8Wy-8B-cpa" customClass="PhotoViewController" customModule="SiteSee" customModuleProvider="target" sceneMemberID="viewController">
-                    <imageView key="view" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hX1-cF-CV9">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mna-DO-vwQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="pUD-74-h8S"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleAspectFit" id="1Rt-1s-WTE">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pbX-Mp-fz3">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="uO5-D4-gdg" appends="YES" id="cV0-TU-7Vi"/>
+                                </connections>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4AC-Uv-PfF">
+                                <rect key="frame" x="0.0" y="572" width="600" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="attribution"/>
+                                <connections>
+                                    <action selector="attributionTapped:" destination="8Wy-8B-cpa" eventType="touchUpInside" id="D3c-Ya-kRB"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KdN-0B-Wb5">
+                                <rect key="frame" x="0.0" y="536" width="600" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </imageView>
+                        <constraints>
+                            <constraint firstItem="KdN-0B-Wb5" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="7yN-GP-M4n"/>
+                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="pbX-Mp-fz3" secondAttribute="bottom" id="F1b-cP-yfB"/>
+                            <constraint firstItem="4AC-Uv-PfF" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="JNl-MJ-G1m"/>
+                            <constraint firstItem="4AC-Uv-PfF" firstAttribute="top" secondItem="KdN-0B-Wb5" secondAttribute="bottom" constant="20" id="Me0-p2-KdU"/>
+                            <constraint firstItem="pbX-Mp-fz3" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="OEB-NJ-dnJ"/>
+                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="4AC-Uv-PfF" secondAttribute="bottom" id="TXw-IF-GDx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KdN-0B-Wb5" secondAttribute="trailing" constant="-20" id="WHs-se-uTD"/>
+                            <constraint firstItem="pbX-Mp-fz3" firstAttribute="top" secondItem="mna-DO-vwQ" secondAttribute="bottom" constant="-64" id="cYJ-9S-Mhb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4AC-Uv-PfF" secondAttribute="trailing" constant="-20" id="tpE-fH-nPX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="pbX-Mp-fz3" secondAttribute="trailing" constant="-20" id="y4n-bM-lq1"/>
+                        </constraints>
+                    </view>
                     <connections>
-                        <outlet property="imageView" destination="hX1-cF-CV9" id="L1z-au-HjE"/>
+                        <outlet property="attribution" destination="4AC-Uv-PfF" id="W8h-vn-yiR"/>
+                        <outlet property="attributionLabel" destination="KdN-0B-Wb5" id="HAn-Of-a1j"/>
+                        <outlet property="imageView" destination="pbX-Mp-fz3" id="PXP-4y-79r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ed-jO-B6b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="uO5-D4-gdg">
+                    <connections>
+                        <action selector="tapped:" destination="8Wy-8B-cpa" id="U1b-J8-GDk"/>
+                        <outlet property="delegate" destination="8Wy-8B-cpa" id="MEi-JM-KOb"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3354" y="464"/>
         </scene>

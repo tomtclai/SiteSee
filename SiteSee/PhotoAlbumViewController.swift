@@ -87,7 +87,7 @@ class PhotoAlbumViewController: UIViewController {
     // MARK: Flickr API
 
     func searchPhotosByText(text:String, pageNumber: Int) {
-        let methodArguments = Flickr.sharedInstance().getSearchMethodArgumentsConvenience(text, perPage: 21)
+        let methodArguments = Flickr.sharedInstance().getSearchPhotoMethodArgumentsConvenience(text, perPage: 21)
         
         Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
             guard error == nil else {
@@ -107,7 +107,7 @@ class PhotoAlbumViewController: UIViewController {
                         return
                 }
                 var sortOrder: Double = 0.0
-                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (thumbnailUrl, imageUrl, origImageUrl, error) in
+                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: self.lastPageNumber, completionHandler: { (thumbnailUrl, origImageUrl, flickrPageUrl, ownerName, license, error) in
                     guard error == nil else {
                         return
                     }
@@ -116,8 +116,10 @@ class PhotoAlbumViewController: UIViewController {
                     let imageDictionary : [String: AnyObject?] = [
                         Image.Keys.ThumbnailUrl : thumbnailUrl!,
                         Image.Keys.OrigImageUrl : origImageUrl,
-                        Image.Keys.SortOrder : NSNumber(double: sortOrder)
-                        
+                        Image.Keys.SortOrder : NSNumber(double: sortOrder),
+                        Image.Keys.FlickrPageUrl : flickrPageUrl,
+                        Image.Keys.OwnerName : ownerName,
+                        Image.Keys.License : license
                     ]
                     sortOrder += 1.0
                     

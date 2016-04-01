@@ -99,7 +99,7 @@ class SiteTableViewController: UITableViewController {
 
     // MARK: Flickr Client
     func searchFlickrForPhotos(text:String) {
-        let methodArguments = Flickr.sharedInstance().getSearchMethodArgumentsConvenience(text, perPage: 21)
+        let methodArguments = Flickr.sharedInstance().getSearchPhotoMethodArgumentsConvenience(text, perPage: 21)
         
         Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
             guard error == nil else {
@@ -108,17 +108,19 @@ class SiteTableViewController: UITableViewController {
             }
             dispatch_async(dispatch_get_main_queue()){
                 var sortOrder: Double = 0.0
-                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: 0, completionHandler: { (thumbnailUrl, imageUrl, origImageUrl, error) in
+                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: 0, completionHandler: { (thumbnailUrl, origImageUrl, flickrPageUrl, ownerName, license, error) in
                     guard error == nil else {
                         return
                     }
-                    
                     // add thumbnail url to core data
                     // add medium url to core data
                     let imageDictionary : [String: AnyObject?] = [
                         Image.Keys.ThumbnailUrl : thumbnailUrl!,
                         Image.Keys.OrigImageUrl : origImageUrl,
-                        Image.Keys.SortOrder : NSNumber(double: sortOrder)
+                        Image.Keys.SortOrder : NSNumber(double: sortOrder),
+                        Image.Keys.FlickrPageUrl : flickrPageUrl,
+                        Image.Keys.OwnerName : ownerName,
+                        Image.Keys.License : license
                     ]
                     sortOrder += 1.0
                     
@@ -128,6 +130,7 @@ class SiteTableViewController: UITableViewController {
                         self.saveContext()
                     }
                 })
+
                 
             }
         }

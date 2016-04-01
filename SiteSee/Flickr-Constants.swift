@@ -12,6 +12,59 @@ extension Flickr {
     struct Constants {
         static let baseUrl = "https://api.flickr.com/services/rest/"
         static let apiKey = "81576fa64477ffdb64887f30f9370e7f"
+        static func webPageUrlForPhoto(userID: String, photoID: String) -> String {
+            var url = "https://www.flickr.com/photos/"
+            url.appendContentsOf(userID)
+            url.appendContentsOf("/")
+            url.appendContentsOf(photoID)
+            return url
+        }
+        static func licenseUrl(licenseID: Int) -> String? {
+            // TODO: use the API function to get these
+            switch licenseID {
+            case 1:
+                return "http://creativecommons.org/licenses/by-nc-sa/2.0/"
+            case 2:
+                return "http://creativecommons.org/licenses/by-nc/2.0/"
+            case 3:
+                return "http://creativecommons.org/licenses/by-nc-nd/2.0/"
+            case 4:
+                return "http://creativecommons.org/licenses/by/2.0/"
+            case 5:
+                return "http://creativecommons.org/licenses/by-sa/2.0/"
+            case 6:
+                return "http://creativecommons.org/licenses/by-nd/2.0/"
+            case 7:
+                return "http://flickr.com/commons/usage/"
+            case 8:
+                return "http://www.usa.gov/copyright.shtml"
+            default:
+                return nil
+            }
+        }
+        static func licenseName(licenseID: Int) -> String? {
+            // TODO: use the API function to get these
+            switch licenseID {
+            case 1:
+                return "Attribution-NonCommercial-ShareAlike License"
+            case 2:
+                return "Attribution-NonCommercial License"
+            case 3:
+                return "Attribution-NonCommercial-NoDerivs License"
+            case 4:
+                return "Attribution License"
+            case 5:
+                return "Attribution-ShareAlike License"
+            case 6:
+                return "Attribution-NoDerivs License"
+            case 7:
+                return "No known copyright restrictions"
+            case 8:
+                return "United States Government Work"
+            default:
+                return nil
+            }
+        }
     }
     
     struct Resources {

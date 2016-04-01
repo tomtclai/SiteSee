@@ -18,7 +18,7 @@ class Flickr : Model {
         }
         return Singleton.sharedInstance
     }
-    func getRealName(methodArguments: [String : AnyObject], completionHandler: (stat: String?, realname: String?, error: NSError?)-> Void) {
+    func getOwnerName(methodArguments: [String : AnyObject], completionHandler: (ownerName: String?, error: NSError?)-> Void) {
         let session = NSURLSession.sharedSession()
         let urlString = Constants.baseUrl + escapedParameters(methodArguments)
         let url = NSURL(string: urlString)!
@@ -26,24 +26,24 @@ class Flickr : Model {
         
         let task = session.dataTaskWithRequest(request) { (data, response, error) in
             guard error == nil else {
-                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey:error!.localizedDescription]))
+                completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey:error!.localizedDescription]))
                 return
             }
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 if let response = response as? NSHTTPURLResponse {
-                    completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: response.description]))
+                    completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: response.description]))
                 } else if let response = response {
-                    completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: response.description]))
+                    completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: response.description]))
                 } else {
-                    completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Server returned an invalid response"]))
+                    completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Server returned an invalid response"]))
                 }
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
-                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request"]))
+                completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request"]))
                 return
             }
             
@@ -54,26 +54,45 @@ class Flickr : Model {
                 parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
             } catch {
                 parsedResult = nil
-                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
+                completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
             }
             
             
             /* GUARD: Did Flickr return an error (stat != ok)? */
             guard let stat = parsedResult["stat"] as? String where stat == "ok" else {
-                completionHandler(stat: parsedResult["stat"] as? String, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Flickr API returned an error. See error code and message in \(parsedResult)"]))
+                completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Flickr API returned an error. See error code and message in \(parsedResult)"]))
                 
                 return
             }
             
             /* GUARD: Is the "photos" key in our result? */
-            guard let realName = parsedResult["realname"] as? String else {
+            
+            guard let personDict = parsedResult["person"] as? NSDictionary else {
                 
-                completionHandler(stat: nil, realname: nil, error: NSError(domain: "getRealName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Cannot find key 'realname' in \(parsedResult)"]))
+                completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Cannot find key 'person' in \(parsedResult)"]))
                 return
             }
             
-            completionHandler(stat: stat, realname: realName, error: nil)
+            if let realNameDict = personDict["realname"] as? NSDictionary {
+                guard let ownerName = realNameDict["_content"] as? String else {
+                    
+                    completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Cannot find key '_content' in \(realNameDict)"]))
+                    return
+                }
+                
+                completionHandler(ownerName: ownerName, error: nil)
+                return
+            } else if let userNameDict = personDict["username"] as? NSDictionary {
+                guard let ownerName = userNameDict["_content"] as? String else {
+                    
+                    completionHandler(ownerName: nil, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey:"Cannot find key '_content' in \(userNameDict)"]))
+                    return
+                }
+                completionHandler(ownerName: ownerName, error: nil)
+            }
+            
+
         }
         task.resume()
     }
@@ -250,7 +269,7 @@ extension Flickr {
             "nojsoncallback": NO_JSON_CALLBACK,
             "text": text,
             "per_page": perPage,
-            "license": "6,7,8"
+            "license": "1,2,3,4,5,6,7,8"
         ]
         return methodArguments
     }
@@ -267,7 +286,7 @@ extension Flickr {
         ]
         return methodArguments
     }
-    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, imageUrl: String?, origImageUrl: String?, flickrPageUrl: String?, ownerName: String?, error: NSError?)->Void) {
+    func getImageFromFlickrWithPageConvenience(methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:(thumbnailUrl: String?, origImageUrl: String?, flickrPageUrl: String?, ownerName: String?, license: NSNumber?, error: NSError?)->Void) {
         Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: pageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
             guard error == nil else {
                 print(error?.localizedDescription)
@@ -287,13 +306,7 @@ extension Flickr {
                         print("Cannot find key 'url_q' in \(photoDictionary)")
                         return
                     }
-                    
-                    
-                    guard let imageUrlStr = photoDictionary["url_q"] as? String else {
-                        print("Cannot find key 'url_q' in \(photoDictionary)")
-                        return
-                    }
-                    
+
                     //use owner ID to find owner real name
                     guard let ownerIDStr = photoDictionary["owner"] as? String else {
                         print("Cannot find key 'owner' in \(photoDictionary)")
@@ -306,15 +319,26 @@ extension Flickr {
                         return
                     }
                     
-                    if let originalImageUrlStr = photoDictionary["url_o"] as? String {
-//                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: originalImageUrlStr, ownerID: ownerIDStr, error: nil)
-                    } else {
-//                        completionHandler(thumbnailUrl: thumbnailUrlStr, imageUrl: imageUrlStr, origImageUrl: nil, ownerID: ownerIDStr, error: nil)
+                    // can be nil
+                    let originalImageUrlStr = photoDictionary["url_o"] as? String
+                    
+                    guard let license = photoDictionary["license"]?.integerValue else {
+                        print("cannot find key license in \(photoDictionary) ")
+                        return
                     }
+                    
+                    self.getOwnerName(self.getPeopleSearchArgumentsConvenience(ownerIDStr), completionHandler: { (ownerName, error) in
+                        guard error == nil else {
+                            completionHandler(thumbnailUrl: thumbnailUrlStr, origImageUrl: originalImageUrlStr, flickrPageUrl: Constants.webPageUrlForPhoto(ownerIDStr, photoID: photoID), ownerName: nil, license: license, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
+                            print("no real name")
+                            return
+                        }
+                        completionHandler(thumbnailUrl: thumbnailUrlStr, origImageUrl: originalImageUrlStr, flickrPageUrl: Constants.webPageUrlForPhoto(ownerIDStr, photoID: photoID), ownerName: ownerName, license: license, error: nil)
+                    })
                     
                 }
             } else {
-//                completionHandler(thumbnailUrl: nil, imageUrl: nil, origImageUrl: nil, ownerID: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo: nil))
+                completionHandler(thumbnailUrl: nil, origImageUrl: nil, flickrPageUrl: nil, ownerName: nil, license: nil, error: NSError(domain: "getImageFromFlickrConvenience", code: 999, userInfo:[ NSLocalizedDescriptionKey: "No photos here"]))
                 
             }
         })

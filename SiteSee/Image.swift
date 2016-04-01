@@ -18,6 +18,8 @@ class Image: NSManagedObject {
         static let FlickrPageUrl = "flickrPageUrl"
         static let SortOrder = "sortOrder"
         static let OrigImageUrl = "origImageUrl"
+        static let OwnerName = "ownerName"
+        static let License = "license"
     }
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
@@ -33,6 +35,8 @@ class Image: NSManagedObject {
         uuid = dictionary[Keys.UUID] as? String
         sortOrder = dictionary[Keys.SortOrder] as? Double
         origImageUrl = dictionary[Keys.OrigImageUrl] as? String
+        ownerName = dictionary[Keys.OwnerName] as? String
+        license = dictionary[Keys.License] as? NSNumber
     }
     
     override func prepareForDeletion() {

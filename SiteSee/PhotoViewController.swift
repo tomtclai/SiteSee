@@ -7,10 +7,21 @@
 //
 
 import UIKit
-
+import SafariServices
 class PhotoViewController: UIViewController {
     var image : Image!
+    @IBOutlet weak var attributionLabel: UILabel!
+    @IBOutlet weak var attribution: UIButton!
     @IBOutlet weak var imageView: UIImageView!
+    func attributionStr(flickrLicense: Int, ownerName: String)->String {
+        let licenseName = Flickr.Constants.licenseName(flickrLicense)
+        return "This photo is made available under a \(licenseName!) license."
+    }
+    
+    @IBAction func tapped(sender: UITapGestureRecognizer) {
+        let sfv = SFSafariViewController(URL: NSURL(string:image.flickrPageUrl!)!)
+        navigationController?.pushViewController(sfv, animated: true)
+    }
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -21,10 +32,16 @@ class PhotoViewController: UIViewController {
         }
         
         imageView.image = UIImage(contentsOfFile: Image.imgPath(uuid))
-
+        attribution.setTitle(attributionStr(image.license!.integerValue, ownerName:image.ownerName!), forState: .Normal)
+        attribution.titleLabel?.textAlignment = .Center
+        attributionLabel.text = "Copyright © \(image.ownerName!).\n No changes were made."
         loadFullSizeImage()
     }
     
+    @IBAction func attributionTapped(sender: UIButton) {
+        let sfv = SFSafariViewController(URL: NSURL(string: Flickr.Constants.licenseUrl(image.license!.integerValue)!)!)
+        navigationController?.pushViewController(sfv, animated: true)
+    }
     func loadFullSizeImage() -> Void {
         guard image.origImageUrl != nil else {
             return
@@ -39,5 +56,13 @@ class PhotoViewController: UIViewController {
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
         })
+    }
+}
+extension PhotoViewController: UIGestureRecognizerDelegate{
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(attribution){
+            return false
+        }
+        return true
     }
 }
