@@ -15,7 +15,11 @@ class PhotoViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     func attributionStr(flickrLicense: Int, ownerName: String)->String {
         let licenseName = Flickr.Constants.licenseName(flickrLicense)
+        if flickrLicense == 7 || flickrLicense == 8 {
+            return "\(licenseName)."
+        } else {
         return "This photo is made available under a \(licenseName!) license."
+        }
     }
     
     @IBAction func tapped(sender: UITapGestureRecognizer) {

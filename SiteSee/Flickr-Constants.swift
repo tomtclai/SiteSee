@@ -46,17 +46,17 @@ extension Flickr {
             // TODO: use the API function to get these
             switch licenseID {
             case 1:
-                return "Attribution-NonCommercial-ShareAlike License"
+                return "Attribution-NonCommercial-ShareAlike"
             case 2:
-                return "Attribution-NonCommercial License"
+                return "Attribution-NonCommercial"
             case 3:
-                return "Attribution-NonCommercial-NoDerivs License"
+                return "Attribution-NonCommercial-NoDerivs"
             case 4:
-                return "Attribution License"
+                return "Attribution"
             case 5:
-                return "Attribution-ShareAlike License"
+                return "Attribution-ShareAlike"
             case 6:
-                return "Attribution-NoDerivs License"
+                return "Attribution-NoDerivs"
             case 7:
                 return "No known copyright restrictions"
             case 8:
