@@ -11,7 +11,7 @@ import Foundation
 extension Flickr {
     struct Constants {
         static let baseUrl = "https://api.flickr.com/services/rest/"
-        static let apiKey = "81576fa64477ffdb64887f30f9370e7f"
+        static let apiKey = FlickrSecretAPIKey // Not to be shared on a public repo
         static func webPageUrlForPhoto(userID: String, photoID: String) -> String {
             var url = "https://www.flickr.com/photos/"
             url.appendContentsOf(userID)
