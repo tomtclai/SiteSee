@@ -10,6 +10,7 @@
 		772B7DD61CA3943100849896 /* SSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DD51CA3943100849896 /* SSTableViewCell.swift */; };
 		772B7DDE1CA47A0900849896 /* SSTableViewPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */; };
 		7760CAD51CB718DF00A5A180 /* Flickr-APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7760CAD41CB718DF00A5A180 /* Flickr-APIKey.swift */; };
+		7760CAD71CB71DDA00A5A180 /* SSMultilineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7760CAD61CB71DDA00A5A180 /* SSMultilineButton.swift */; };
 		777DE3AA1CACDB8B007A81FC /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777DE3A91CACDB8B007A81FC /* SnapshotHelper.swift */; };
 		7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1C71CA33F8100D893B7 /* AppDelegate.swift */; };
 		7793B1CD1CA33F8100D893B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CB1CA33F8100D893B7 /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 		772B7DD51CA3943100849896 /* SSTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewCell.swift; sourceTree = "<group>"; };
 		772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSTableViewPhotosCell.swift; sourceTree = "<group>"; };
 		7760CAD41CB718DF00A5A180 /* Flickr-APIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Flickr-APIKey.swift"; sourceTree = "<group>"; };
+		7760CAD61CB71DDA00A5A180 /* SSMultilineButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSMultilineButton.swift; sourceTree = "<group>"; };
 		777DE3A91CACDB8B007A81FC /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		7793B1C41CA33F8100D893B7 /* SiteSee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiteSee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7793B1C71CA33F8100D893B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				7793B1CB1CA33F8100D893B7 /* Main.storyboard */,
 				7793B1D01CA33F8100D893B7 /* LaunchScreen.storyboard */,
 				7793B1E71CA3400900D893B7 /* VTCollectionViewCell.swift */,
+				7760CAD61CB71DDA00A5A180 /* SSMultilineButton.swift */,
 				772B7DDD1CA47A0900849896 /* SSTableViewPhotosCell.swift */,
 				772B7DD51CA3943100849896 /* SSTableViewCell.swift */,
 			);
@@ -223,6 +226,7 @@
 			buildPhases = (
 				7793B1C01CA33F8100D893B7 /* Sources */,
 				7793B1C11CA33F8100D893B7 /* Frameworks */,
+				7760CAD81CB7237D00A5A180 /* ShellScript */,
 				7793B1C21CA33F8100D893B7 /* Resources */,
 			);
 			buildRules = (
@@ -311,6 +315,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7760CAD81CB7237D00A5A180 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7793B1C01CA33F8100D893B7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -331,6 +351,7 @@
 				7793B1F51CA3400900D893B7 /* Flickr-Constants.swift in Sources */,
 				7793B1EE1CA3400900D893B7 /* PhotoAlbumViewController.swift in Sources */,
 				7793B1EB1CA3400900D893B7 /* Image.swift in Sources */,
+				7760CAD71CB71DDA00A5A180 /* SSMultilineButton.swift in Sources */,
 				7793B1F41CA3400900D893B7 /* CoreDataStackManager.swift in Sources */,
 				7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */,
 				7793B1ED1CA3400900D893B7 /* Wikipedia-Constants.swift in Sources */,

@@ -46,7 +46,6 @@ class PhotoAlbumViewController: UIViewController {
         collectionView.addGestureRecognizer(tapGesture)
         
     }
-    
     // MARK: User Iteraction
     @IBAction func didTap(sender: UITapGestureRecognizer) {
         let point = sender.locationInView(self.collectionView)
@@ -256,7 +255,8 @@ extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let itemsPerRow:CGFloat = 3
         let padding:CGFloat = 5
-        let photoSide = (collectionView.bounds.width / itemsPerRow) - padding
+        let rowWidth = min(collectionView.bounds.width, collectionView.bounds.height)
+        let photoSide = (rowWidth / itemsPerRow) - padding
         return CGSize(width: photoSide, height: photoSide)
     }
 }

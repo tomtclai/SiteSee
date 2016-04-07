@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Lal-ki-qG9">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -339,19 +338,19 @@
                                 </connections>
                             </imageView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2b-GV-D72">
-                                <rect key="frame" x="0.0" y="532" width="600" height="68"/>
+                                <rect key="frame" x="0.0" y="548" width="600" height="52"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Raz-c0-XAy">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="68"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ili-jP-EO5">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ili-jP-EO5">
                                             <rect key="frame" x="0.0" y="8" width="600" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-sQ-Ghm">
-                                            <rect key="frame" x="0.0" y="40" width="600" height="28"/>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-sQ-Ghm" customClass="SSMultilineButton" customModule="SiteSee" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="24" width="600" height="28"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <state key="normal" title="attribution"/>
                                             <connections>
@@ -362,14 +361,14 @@
                                     <constraints>
                                         <constraint firstItem="Ili-jP-EO5" firstAttribute="top" secondItem="Raz-c0-XAy" secondAttribute="top" constant="8" id="9QA-5Q-NGW"/>
                                         <constraint firstAttribute="bottom" secondItem="3JT-sQ-Ghm" secondAttribute="bottom" id="Jmk-Ja-00B"/>
-                                        <constraint firstItem="3JT-sQ-Ghm" firstAttribute="top" secondItem="Ili-jP-EO5" secondAttribute="bottom" constant="16" id="gYr-sk-hsd"/>
+                                        <constraint firstItem="3JT-sQ-Ghm" firstAttribute="top" secondItem="Ili-jP-EO5" secondAttribute="bottom" id="gYr-sk-hsd"/>
                                         <constraint firstAttribute="trailing" secondItem="3JT-sQ-Ghm" secondAttribute="trailing" id="jQ4-ZC-gyl"/>
                                         <constraint firstItem="Ili-jP-EO5" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" id="jm7-rr-Utm"/>
                                         <constraint firstItem="3JT-sQ-Ghm" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" id="kyc-X9-Jfk"/>
                                         <constraint firstAttribute="trailing" secondItem="Ili-jP-EO5" secondAttribute="trailing" id="oVe-jJ-agN"/>
                                     </constraints>
                                 </view>
-                                <blurEffect style="light"/>
+                                <blurEffect style="extraLight"/>
                             </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
