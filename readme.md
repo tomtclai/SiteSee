@@ -1,10 +1,12 @@
 
-# SiteSee
-![add](Images/Icon-76@2x.png) 
+# SiteSee 
 
+![Icon](Images/Icon-76@2x.png) 
+ 
 Learn about the neighborhoods, cities and countries around the world!
 
-<!-- Screenshots here -->
+##Download
+[https://itunes.apple.com/us/app/sitesee-discover-neighborhoods/id1098475733](https://itunes.apple.com/us/app/sitesee-discover-neighborhoods/id1098475733)
 
 ##User Guide
 
@@ -23,8 +25,8 @@ Learn about the neighborhoods, cities and countries around the world!
 Button | What it does
 ----|----
 ![layers](Images/layers.png) | Change from standard maps to a satellite / hybrid one, or vice versa
-![layers](Images/trash.png) | Delete all pins from the map
-![layers](Images/arrow.png) | Show your location on the map
+![trash](Images/trash.png) | Delete all pins from the map
+![arrow](Images/arrow.png) | Show your location on the map
 
 
 ###Managing media for a location
@@ -44,3 +46,5 @@ Button | What it does
 2. Install iOS 9.3
 3. `git clone` this project
 4. Open `SiteSee.xcodeproj`
+
+
