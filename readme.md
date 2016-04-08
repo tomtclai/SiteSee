@@ -2,11 +2,14 @@
 # SiteSee 
 
 ![Icon](Images/Icon-76@2x.png) 
- 
+
 Learn about the neighborhoods, cities and countries around the world!
 
+
 ##Download
-[https://itunes.apple.com/us/app/sitesee-discover-neighborhoods/id1098475733](https://itunes.apple.com/us/app/sitesee-discover-neighborhoods/id1098475733)
+[![appstore](Images/appstore.png)](https://itunes.apple.com/us/app/sitesee-discover-neighborhoods/id1098475733)
+
+_Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc._
 
 ##User Guide
 
