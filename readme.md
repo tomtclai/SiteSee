@@ -11,6 +11,12 @@ Discover neighborhoods, cities and countries around the world!
 
 _Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc._
 
+##Feedback
+Github user? [Add an Issue here](https://github.com/tomtclai/SiteSee/issues)
+
+Not github user? [Fill out the form here](https://docs.google.com/forms/d/1oCb8PoIk4_8OdZVPJP11OBJk2SgWbZHwnVqLEhC02M0)
+
+
 ##User Guide
 
 ###Start using the application
