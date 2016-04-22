@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 class PhotoViewController: UIViewController {
     var image : Image!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var attributionLabel: UILabel!
     @IBOutlet weak var attribution: UIButton!
     @IBOutlet weak var imageView: UIImageView!
@@ -58,6 +59,7 @@ class PhotoViewController: UIViewController {
                 
                 UIView.transitionWithView(self.imageView, duration:0.2, options: .TransitionCrossDissolve, animations: {
                     self.imageView.image = UIImage(data: data)!
+                    self.scrollView.contentSize = self.imageView.frame.size
                     }, completion: nil)
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
@@ -70,5 +72,11 @@ extension PhotoViewController: UIGestureRecognizerDelegate{
             return false
         }
         return true
+    }
+}
+
+extension PhotoViewController: UIScrollViewDelegate {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return imageView;
     }
 }

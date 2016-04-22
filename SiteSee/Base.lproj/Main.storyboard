@@ -330,13 +330,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pbX-Mp-fz3">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="aL8-tI-Xjr">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <gestureRecognizers/>
+                                <subviews>
+                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="256" verticalHuggingPriority="256" translatesAutoresizingMaskIntoConstraints="NO" id="pbX-Mp-fz3">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="uO5-D4-gdg" appends="YES" id="cV0-TU-7Vi"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="centerY" secondItem="aL8-tI-Xjr" secondAttribute="centerY" id="3XQ-NQ-2gs"/>
+                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="top" secondItem="aL8-tI-Xjr" secondAttribute="top" id="9vE-fn-oCd"/>
+                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="centerX" secondItem="aL8-tI-Xjr" secondAttribute="centerX" id="D15-lA-eSo"/>
+                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="height" secondItem="aL8-tI-Xjr" secondAttribute="height" id="IMB-hY-plT"/>
+                                    <constraint firstAttribute="bottom" secondItem="pbX-Mp-fz3" secondAttribute="bottom" id="LYB-wb-zDn"/>
+                                    <constraint firstAttribute="trailing" secondItem="pbX-Mp-fz3" secondAttribute="trailing" id="arB-3U-G2B"/>
+                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="leading" secondItem="aL8-tI-Xjr" secondAttribute="leading" id="dLH-6e-wm8"/>
+                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="width" secondItem="aL8-tI-Xjr" secondAttribute="width" id="hrO-7V-yB8"/>
+                                </constraints>
+                                <inset key="scrollIndicatorInsets" minX="0.0" minY="-44" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="uO5-D4-gdg" appends="YES" id="cV0-TU-7Vi"/>
+                                    <outlet property="delegate" destination="8Wy-8B-cpa" id="5C6-Of-Ndd"/>
                                 </connections>
-                            </imageView>
+                            </scrollView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2b-GV-D72">
                                 <rect key="frame" x="0.0" y="548" width="600" height="52"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Raz-c0-XAy">
@@ -373,19 +392,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="pbX-Mp-fz3" secondAttribute="bottom" id="F1b-cP-yfB"/>
-                            <constraint firstItem="pbX-Mp-fz3" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leadingMargin" constant="-20" id="OEB-NJ-dnJ"/>
+                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="aL8-tI-Xjr" secondAttribute="bottom" id="4aG-ZG-ckF"/>
+                            <constraint firstItem="aL8-tI-Xjr" firstAttribute="top" secondItem="1Rt-1s-WTE" secondAttribute="top" id="UL0-NS-giC"/>
                             <constraint firstAttribute="trailing" secondItem="j2b-GV-D72" secondAttribute="trailing" id="X2a-Do-6OD"/>
-                            <constraint firstItem="pbX-Mp-fz3" firstAttribute="top" secondItem="mna-DO-vwQ" secondAttribute="bottom" constant="-64" id="cYJ-9S-Mhb"/>
+                            <constraint firstAttribute="trailing" secondItem="aL8-tI-Xjr" secondAttribute="trailing" id="lTn-Ui-EXq"/>
                             <constraint firstItem="j2b-GV-D72" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leading" id="lcw-35-J82"/>
+                            <constraint firstItem="aL8-tI-Xjr" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leading" id="oM5-Wn-Ase"/>
                             <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="j2b-GV-D72" secondAttribute="bottom" id="uQw-vp-DsP"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="pbX-Mp-fz3" secondAttribute="trailing" constant="-20" id="y4n-bM-lq1"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="attribution" destination="3JT-sQ-Ghm" id="RqG-fT-V3w"/>
                         <outlet property="attributionLabel" destination="Ili-jP-EO5" id="bdR-RO-X6S"/>
                         <outlet property="imageView" destination="pbX-Mp-fz3" id="PXP-4y-79r"/>
+                        <outlet property="scrollView" destination="aL8-tI-Xjr" id="xDr-iN-0B2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ed-jO-B6b" userLabel="First Responder" sceneMemberID="firstResponder"/>
