@@ -90,10 +90,8 @@ class PhotoViewController: UIViewController {
         Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { (data) -> Void in
             dispatch_async(dispatch_get_main_queue()){
                 
-                UIView.transitionWithView(self.imageView, duration:0.2, options: .TransitionCrossDissolve, animations: {
-                    self.imageView.image = UIImage(data: data)!
-                    self.updateMinZoomScaleFor(self.imageView.bounds.size)
-                    }, completion: nil)
+                self.imageView.image = UIImage(data: data)!
+                self.updateMinZoomScaleFor(self.imageView.bounds.size)
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             }
         })
