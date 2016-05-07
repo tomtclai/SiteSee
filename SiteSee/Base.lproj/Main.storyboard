@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Lal-ki-qG9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Lal-ki-qG9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -199,27 +199,29 @@
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="74"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZK-xi-Yyp">
-                                            <rect key="frame" x="20" y="5" width="527" height="20"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fza-V5-irY">
-                                            <rect key="frame" x="20" y="27" width="527" height="39"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IOX-Zu-bOM">
+                                            <rect key="frame" x="8" y="5" width="551" height="61"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZK-xi-Yyp">
+                                                    <rect key="frame" x="0.0" y="0.0" width="551" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fza-V5-irY">
+                                                    <rect key="frame" x="0.0" y="20" width="551" height="41"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="iZK-xi-Yyp" secondAttribute="trailing" constant="20" id="97i-zB-QBO"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Fza-V5-irY" secondAttribute="bottom" id="BMk-8Y-qmx"/>
-                                        <constraint firstItem="iZK-xi-Yyp" firstAttribute="leading" secondItem="jf1-ZR-omH" secondAttribute="leading" constant="20" id="eVz-ka-hwb"/>
-                                        <constraint firstItem="iZK-xi-Yyp" firstAttribute="top" secondItem="jf1-ZR-omH" secondAttribute="top" constant="5" id="luS-Ss-Izx"/>
-                                        <constraint firstAttribute="trailing" secondItem="Fza-V5-irY" secondAttribute="trailing" constant="20" id="ofO-pS-Xto"/>
-                                        <constraint firstItem="Fza-V5-irY" firstAttribute="leading" secondItem="jf1-ZR-omH" secondAttribute="leading" constant="20" id="r7g-It-Lc4"/>
-                                        <constraint firstItem="Fza-V5-irY" firstAttribute="top" secondItem="iZK-xi-Yyp" secondAttribute="bottom" constant="2" id="waA-eY-dfC"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="IOX-Zu-bOM" secondAttribute="bottom" id="MWT-r3-Lwo"/>
+                                        <constraint firstItem="IOX-Zu-bOM" firstAttribute="top" secondItem="jf1-ZR-omH" secondAttribute="topMargin" constant="-3" id="O14-bX-0sg"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="IOX-Zu-bOM" secondAttribute="trailing" id="bHF-cm-xRW"/>
+                                        <constraint firstItem="IOX-Zu-bOM" firstAttribute="leading" secondItem="jf1-ZR-omH" secondAttribute="leadingMargin" id="kFJ-Zw-2Om"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -330,61 +332,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="aL8-tI-Xjr">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" semanticContentAttribute="spatial" preservesSuperviewLayoutMargins="YES" indicatorStyle="black" minimumZoomScale="0.0" maximumZoomScale="9" translatesAutoresizingMaskIntoConstraints="NO" id="aL8-tI-Xjr">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="256" verticalHuggingPriority="256" translatesAutoresizingMaskIntoConstraints="NO" id="pbX-Mp-fz3">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <gestureRecognizers/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="uO5-D4-gdg" appends="YES" id="cV0-TU-7Vi"/>
-                                        </connections>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="260" verticalHuggingPriority="260" translatesAutoresizingMaskIntoConstraints="NO" id="t8q-iA-Z4c">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" placeholder="YES" id="gJZ-Mu-4JI"/>
+                                            <constraint firstAttribute="height" constant="100" placeholder="YES" id="zy4-Kb-Xch"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="centerY" secondItem="aL8-tI-Xjr" secondAttribute="centerY" id="3XQ-NQ-2gs"/>
-                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="top" secondItem="aL8-tI-Xjr" secondAttribute="top" id="9vE-fn-oCd"/>
-                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="centerX" secondItem="aL8-tI-Xjr" secondAttribute="centerX" id="D15-lA-eSo"/>
-                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="height" secondItem="aL8-tI-Xjr" secondAttribute="height" id="IMB-hY-plT"/>
-                                    <constraint firstAttribute="bottom" secondItem="pbX-Mp-fz3" secondAttribute="bottom" id="LYB-wb-zDn"/>
-                                    <constraint firstAttribute="trailing" secondItem="pbX-Mp-fz3" secondAttribute="trailing" id="arB-3U-G2B"/>
-                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="leading" secondItem="aL8-tI-Xjr" secondAttribute="leading" id="dLH-6e-wm8"/>
-                                    <constraint firstItem="pbX-Mp-fz3" firstAttribute="width" secondItem="aL8-tI-Xjr" secondAttribute="width" id="hrO-7V-yB8"/>
+                                    <constraint firstAttribute="trailing" secondItem="t8q-iA-Z4c" secondAttribute="trailing" id="4rO-4m-t7Y"/>
+                                    <constraint firstItem="t8q-iA-Z4c" firstAttribute="top" secondItem="aL8-tI-Xjr" secondAttribute="top" id="9Lv-jL-1B7"/>
+                                    <constraint firstAttribute="bottom" secondItem="t8q-iA-Z4c" secondAttribute="bottom" id="AAP-Xt-sDb"/>
+                                    <constraint firstItem="t8q-iA-Z4c" firstAttribute="leading" secondItem="aL8-tI-Xjr" secondAttribute="leading" id="QAT-iJ-GXD"/>
                                 </constraints>
-                                <inset key="scrollIndicatorInsets" minX="0.0" minY="-44" maxX="0.0" maxY="0.0"/>
+                                <inset key="scrollIndicatorInsets" minX="0.0" minY="44" maxX="0.0" maxY="44"/>
                                 <connections>
                                     <outlet property="delegate" destination="8Wy-8B-cpa" id="5C6-Of-Ndd"/>
                                 </connections>
                             </scrollView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2b-GV-D72">
-                                <rect key="frame" x="0.0" y="548" width="600" height="52"/>
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Raz-c0-XAy">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ili-jP-EO5">
-                                            <rect key="frame" x="0.0" y="8" width="600" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-sQ-Ghm" customClass="SSMultilineButton" customModule="SiteSee" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="24" width="600" height="28"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <state key="normal" title="attribution"/>
-                                            <connections>
-                                                <action selector="attributionTapped:" destination="8Wy-8B-cpa" eventType="touchUpInside" id="ejJ-L9-WtJ"/>
-                                            </connections>
-                                        </button>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="syF-9G-poA">
+                                            <rect key="frame" x="4" y="8" width="592" height="44"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ili-jP-EO5">
+                                                    <rect key="frame" x="0.0" y="0.0" width="592" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-sQ-Ghm" customClass="SSMultilineButton" customModule="SiteSee" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="16" width="592" height="28"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="attribution"/>
+                                                    <connections>
+                                                        <action selector="attributionTapped:" destination="8Wy-8B-cpa" eventType="touchUpInside" id="ejJ-L9-WtJ"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Ili-jP-EO5" firstAttribute="top" secondItem="Raz-c0-XAy" secondAttribute="top" constant="8" id="9QA-5Q-NGW"/>
-                                        <constraint firstAttribute="bottom" secondItem="3JT-sQ-Ghm" secondAttribute="bottom" id="Jmk-Ja-00B"/>
-                                        <constraint firstItem="3JT-sQ-Ghm" firstAttribute="top" secondItem="Ili-jP-EO5" secondAttribute="bottom" id="gYr-sk-hsd"/>
-                                        <constraint firstAttribute="trailing" secondItem="3JT-sQ-Ghm" secondAttribute="trailing" id="jQ4-ZC-gyl"/>
-                                        <constraint firstItem="Ili-jP-EO5" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" id="jm7-rr-Utm"/>
-                                        <constraint firstItem="3JT-sQ-Ghm" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" id="kyc-X9-Jfk"/>
-                                        <constraint firstAttribute="trailing" secondItem="Ili-jP-EO5" secondAttribute="trailing" id="oVe-jJ-agN"/>
+                                        <constraint firstItem="syF-9G-poA" firstAttribute="top" secondItem="Raz-c0-XAy" secondAttribute="top" constant="8" id="5Ey-JI-hKy"/>
+                                        <constraint firstAttribute="trailing" secondItem="syF-9G-poA" secondAttribute="trailing" constant="4" id="C5q-Q8-VzW"/>
+                                        <constraint firstAttribute="bottom" secondItem="syF-9G-poA" secondAttribute="bottom" constant="8" id="Kf4-cS-UC8"/>
+                                        <constraint firstItem="syF-9G-poA" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" constant="4" id="nIq-DF-VZy"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="extraLight"/>
@@ -404,7 +404,12 @@
                     <connections>
                         <outlet property="attribution" destination="3JT-sQ-Ghm" id="RqG-fT-V3w"/>
                         <outlet property="attributionLabel" destination="Ili-jP-EO5" id="bdR-RO-X6S"/>
-                        <outlet property="imageView" destination="pbX-Mp-fz3" id="PXP-4y-79r"/>
+                        <outlet property="effectView" destination="j2b-GV-D72" id="KwO-v2-Q9t"/>
+                        <outlet property="imageView" destination="t8q-iA-Z4c" id="2C0-1t-iTS"/>
+                        <outlet property="imageViewBottomConstraint" destination="AAP-Xt-sDb" id="7Zm-3R-Hey"/>
+                        <outlet property="imageViewLeadingConstraint" destination="QAT-iJ-GXD" id="muL-gC-sre"/>
+                        <outlet property="imageViewTopConstraint" destination="9Lv-jL-1B7" id="79h-9a-7L1"/>
+                        <outlet property="imageViewTrailingConstraint" destination="4rO-4m-t7Y" id="SPu-5v-xBG"/>
                         <outlet property="scrollView" destination="aL8-tI-Xjr" id="xDr-iN-0B2"/>
                     </connections>
                 </viewController>
