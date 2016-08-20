@@ -51,6 +51,8 @@ class SiteTableViewController: UITableViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
+        registerForPreviewingWithDelegate(self, sourceView: tableView)
+        
     }
 
     // MARK: Helpers
@@ -66,28 +68,27 @@ class SiteTableViewController: UITableViewController {
         }
         return NSIndexPath(forRow: ip.row, inSection: section)
     }
-    func gotoArticle(indexPath: NSIndexPath) {
+    func urlForTableCellAt(indexPath: NSIndexPath) -> NSURL? {
         let fi = convertIndexPathForFetchedResultsController(indexPath)
         guard let article = fetchedArticlesController.objectAtIndexPath(fi) as? Article  else {
             print("fetched result not an article")
-            return
+            return nil
         }
         guard let title = article.title else {
             print("article does not have a title")
-            return
+            return nil
         }
         guard let urlEncodedTitle = title.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLUserAllowedCharacterSet()) else {
             print("title did not encode: \(title)")
-            return
+            return nil
         }
         let urlStr = Wikipedia.Constants.userBaseUrl + urlEncodedTitle
         
         guard let url = NSURL(string: urlStr) else {
             print("\(urlStr) is not a valid url")
-            return
+            return nil
         }
-        
-        pushSafariViewController(url)
+        return url
     }
     
     func pushSafariViewController(url: NSURL) {
@@ -257,7 +258,11 @@ class SiteTableViewController: UITableViewController {
         case 0:
             performSegueWithIdentifier("photoAlbumViewController", sender: tableView)
         case 1:
-            gotoArticle(indexPath)
+            guard let url = urlForTableCellAt(indexPath) else {
+                print("url is nil")
+                return
+            }
+            pushSafariViewController(url)
         default:
             print("Unexpected section in didSelectRowAtIndexPath")
             return
@@ -560,6 +565,24 @@ extension SiteTableViewController : UICollectionViewDelegateFlowLayout {
 extension SiteTableViewController : UIViewControllerRestoration {
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("SiteTableViewController")
+    }
+}
+
+
+extension SiteTableViewController: UIViewControllerPreviewingDelegate {
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(location) else { return nil }
+        
+        guard let url = urlForTableCellAt(indexPath) else { return nil }
+        let sfVc = SFSafariViewController(URL: url)
+        sfVc.delegate = self
+        previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+        
+        return sfVc
+        
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
     }
 }
 
