@@ -74,6 +74,7 @@
 		7793B1E61CA3400900D893B7 /* Flickr-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Flickr-Constants.swift"; sourceTree = "<group>"; };
 		7793B1E71CA3400900D893B7 /* VTCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTCollectionViewCell.swift; sourceTree = "<group>"; };
 		7793B1F81CA3401D00D893B7 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		77DA11291CDEBB7C00D02E5D /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		77F0CA731CACCF7400D4CD95 /* SiteSeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SiteSeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77F0CA751CACCF7400D4CD95 /* SiteSeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSeeUITests.swift; sourceTree = "<group>"; };
 		77F0CA771CACCF7400D4CD95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -575,6 +576,7 @@
 		7793B1F71CA3401D00D893B7 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				77DA11291CDEBB7C00D02E5D /* Model 2.xcdatamodel */,
 				7793B1F81CA3401D00D893B7 /* Model.xcdatamodel */,
 			);
 			currentVersion = 7793B1F81CA3401D00D893B7 /* Model.xcdatamodel */;
