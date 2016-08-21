@@ -91,11 +91,9 @@ class SiteTableViewController: UITableViewController {
         return url
     }
     
-    func pushSafariViewController(url: NSURL) {
+    func presentSafariViewController(url: NSURL) {
         let sfVc = SFSafariViewController(URL: url)
-        sfVc.delegate = self
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        navigationController?.pushViewController(sfVc, animated: true)
+        presentViewController(sfVc, animated: true, completion: nil)
     }
 
     // MARK: Flickr Client
@@ -262,7 +260,7 @@ class SiteTableViewController: UITableViewController {
                 print("url is nil")
                 return
             }
-            pushSafariViewController(url)
+            presentSafariViewController(url)
         default:
             print("Unexpected section in didSelectRowAtIndexPath")
             return
@@ -490,15 +488,6 @@ extension SiteTableViewController : NSFetchedResultsControllerDelegate {
     }
 }
 
-
-// MARK: SFSafariViewControllerDelegate
-extension SiteTableViewController : SFSafariViewControllerDelegate {
-    func safariViewControllerDidFinish(controller: SFSafariViewController) {
-        navigationController?.popViewControllerAnimated(true)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-}
-
 // MARK: UICollectionViewDataSource
 extension SiteTableViewController : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -575,14 +564,13 @@ extension SiteTableViewController: UIViewControllerPreviewingDelegate {
         
         guard let url = urlForTableCellAt(indexPath) else { return nil }
         let sfVc = SFSafariViewController(URL: url)
-        sfVc.delegate = self
         previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
         
         return sfVc
         
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        showViewController(viewControllerToCommit, sender: self)
+        presentViewController(viewControllerToCommit, animated: true, completion: nil)
     }
 }
 
