@@ -6,20 +6,20 @@
 Discover neighborhoods, cities and countries around the world!
 
 
-##Download
+## Download
 [![appstore](Images/appstore.png)](https://itunes.apple.com/us/app/sitesee-discover-neighborhoods/id1098475733)
 
 _Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc._
 
-##Feedback
+## Feedback
 Github user? [Add an Issue here](https://github.com/tomtclai/SiteSee/issues)
 
 Not github user? [Fill out the form here](https://docs.google.com/forms/d/1oCb8PoIk4_8OdZVPJP11OBJk2SgWbZHwnVqLEhC02M0)
 
 
-##User Guide
+## User Guide
 
-###Start using the application
+### Start using the application
 - Use the ![add](Images/add.png) button to add a pin
 - Tap on a pin to see relevant photos from Flickr and Wiki pages 
 
@@ -29,7 +29,7 @@ Not github user? [Fill out the form here](https://docs.google.com/forms/d/1oCb8P
  ![](Images/2.jpg) | ![](Images/3.jpg)
 
 
-####Other things you could do from the home screen...
+#### Other things you could do from the home screen...
 
 Button | What it does
 ----|----
@@ -38,7 +38,7 @@ Button | What it does
 ![arrow](Images/arrow.png) | Show your location on the map
 
 
-###Managing media for a location
+### Managing media for a location
 
 - Swipe to delete articles tied to the location
 - Tap on the row of pictures to expand the view
