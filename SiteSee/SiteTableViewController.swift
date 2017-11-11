@@ -325,7 +325,7 @@ class SiteTableViewController: UITableViewController {
             }
             targetSortOrder = (objectBeforeDest.sortOrder!.doubleValue + objectToDisplace.sortOrder!.doubleValue) / 2
         }
-        objectToMove.sortOrder = targetSortOrder
+        objectToMove.sortOrder = targetSortOrder as NSNumber
         DispatchQueue.main.async {
             do { try self.sharedContext.save() } catch {}
         }
