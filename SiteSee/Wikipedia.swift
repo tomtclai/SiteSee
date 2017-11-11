@@ -68,12 +68,15 @@ class Wikipedia : Model {
             }
             
             /* Parse the data! */
-            let parsedResult: AnyObject!
+            let parsedResult: [String: Any]
             
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                    completionHandler(nil, NSError(domain: "getArticleFromWikipediaBySearch", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not convert to dictionary '\(data)'"]))
+                    return
+                }
+                parsedResult = dictionary
             } catch {
-                parsedResult = nil
                 completionHandler(nil , NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
             }
@@ -105,7 +108,7 @@ extension Wikipedia {
                 completionHandler(nil, nil, NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
                 return
             }
-            guard let resultsDict = resultsDict else {
+            guard let resultsDict = resultsDict as? [[String: Any]] else {
                 print("resultsDict is nil")
                 completionHandler(nil, nil, NSError(domain: "getArticleFromWikipediaBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
                 return
@@ -118,12 +121,12 @@ extension Wikipedia {
                 }
                 guard var subtitle = resultDict["snippet"] as? String else {
                     print("no subtitle")
-                    completionHandler(title: title, subtitle: nil, error: NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no subtitle in \(resultDict)"]))
+                    completionHandler(title, nil, NSError(domain: "getListOfArticles", code: 0, userInfo: [NSLocalizedDescriptionKey: "no subtitle in \(resultDict)"]))
                     return
                 }
                 subtitle = self.stripHTMLTags(subtitle)
                 
-                completionHandler(title: title, subtitle: subtitle, error: nil)
+                completionHandler(title, subtitle, nil)
                 
             }
         }

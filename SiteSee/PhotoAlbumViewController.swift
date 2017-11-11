@@ -118,7 +118,7 @@ class PhotoAlbumViewController: UIViewController {
                         Image.Keys.SortOrder : NSNumber(value: sortOrder as Double),
                         Image.Keys.FlickrPageUrl : flickrPageUrl as AnyObject,
                         Image.Keys.OwnerName : ownerName as AnyObject,
-                        Image.Keys.License : license
+                        Image.Keys.License : NSNumber(value: license!) as AnyObject
                     ]
                     sortOrder += 1.0
                     

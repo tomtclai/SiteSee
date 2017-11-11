@@ -133,12 +133,16 @@ class Flickr : Model {
                 return
             }
             /* Parse the data! */
-            let parsedResult: [String: Any]!
+            let parsedResult: [String: Any]
             
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+
+                guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                    completionHandler(nil, nil, nil , NSError(domain: "getImageFromFlickrBySearch", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not convert to dictionary '\(data)'"]))
+                    return
+                }
+                parsedResult = dictionary
             } catch {
-                parsedResult = nil
                 
                 completionHandler(nil, nil, nil, NSError(domain: "getImageFromFlickrBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
@@ -293,7 +297,7 @@ extension Flickr {
         ]
         return methodArguments
     }
-    func getImageFromFlickrWithPageConvenience(_ methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:@escaping (_ thumbnailUrl: String?, _ origImageUrl: String?, _ flickrPageUrl: String?, _ ownerName: String?, _ license: NSNumber?, _ error: NSError?)->Void) {
+    func getImageFromFlickrWithPageConvenience(_ methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:@escaping (_ thumbnailUrl: String?, _ origImageUrl: String?, _ flickrPageUrl: String?, _ ownerName: String?, _ license: Int?, _ error: NSError?)->Void) {
         Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: pageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
             guard error == nil else {
                 print(error?.localizedDescription)
@@ -328,19 +332,19 @@ extension Flickr {
                     
                     // can be nil
                     let originalImageUrlStr = photoDictionary["url_o"] as? String
-                    
-                    guard let license = photoDictionary["license"] as? Int else {
+
+                    guard let license = photoDictionary["license"]?.integerValue else {
                         print("cannot find key license in \(photoDictionary) ")
                         return
                     }
-                    
+
                     self.getOwnerName(self.getPeopleSearchArgumentsConvenience(ownerIDStr), completionHandler: { (ownerName, error) in
                         guard error == nil else {
-                            completionHandler(thumbnailUrl: thumbnailUrlStr, origImageUrl: originalImageUrlStr, flickrPageUrl: Constants.webPageUrlForPhoto(ownerIDStr, photoID: photoID), ownerName: nil, license: license, error: NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
+                            completionHandler(thumbnailUrlStr, originalImageUrlStr, Constants.webPageUrlForPhoto(ownerIDStr, photoID: photoID), nil, license, NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: error!.localizedDescription]))
                             print("no real name")
                             return
                         }
-                        completionHandler(thumbnailUrl: thumbnailUrlStr, origImageUrl: originalImageUrlStr, flickrPageUrl: Constants.webPageUrlForPhoto(ownerIDStr, photoID: photoID), ownerName: ownerName, license: license, error: nil)
+                        completionHandler(thumbnailUrlStr, originalImageUrlStr, Constants.webPageUrlForPhoto(ownerIDStr, photoID: photoID), ownerName, license, nil)
                     })
                     
                 }
