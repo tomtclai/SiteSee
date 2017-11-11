@@ -1,6 +1,5 @@
 
-# SiteSee  
-![Build status](https://travis-ci.org/tomtclai/SiteSee.svg?branch=master)
+# SiteSee [![Build status](https://travis-ci.org/tomtclai/SiteSee.svg?branch=master)](https://travis-ci.org/tomtclai/SiteSee/builds)
 
 ![Icon](Images/Icon-76@2x.png) 
 
