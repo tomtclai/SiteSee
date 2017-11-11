@@ -1,0 +1,4 @@
+osx_image: xcode9.1 
+language: swift
+xcode_project: SiteSee.xcodeproj # path to your xcodeproj folder
+xcode_scheme: SiteSee
