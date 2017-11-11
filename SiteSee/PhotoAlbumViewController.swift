@@ -11,7 +11,7 @@ import MapKit
 import CoreData
 import Foundation
 class PhotoAlbumViewController: UIViewController {
-    var selectedIndexPath: NSIndexPath?
+    var selectedIndexPath: IndexPath?
     var annotation: VTAnnotation! {
         didSet{
             let keyword =  annotation.keyword()
@@ -19,26 +19,26 @@ class PhotoAlbumViewController: UIViewController {
             searchPhotosByText(keyword, pageNumber: lastPageNumber)
         }
     }
-    var blockOperations: [NSBlockOperation] = []
+    var blockOperations: [BlockOperation] = []
     let placeholder = UIImage(named: "placeholder")!
     @IBOutlet var tapGesture: UITapGestureRecognizer!
     @IBOutlet weak var collectionView: UICollectionView!
     var lastPageNumber : Int {
         set {
-            annotation.pageNumber = newValue
-            dispatch_async(dispatch_get_main_queue()) {
+            annotation.pageNumber = newValue as NSNumber
+            DispatchQueue.main.async {
                 do {
                     try self.sharedContext.save()
                 } catch {}
             }
         }
         get {
-            return annotation.pageNumber.integerValue
+            return annotation.pageNumber.intValue
         }
     }
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
-        navigationController?.navigationBarHidden = false
+        navigationController?.isNavigationBarHidden = false
         
         
         collectionView.delegate = self
@@ -47,35 +47,35 @@ class PhotoAlbumViewController: UIViewController {
         
     }
     // MARK: User Iteraction
-    @IBAction func didTap(sender: UITapGestureRecognizer) {
-        let point = sender.locationInView(self.collectionView)
+    @IBAction func didTap(_ sender: UITapGestureRecognizer) {
+        let point = sender.location(in: self.collectionView)
         
-        if let indexPath = self.collectionView.indexPathForItemAtPoint(point)
+        if let indexPath = self.collectionView.indexPathForItem(at: point)
         {
             selectedIndexPath = indexPath
-            performSegueWithIdentifier("PhotoViewController", sender: self)
+            performSegue(withIdentifier: "PhotoViewController", sender: self)
         }
     }
 
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
-    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return action == #selector(VTCollectionViewCell.deleteImage)
     }
     
     // MARK: Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PhotoViewController" {
             guard let indexPath = selectedIndexPath else {
                 print("selectedIndexPath is nil")
                 return
             }
-            guard let destVc = segue.destinationViewController as? PhotoViewController else {
+            guard let destVc = segue.destination as? PhotoViewController else {
                 print("destVc isnt PhotoViewController")
                 return
             }
-            guard let image = fetchedResultsController.objectAtIndexPath(indexPath) as? Image else {
+            guard let image = fetchedResultsController.object(at: indexPath) as? Image else {
                 print("objectAtIndexPath isn't Image")
                 return
             }
@@ -85,21 +85,21 @@ class PhotoAlbumViewController: UIViewController {
     
     // MARK: Flickr API
 
-    func searchPhotosByText(text:String, pageNumber: Int) {
+    func searchPhotosByText(_ text:String, pageNumber: Int) {
         let methodArguments = Flickr.sharedInstance().getSearchPhotoMethodArgumentsConvenience(text, perPage: 21)
         
         Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
             guard error == nil else {
-                let uac = UIAlertController(title: error!.localizedDescription, message: nil, preferredStyle: .Alert)
-                uac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                self.presentViewController(uac, animated: true, completion: nil)
+                let uac = UIAlertController(title: error!.localizedDescription, message: nil, preferredStyle: .alert)
+                uac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(uac, animated: true, completion: nil)
                 return
             }
             let pageLimit = min(totalPages!, 40)
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 if pageLimit == 0 {
                     self.lastPageNumber = 0
-                } else if self.collectionView.numberOfItemsInSection(0) == 0 {
+                } else if self.collectionView.numberOfItems(inSection: 0) == 0 {
                     self.lastPageNumber = pageNumber % pageLimit
                 } else if self.lastPageNumber == pageNumber { // do not download the same page again
                     // TODO: change this for infinite scroll
@@ -113,16 +113,16 @@ class PhotoAlbumViewController: UIViewController {
                     // add thumbnail url to core data
                     // add medium url to core data
                     let imageDictionary : [String: AnyObject?] = [
-                        Image.Keys.ThumbnailUrl : thumbnailUrl!,
-                        Image.Keys.OrigImageUrl : origImageUrl,
-                        Image.Keys.SortOrder : NSNumber(double: sortOrder),
-                        Image.Keys.FlickrPageUrl : flickrPageUrl,
-                        Image.Keys.OwnerName : ownerName,
+                        Image.Keys.ThumbnailUrl : thumbnailUrl! as AnyObject,
+                        Image.Keys.OrigImageUrl : origImageUrl as AnyObject,
+                        Image.Keys.SortOrder : NSNumber(value: sortOrder as Double),
+                        Image.Keys.FlickrPageUrl : flickrPageUrl as AnyObject,
+                        Image.Keys.OwnerName : ownerName as AnyObject,
                         Image.Keys.License : license
                     ]
                     sortOrder += 1.0
                     
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         let image = Image(dictionary: imageDictionary, context: self.sharedContext)
                         image.pin = self.annotation
                         self.saveContext()
@@ -143,7 +143,7 @@ class PhotoAlbumViewController: UIViewController {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest(entityName: "Image")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Image")
         request.predicate = NSPredicate(format: "pin == %@", self.annotation)
         request.sortDescriptors = [NSSortDescriptor(key: "sortOrder", ascending: true)]
         
@@ -155,104 +155,104 @@ class PhotoAlbumViewController: UIViewController {
     // MARK: State Restoration
     let longitudeKey = "longitude"
     let latitudeKey = "latitude"
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
-        coder.encodeObject(annotation.longitude, forKey: longitudeKey)
-        coder.encodeObject(annotation.latitude, forKey: latitudeKey)
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(annotation.longitude, forKey: longitudeKey)
+        coder.encode(annotation.latitude, forKey: latitudeKey)
     }
 
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        super.decodeRestorableStateWithCoder(coder)
-        let long = coder.decodeObjectForKey(longitudeKey) as! NSNumber
-        let lat = coder.decodeObjectForKey(latitudeKey) as! NSNumber
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        let long = coder.decodeObject(forKey: longitudeKey) as! NSNumber
+        let lat = coder.decodeObject(forKey: latitudeKey) as! NSNumber
         
-        let request = NSFetchRequest(entityName: "VTAnnotation")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "VTAnnotation")
         request.predicate = NSPredicate(format: "latitude == %f AND longitude == %f", argumentArray: [lat.doubleValue, long.doubleValue])
         request.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
         
-        do { annotation = try sharedContext.executeFetchRequest(request).first as! VTAnnotation} catch {}
+        do { annotation = try sharedContext.fetch(request).first as! VTAnnotation} catch {}
         
     }
     
     // Mark: Documents Directory
-    static func photoURL(uniqueFileName: String) -> NSURL {
-        let documentsDirectoryURL: NSURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-        return documentsDirectoryURL.URLByAppendingPathComponent(uniqueFileName)
+    static func photoURL(_ uniqueFileName: String) -> URL {
+        let documentsDirectoryURL: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsDirectoryURL.appendingPathComponent(uniqueFileName)
     }
 }
 // MARK: NSFetchedResultsControllerDelegate
 extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
 
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        blockOperations.removeAll(keepCapacity: false)
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        blockOperations.removeAll(keepingCapacity: false)
     }
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
+        case .insert:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
-                    self.collectionView.insertItemsAtIndexPaths([newIndexPath!])
+                BlockOperation(block: { () -> Void in
+                    self.collectionView.insertItems(at: [newIndexPath!])
                 })
             )
-        case .Delete:
+        case .delete:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
-                    self.collectionView.deleteItemsAtIndexPaths([indexPath!])
+                BlockOperation(block: { () -> Void in
+                    self.collectionView.deleteItems(at: [indexPath!])
                 })
             )
-        case .Update:
+        case .update:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
-                    self.collectionView.reloadItemsAtIndexPaths([indexPath!])
+                BlockOperation(block: { () -> Void in
+                    self.collectionView.reloadItems(at: [indexPath!])
                 })
             )
-        case .Move:
+        case .move:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
-                    self.collectionView.moveItemAtIndexPath(indexPath!, toIndexPath: newIndexPath!)
+                BlockOperation(block: { () -> Void in
+                    self.collectionView.moveItem(at: indexPath!, to: newIndexPath!)
                 })
             )
         }
     }
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        let set = NSIndexSet(index: sectionIndex)
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        let set = IndexSet(integer: sectionIndex)
         switch type {
-        case .Insert:
+        case .insert:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
+                BlockOperation(block: { () -> Void in
                     self.collectionView.insertSections(set)
                 })
             )
-        case .Delete:
+        case .delete:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
+                BlockOperation(block: { () -> Void in
                     self.collectionView.deleteSections(set)
                 })
             )
-        case .Update:
+        case .update:
             blockOperations.append(
-                NSBlockOperation(block: { () -> Void in
+                BlockOperation(block: { () -> Void in
                     self.collectionView.reloadSections(set)
                 })
             )
         default: break
         }
     }
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             self.collectionView.performBatchUpdates({ () -> Void in
-                for op : NSBlockOperation in self.blockOperations {
+                for op : BlockOperation in self.blockOperations {
                     op.start()
                 }
                 
                 }) { completed -> Void in
-                    self.blockOperations.removeAll(keepCapacity: false)
+                    self.blockOperations.removeAll(keepingCapacity: false)
                     
             }
     }
 }
 // MARK: UICollectionViewDelegateFlowLayout
 extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemsPerRow:CGFloat = 3
         let padding:CGFloat = 5
         let rowWidth = min(collectionView.bounds.width, collectionView.bounds.height)
@@ -262,27 +262,27 @@ extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
 }
 // MARK: UICollectionViewDelegate
 extension PhotoAlbumViewController : UICollectionViewDelegate {
-    func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
         selectedIndexPath = indexPath
         
-        var targetFrame = collectionView.cellForItemAtIndexPath(indexPath)!.frame
-        targetFrame = collectionView.convertRect(targetFrame, toView: collectionView.superview)
+        var targetFrame = collectionView.cellForItem(at: indexPath)!.frame
+        targetFrame = collectionView.convert(targetFrame, to: collectionView.superview)
         
-        UIMenuController.sharedMenuController().setTargetRect(targetFrame, inView: collectionView.superview!)
+        UIMenuController.shared.setTargetRect(targetFrame, in: collectionView.superview!)
         let deleteMenuItem = UIMenuItem(title: "Delete", action: #selector(VTCollectionViewCell.deleteImage))
         
-        UIMenuController.sharedMenuController().menuItems = [deleteMenuItem]
+        UIMenuController.shared.menuItems = [deleteMenuItem]
         return true
     }
-    func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
         return action==#selector(VTCollectionViewCell.deleteImage)
     }
-    func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+    func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     }
 }
 // MARK: UICollectionViewDataSource
 extension PhotoAlbumViewController : UICollectionViewDataSource {
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         if let sections = fetchedResultsController.sections {
             return sections.count
         } else {
@@ -290,15 +290,15 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchedResultsController.sections![section].numberOfObjects
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! VTCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! VTCollectionViewCell
         cell.activity.hidesWhenStopped = true
         cell.delegate = self
-        let image = fetchedResultsController.objectAtIndexPath(indexPath) as! Image
+        let image = fetchedResultsController.object(at: indexPath) as! Image
         
         // look for local path, if not found, download and save to documents directory
         
@@ -315,12 +315,12 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
             cell.backgroundView = UIImageView(image: placeholder)
             if let thumbnailUrl = image.thumbnailUrl {
             Flickr.sharedInstance().getCellImageConvenience(thumbnailUrl, completion: { (data) -> Void in
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     let img = UIImage(data: data)!
                     cell.backgroundView = UIImageView(image: img)
-                    image.uuid = NSUUID().UUIDString
+                    image.uuid = UUID().uuidString
                     let jpegData = UIImageJPEGRepresentation(img, 1.0)!
-                    jpegData.writeToFile(Image.imgPath(image.uuid!), atomically: true)
+                    try? jpegData.write(to: URL(fileURLWithPath: Image.imgPath(image.uuid!)), options: [.atomic])
                     do {
                         try self.sharedContext.save()
                     } catch {}
@@ -337,8 +337,8 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
 
 //MARK: UIViewControllerRestoration
 extension PhotoAlbumViewController : UIViewControllerRestoration {
-    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PhotoAlbumViewController")
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PhotoAlbumViewController")
     }
 }
 //MARK: UIGestureRecognizerDelegate
@@ -347,9 +347,9 @@ extension PhotoAlbumViewController : UIGestureRecognizerDelegate {
 extension PhotoAlbumViewController : VTCollectionViewCellDelegate {
     func deleteSelectedImage() {
         if let selected = selectedIndexPath {
-            if let object = fetchedResultsController.objectAtIndexPath(selected) as? NSManagedObject {
-                dispatch_async(dispatch_get_main_queue(), { 
-                    self.sharedContext.deleteObject(object)
+            if let object = fetchedResultsController.object(at: selected) as? NSManagedObject {
+                DispatchQueue.main.async(execute: { 
+                    self.sharedContext.delete(object)
                     do{ try self.sharedContext.save() } catch {}
                 })
             } else {

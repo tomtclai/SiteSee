@@ -35,7 +35,7 @@ class SSUITests: XCTestCase {
             app.alerts["Allow “SiteSee” to access your location while you use the app?"].collectionViews.buttons["Allow"].tap()
         }
         // screenshot
-        NSThread.sleepForTimeInterval(0.5)
+        Thread.sleep(forTimeInterval: 0.5)
         snapshot("01TapOn+ToDropAPin")
         app.toolbars.buttons["Add"].tap()
         // screenshot
@@ -52,10 +52,10 @@ class SSUITests: XCTestCase {
         cupertinoCaliforniaNavigationBar.buttons["Done"].tap()
         // screenshot
         snapshot("03SeeRelevantPhotosAndArticles")
-        tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0).childrenMatchingType(.StaticText).element.tap()
+        tablesQuery.children(matching: .cell).element(boundBy: 0).children(matching: .staticText).element.tap()
         snapshot("06ViewPictures")
         // screenshot
-        XCUIApplication().collectionViews.cells.elementBoundByIndex(1).pressForDuration(1.4);
+        XCUIApplication().collectionViews.cells.element(boundBy: 1).press(forDuration: 1.4);
         snapshot("07LongPressToDelete")
         
     }

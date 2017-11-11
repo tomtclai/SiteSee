@@ -22,18 +22,18 @@ class Image: NSManagedObject {
         static let License = "license"
     }
     
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     init(dictionary: [String:AnyObject?], context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("Image", inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: "Image", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         thumbnailUrl = dictionary[Keys.ThumbnailUrl] as? String
         flickrPageUrl = dictionary[Keys.FlickrPageUrl] as? String
         uuid = dictionary[Keys.UUID] as? String
-        sortOrder = dictionary[Keys.SortOrder] as? Double
+        sortOrder = dictionary[Keys.SortOrder] as? Double as! NSNumber
         origImageUrl = dictionary[Keys.OrigImageUrl] as? String
         ownerName = dictionary[Keys.OwnerName] as? String
         license = dictionary[Keys.License] as? NSNumber
@@ -41,18 +41,18 @@ class Image: NSManagedObject {
     
     override func prepareForDeletion() {
         if let uuid = uuid {
-            let documentDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
-            let imgPath = documentDirectory.stringByAppendingPathComponent(uuid).stringByAppendingString(".jpg")
+            let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+            let imgPath = documentDirectory.appendingPathComponent(uuid) + ".jpg"
             do {
-                try NSFileManager.defaultManager().removeItemAtPath(imgPath)
+                try FileManager.default.removeItem(atPath: imgPath)
             } catch {
                 print("rm file error")
             }
         }
     }
     
-    static func imgPath(uuid: String) -> String{
-        let documentDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
-        return documentDirectory.stringByAppendingPathComponent(uuid).stringByAppendingString(".jpg")
+    static func imgPath(_ uuid: String) -> String{
+        let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+        return documentDirectory.appendingPathComponent(uuid) + ".jpg"
     }
 }

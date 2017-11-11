@@ -20,7 +20,7 @@ class LocationsMapViewController: UIViewController {
     var dictionaryStateNames = NSDictionary(objects:
         ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba", "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador"] ,
                                             forKeys:
-        ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "ON", "QC", "NS", "NB", "MB", "BC", "PE", "SK", "AB", "NL"])
+        ["AL" as NSCopying, "AK" as NSCopying, "AZ" as NSCopying, "AR" as NSCopying, "CA" as NSCopying, "CO" as NSCopying, "CT" as NSCopying, "DE" as NSCopying, "DC" as NSCopying, "FL" as NSCopying, "GA" as NSCopying, "HI" as NSCopying, "ID" as NSCopying, "IL" as NSCopying, "IN" as NSCopying, "IA" as NSCopying, "KS" as NSCopying, "KY" as NSCopying, "LA" as NSCopying, "ME" as NSCopying, "MD" as NSCopying, "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "ON", "QC", "NS", "NB", "MB", "BC", "PE", "SK", "AB", "NL"])
 
     @IBOutlet weak var locationButton: UIBarButtonItem!
     
@@ -38,20 +38,20 @@ class LocationsMapViewController: UIViewController {
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(fetchedResultsController.fetchedObjects as! [MKAnnotation])
         locationManager.requestWhenInUseAuthorization()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LocationsMapViewController.mapTypeChanged(_:)), name: NSUserDefaultsDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LocationsMapViewController.mapTypeChanged(_:)), name: UserDefaults.didChangeNotification, object: nil)
     }
     
     // MARK: User Interaction
-    func mapTypeChanged(notification: NSNotification) {
+    func mapTypeChanged(_ notification: Notification) {
 
-        if let rawValue = NSUserDefaults.standardUserDefaults().objectForKey("mapType") as? UInt {
+        if let rawValue = UserDefaults.standard.object(forKey: "mapType") as? UInt {
             if let mapType = MKMapType(rawValue: rawValue) {
                 switch(mapType){
-                case .Standard:
+                case .standard:
                     segmentedControl.selectedSegmentIndex = 0
-                case .Hybrid:
+                case .hybrid:
                     segmentedControl.selectedSegmentIndex = 1
-                case .Satellite:
+                case .satellite:
                     segmentedControl.selectedSegmentIndex = 2
                 default:
                     return
@@ -60,116 +60,116 @@ class LocationsMapViewController: UIViewController {
         }
     }
     
-    @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
+    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
         let Map = 0
         let Hybrid = 1
         let Satellite = 2
         switch(sender.selectedSegmentIndex){
         case Map:
-            mapView.mapType = .Standard
-            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Standard.rawValue, forKey: "mapType")
+            mapView.mapType = .standard
+            UserDefaults.standard.set(MKMapType.standard.rawValue, forKey: "mapType")
         case Hybrid:
-            mapView.mapType = .Hybrid
-            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Hybrid.rawValue, forKey: "mapType")
+            mapView.mapType = .hybrid
+            UserDefaults.standard.set(MKMapType.hybrid.rawValue, forKey: "mapType")
         case Satellite:
-            mapView.mapType = .Satellite
-            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Satellite.rawValue, forKey: "mapType")
+            mapView.mapType = .satellite
+            UserDefaults.standard.set(MKMapType.satellite.rawValue, forKey: "mapType")
         default:
             print("Wrong Index in segmented control")
         }
     }
     
-    @IBAction func locationTapped(sender: UIBarButtonItem) {
+    @IBAction func locationTapped(_ sender: UIBarButtonItem) {
         startTrackingLocation()
     }
     
     func startTrackingLocation() {
         switch CLLocationManager.authorizationStatus() {
-        case .NotDetermined:
+        case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
-        case .Denied:
-            let uac = UIAlertController(title: "Enable Location Services to Allow SiteSee to Determine Your Location", message: "", preferredStyle: UIAlertControllerStyle.Alert)
-            uac.addAction(UIAlertAction(title: "Settings", style: .Default, handler: { (action) in
-                UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!);
+        case .denied:
+            let uac = UIAlertController(title: "Enable Location Services to Allow SiteSee to Determine Your Location", message: "", preferredStyle: UIAlertControllerStyle.alert)
+            uac.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+                UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!);
             }))
-            uac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            uac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-            presentViewController(uac, animated: true, completion: nil)
+            present(uac, animated: true, completion: nil)
             
-        case .Restricted:
-            locationButton.enabled = false
-        case .AuthorizedAlways, .AuthorizedWhenInUse:
+        case .restricted:
+            locationButton.isEnabled = false
+        case .authorizedAlways, .authorizedWhenInUse:
             switch mapView.userTrackingMode {
-            case .Follow, .FollowWithHeading:
-                mapView.setUserTrackingMode(.None, animated: true)
-            case .None:
-                mapView.setUserTrackingMode(.Follow, animated: true)
+            case .follow, .followWithHeading:
+                mapView.setUserTrackingMode(.none, animated: true)
+            case .none:
+                mapView.setUserTrackingMode(.follow, animated: true)
             }
             
         }
     }
-    @IBAction func layersButtonTapped(sender: UIBarButtonItem) {
-        let uac = UIAlertController(title: "Change Map Type", message: nil, preferredStyle: .ActionSheet)
-        uac.addAction(UIAlertAction(title: "Standard", style: .Default, handler: { (uac) in
-            self.mapView.mapType = .Standard
-            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Standard.rawValue, forKey: "mapType")
+    @IBAction func layersButtonTapped(_ sender: UIBarButtonItem) {
+        let uac = UIAlertController(title: "Change Map Type", message: nil, preferredStyle: .actionSheet)
+        uac.addAction(UIAlertAction(title: "Standard", style: .default, handler: { (uac) in
+            self.mapView.mapType = .standard
+            UserDefaults.standard.set(MKMapType.standard.rawValue, forKey: "mapType")
         }))
-        uac.addAction(UIAlertAction(title: "Hybrid", style: .Default, handler: { (uac) in
-            self.mapView.mapType = .Hybrid
-            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Hybrid.rawValue, forKey: "mapType")
+        uac.addAction(UIAlertAction(title: "Hybrid", style: .default, handler: { (uac) in
+            self.mapView.mapType = .hybrid
+            UserDefaults.standard.set(MKMapType.hybrid.rawValue, forKey: "mapType")
         }))
-        uac.addAction(UIAlertAction(title: "Satellite", style: .Default, handler: { (uac) in
-            self.mapView.mapType = .Satellite
-            NSUserDefaults.standardUserDefaults().setObject(MKMapType.Satellite.rawValue, forKey: "mapType")
+        uac.addAction(UIAlertAction(title: "Satellite", style: .default, handler: { (uac) in
+            self.mapView.mapType = .satellite
+            UserDefaults.standard.set(MKMapType.satellite.rawValue, forKey: "mapType")
         }))
-        uac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        presentViewController(uac, animated: true, completion: nil)
+        uac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(uac, animated: true, completion: nil)
     }
     
-    @IBAction func didLongPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == .Began {
-            let location = sender.locationInView(mapView)
-            let coor = mapView.convertPoint(location, toCoordinateFromView: mapView)
+    @IBAction func didLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let location = sender.location(in: mapView)
+            let coor = mapView.convert(location, toCoordinateFrom: mapView)
             addPin(coor)
         }
     }
-    @IBAction func addButtonTapped(sender: UIBarButtonItem) {
+    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
         addPin(mapView.centerCoordinate)
     }
-    @IBAction func trashButtonTapped(sender: UIBarButtonItem) {
-        let uac = UIAlertController(title: "Delete All Pins", message: "Are you sure you want to delete all pins?", preferredStyle: .ActionSheet)
-        uac.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: { (uac) in
+    @IBAction func trashButtonTapped(_ sender: UIBarButtonItem) {
+        let uac = UIAlertController(title: "Delete All Pins", message: "Are you sure you want to delete all pins?", preferredStyle: .actionSheet)
+        uac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (uac) in
             if let objects = self.fetchedResultsController.fetchedObjects as? [NSManagedObject] {
                 for object in objects {
-                    self.sharedContext.deleteObject(object)
+                    self.sharedContext.delete(object)
                 }
             }
         }))
-        uac.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-        presentViewController(uac, animated: true, completion: nil)
+        uac.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        present(uac, animated: true, completion: nil)
     }
     
-    func addPin(coordinate: CLLocationCoordinate2D)  {
+    func addPin(_ coordinate: CLLocationCoordinate2D)  {
         geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { (placemarks, error) -> Void in
             if let geoCodeError = error {
-                let uac = UIAlertController(title: geoCodeError.localizedDescription, message: "Please make sure the internet is connected", preferredStyle: .Alert)
-                uac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                self.presentViewController(uac, animated: true, completion: nil)
+                let uac = UIAlertController(title: geoCodeError.localizedDescription, message: "Please make sure the internet is connected", preferredStyle: .alert)
+                uac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(uac, animated: true, completion: nil)
                 return
             } else {
                 if let placemark = placemarks?.first {
                     var locationNames = self.locationNames(placemark, altitude:self.mapView.camera.altitude)
                     var annotationDictionary : [String:AnyObject]
                     annotationDictionary = [
-                        VTAnnotation.Keys.Longitude : NSNumber(double: coordinate.longitude),
-                        VTAnnotation.Keys.Latitude : NSNumber(double: coordinate.latitude),
-                        VTAnnotation.Keys.Title : locationNames[0],
-                        VTAnnotation.Keys.Page : NSNumber(integer: 1)
+                        VTAnnotation.Keys.Longitude : NSNumber(value: coordinate.longitude as Double),
+                        VTAnnotation.Keys.Latitude : NSNumber(value: coordinate.latitude as Double),
+                        VTAnnotation.Keys.Title : locationNames[0] as AnyObject,
+                        VTAnnotation.Keys.Page : NSNumber(value: 1 as Int)
                     ]
                     if locationNames.count > 1 {
-                        annotationDictionary[VTAnnotation.Keys.Subtitle] = locationNames[1]
+                        annotationDictionary[VTAnnotation.Keys.Subtitle] = locationNames[1] as AnyObject
                     }
-                    dispatch_async(dispatch_get_main_queue()){
+                    DispatchQueue.main.async{
                         let _ = VTAnnotation(dictionary: annotationDictionary, context: self.sharedContext)
                         CoreDataStackManager.sharedInstance().saveContext()
                     }
@@ -184,39 +184,39 @@ class LocationsMapViewController: UIViewController {
     let mapViewSpanLatDelta = "MapViewSpanLatDelta"
     let mapViewSpanLongDelta = "MapViewSpanLongDelta"
     let mapTypeKey = "MapType"
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
-        coder.encodeDouble(mapView.region.center.latitude, forKey: mapViewLat)
-        coder.encodeDouble(mapView.region.center.longitude, forKey: mapViewLong)
-        coder.encodeDouble(mapView.region.span.latitudeDelta, forKey: mapViewSpanLatDelta)
-        coder.encodeDouble(mapView.region.span.longitudeDelta, forKey: mapViewSpanLongDelta)
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(mapView.region.center.latitude, forKey: mapViewLat)
+        coder.encode(mapView.region.center.longitude, forKey: mapViewLong)
+        coder.encode(mapView.region.span.latitudeDelta, forKey: mapViewSpanLatDelta)
+        coder.encode(mapView.region.span.longitudeDelta, forKey: mapViewSpanLongDelta)
         
-        coder.encodeInt( Int32 (mapView.mapType.rawValue), forKey: mapTypeKey)
+        coder.encodeCInt( Int32 (mapView.mapType.rawValue), forKey: mapTypeKey)
     }
     
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        super.decodeRestorableStateWithCoder(coder)
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
         
         var center = CLLocationCoordinate2D()
         var span = MKCoordinateSpan()
         
-        center.latitude = coder.decodeDoubleForKey(mapViewLat)
-        center.longitude = coder.decodeDoubleForKey(mapViewLong)
+        center.latitude = coder.decodeDouble(forKey: mapViewLat)
+        center.longitude = coder.decodeDouble(forKey: mapViewLong)
         
-        span.latitudeDelta = coder.decodeDoubleForKey(mapViewSpanLatDelta)
-        span.longitudeDelta = coder.decodeDoubleForKey(mapViewSpanLongDelta)
+        span.latitudeDelta = coder.decodeDouble(forKey: mapViewSpanLatDelta)
+        span.longitudeDelta = coder.decodeDouble(forKey: mapViewSpanLongDelta)
         
         let region = MKCoordinateRegion(center: center, span: span)
         
         mapView.setRegion(region, animated: true)
-        mapView.mapType = MKMapType(rawValue: UInt(coder.decodeIntForKey(mapTypeKey)))!
+        mapView.mapType = MKMapType(rawValue: UInt(coder.decodeCInt(forKey: mapTypeKey)))!
     }
     
     // MARK: Navigation
     let siteTableViewControllerSegueID = "SiteTableViewController"
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == siteTableViewControllerSegueID {
-            guard let pavc = segue.destinationViewController as? SiteTableViewController else {
+            guard let pavc = segue.destination as? SiteTableViewController else {
                 print("unexpected destionation viewcontroller")
                 return
             }
@@ -230,13 +230,13 @@ class LocationsMapViewController: UIViewController {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
     lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest(entityName: "VTAnnotation")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "VTAnnotation")
         request.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true), NSSortDescriptor(key: "longitude", ascending: true)]
         return NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
     }()
     
     // MARK: Helpers
-    func locationNames(placemark: CLPlacemark, altitude: CLLocationDistance) -> [String] {
+    func locationNames(_ placemark: CLPlacemark, altitude: CLLocationDistance) -> [String] {
         var names = [String]()
         
         
@@ -271,7 +271,7 @@ class LocationsMapViewController: UIViewController {
 
         return names
     }
-    func reverseGeocodeLocation(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, completionHandler: (name: String) -> Void) {
+    func reverseGeocodeLocation(_ coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, completionHandler: @escaping (_ name: String) -> Void) {
         geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)) { (placemarks, error) -> Void in
             if error == nil {
                 guard let placemarks = placemarks else {
@@ -282,7 +282,7 @@ class LocationsMapViewController: UIViewController {
                 }
             
                 if let name = self.locationNames(placemark, altitude: altitude).first {
-                    completionHandler(name: name)
+                    completionHandler(name)
                 }
                 
             }
@@ -293,8 +293,8 @@ class LocationsMapViewController: UIViewController {
 
 // MARK: UIViewControllerRestoration
 extension LocationsMapViewController : UIViewControllerRestoration {
-    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LocationsMapViewController")
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LocationsMapViewController")
         vc.restorationClass = LocationsMapViewController.self
         vc.restorationIdentifier = (identifierComponents.last as! String)
         return vc
@@ -303,55 +303,55 @@ extension LocationsMapViewController : UIViewControllerRestoration {
 
 // MARK: MKMapViewDelegate
 extension LocationsMapViewController : MKMapViewDelegate {
-    func mapView(mapView: MKMapView, didChangeUserTrackingMode mode: MKUserTrackingMode, animated: Bool) {
-        if mode == .None {
+    func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
+        if mode == .none {
             locationButton.image = UIImage(named: "GPS")
         } else {
             locationButton.image = UIImage(named: "GPS-Filled")
         }
     }
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
         reverseGeocodeLocation(mapView.centerCoordinate, altitude: mapView.camera.altitude) { (name) -> Void in
             self.navigationItem.title = name
         }
     }
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation as? VTAnnotation {
             self.annotation = annotation
-            performSegueWithIdentifier(siteTableViewControllerSegueID, sender: self)
+            performSegue(withIdentifier: siteTableViewControllerSegueID, sender: self)
         }
     }
-    func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         for annView in views
         {
-            if annView.isKindOfClass(MKPinAnnotationView) {
+            if annView.isKind(of: MKPinAnnotationView.self) {
                 let endFrame = annView.frame;
-                annView.frame = CGRectOffset(endFrame, 0, -500);
-                UIView.animateWithDuration(0.3, animations: {
+                annView.frame = endFrame.offsetBy(dx: 0, dy: -500);
+                UIView.animate(withDuration: 0.3, animations: {
                     annView.frame = endFrame
                 })
             }
         }
     }
-    func mapViewWillStartLoadingMap(mapView: MKMapView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
-    func mapViewDidFinishLoadingMap(mapView: MKMapView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }
 
 // MARK: NSFetchedResultsControllerDelegate
 extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         let pin = anObject as! VTAnnotation
         switch type {
-        case .Insert:
+        case .insert:
             mapView.addAnnotation(pin)
-        case .Delete:
+        case .delete:
             mapView.removeAnnotation(pin)
-        case .Update:
+        case .update:
             mapView.removeAnnotation(pin)
             mapView.addAnnotation(pin)
         default:
@@ -362,11 +362,11 @@ extension LocationsMapViewController : NSFetchedResultsControllerDelegate {
 }
 
 extension LocationsMapViewController : CLLocationManagerDelegate {
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedWhenInUse || status == .AuthorizedAlways {
-            if !NSUserDefaults.standardUserDefaults().boolForKey("firstTimeLaunching") {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse || status == .authorizedAlways {
+            if !UserDefaults.standard.bool(forKey: "firstTimeLaunching") {
                 startTrackingLocation()
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstTimeLaunching")
+                UserDefaults.standard.set(true, forKey: "firstTimeLaunching")
             }
         }
     }

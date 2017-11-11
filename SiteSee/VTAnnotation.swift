@@ -31,8 +31,8 @@ class VTAnnotation: NSManagedObject, MKAnnotation {
             return CLLocationCoordinate2D(latitude: latitude.doubleValue, longitude: longitude.doubleValue)
         }
         set {
-            latitude = NSNumber(double: coordinate.latitude)
-            longitude = NSNumber(double: coordinate.longitude)
+            latitude = NSNumber(value: coordinate.latitude as Double)
+            longitude = NSNumber(value: coordinate.longitude as Double)
         }
     }
     
@@ -43,13 +43,13 @@ class VTAnnotation: NSManagedObject, MKAnnotation {
         }
         return keyword
     }
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     init(dictionary: [String:AnyObject], context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("VTAnnotation", inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: "VTAnnotation", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         longitude = dictionary[Keys.Longitude] as! NSNumber
         latitude = dictionary[Keys.Latitude] as! NSNumber
