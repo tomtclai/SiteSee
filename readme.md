@@ -1,5 +1,6 @@
 
-# SiteSee 
+# SiteSee  
+![Build status](https://travis-ci.org/tomtclai/SiteSee.svg?branch=master)
 
 ![Icon](Images/Icon-76@2x.png) 
 
