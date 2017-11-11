@@ -37,7 +37,7 @@ class Model : NSObject {
     // MARK: Convenience
     func getDataFromUrl(_ url: URL, completion: @escaping ((_ data:Data?, _ response: URLResponse?, _ error: NSError?) ->Void)) {
         URLSession.shared.dataTask(with: url, completionHandler: {
-            completion($0, $1, $2 as! NSError)
+            completion($0, $1, $2 as? NSError)
             }) .resume()
     }
     func downloadImage(_ url: String, completion:@escaping (_ data:Data?, _ response: URLResponse?, _ error: NSError?) ->Void) {
