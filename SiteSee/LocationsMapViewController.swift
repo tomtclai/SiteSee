@@ -17,10 +17,63 @@ class LocationsMapViewController: UIViewController {
     var locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    var dictionaryStateNames = NSDictionary(objects:
-        ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba", "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador"] ,
-                                            forKeys:
-        ["AL" as NSCopying, "AK" as NSCopying, "AZ" as NSCopying, "AR" as NSCopying, "CA" as NSCopying, "CO" as NSCopying, "CT" as NSCopying, "DE" as NSCopying, "DC" as NSCopying, "FL" as NSCopying, "GA" as NSCopying, "HI" as NSCopying, "ID" as NSCopying, "IL" as NSCopying, "IN" as NSCopying, "IA" as NSCopying, "KS" as NSCopying, "KY" as NSCopying, "LA" as NSCopying, "ME" as NSCopying, "MD" as NSCopying, "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "ON", "QC", "NS", "NB", "MB", "BC", "PE", "SK", "AB", "NL"])
+    let dictionaryStateNames = [
+        "AK" : "Alaska",
+        "AL" : "Alabama",
+        "AR" : "Arkansas",
+        "AS" : "American Samoa",
+        "AZ" : "Arizona",
+        "CA" : "California",
+        "CO" : "Colorado",
+        "CT" : "Connecticut",
+        "DC" : "District of Columbia",
+        "DE" : "Delaware",
+        "FL" : "Florida",
+        "GA" : "Georgia",
+        "GU" : "Guam",
+        "HI" : "Hawaii",
+        "IA" : "Iowa",
+        "ID" : "Idaho",
+        "IL" : "Illinois",
+        "IN" : "Indiana",
+        "KS" : "Kansas",
+        "KY" : "Kentucky",
+        "LA" : "Louisiana",
+        "MA" : "Massachusetts",
+        "MD" : "Maryland",
+        "ME" : "Maine",
+        "MI" : "Michigan",
+        "MN" : "Minnesota",
+        "MO" : "Missouri",
+        "MS" : "Mississippi",
+        "MT" : "Montana",
+        "NC" : "North Carolina",
+        "ND" : " North Dakota",
+        "NE" : "Nebraska",
+        "NH" : "New Hampshire",
+        "NJ" : "New Jersey",
+        "NM" : "New Mexico",
+        "NV" : "Nevada",
+        "NY" : "New York",
+        "OH" : "Ohio",
+        "OK" : "Oklahoma",
+        "OR" : "Oregon",
+        "PA" : "Pennsylvania",
+        "PR" : "Puerto Rico",
+        "RI" : "Rhode Island",
+        "SC" : "South Carolina",
+        "SD" : "South Dakota",
+        "TN" : "Tennessee",
+        "TX" : "Texas",
+        "UT" : "Utah",
+        "VA" : "Virginia",
+        "VI" : "Virgin Islands",
+        "VT" : "Vermont",
+        "WA" : "Washington",
+        "WI" : "Wisconsin",
+        "WV" : "West Virginia",
+        "WY" : "Wyoming"
+    ]
 
     @IBOutlet weak var locationButton: UIBarButtonItem!
     
@@ -229,10 +282,11 @@ class LocationsMapViewController: UIViewController {
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "VTAnnotation")
+
+    lazy var fetchedResultsController: NSFetchedResultsController<VTAnnotation> = {
+        let request = NSFetchRequest<VTAnnotation>(entityName: "VTAnnotation")
         request.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true), NSSortDescriptor(key: "longitude", ascending: true)]
-        return NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        return NSFetchedResultsController<VTAnnotation>(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
     }()
     
     // MARK: Helpers

@@ -41,20 +41,22 @@ class Flickr : Model {
                 }
                 return
             }
-            
+
             /* GUARD: Was there any data returned? */
             guard let data = data else {
                 completionHandler(nil, NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "No data was returned by the request"]))
                 return
             }
-            
             /* Parse the data! */
-            let parsedResult: Any!
-            
+            let parsedResult: [String: Any]
+
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                    completionHandler(nil, NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
+                    return
+                }
+                parsedResult = dictionary
             } catch {
-                parsedResult = nil
                 completionHandler(nil, NSError(domain: "getOwnerName", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
             }
@@ -114,7 +116,7 @@ class Flickr : Model {
             }
             
             /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 if let response = response as? HTTPURLResponse {
                     completionHandler(nil , nil, nil, NSError(domain: "getImageFromFlickrBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: response.description]))
                 } else if let response = response {
@@ -131,19 +133,19 @@ class Flickr : Model {
                 return
             }
             /* Parse the data! */
-            let parsedResult: AnyObject!
+            let parsedResult: [String: Any]!
             
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
             } catch {
                 parsedResult = nil
                 
                 completionHandler(nil, nil, nil, NSError(domain: "getImageFromFlickrBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse the data as JSON: '\(data)'"]))
                 return
             }
-            
+
             /* GUARD: Did Flickr return an error? */
-            guard let stat = parsedResult["stat"] as? String where stat == "ok" else {
+            guard let stat = parsedResult["stat"] as? String, stat == "ok" else {
                 completionHandler(nil, nil, nil, NSError(domain: "getImageFromFlickrBySearch", code: 0, userInfo: [NSLocalizedDescriptionKey: "Flickr API returned an error. See error code and message in \(parsedResult)"]))
                 return
             }
@@ -170,7 +172,7 @@ class Flickr : Model {
         task.resume()
     }
     
-    func getImageFromFlickrBySearchWithPage(_ methodArguments: [String : AnyObject], pageNumber: Int, completionHandler: @escaping (stat: String?, photosDictionary: NSDictionary?, totalPhotosVal: Int?, error: NSError?) -> Void) {
+    func getImageFromFlickrBySearchWithPage(_ methodArguments: [String : AnyObject], pageNumber: Int, completionHandler: @escaping (_ stat: String?, _ photosDictionary: NSDictionary?, _ totalPhotosVal: Int?, _ error: NSError?) -> Void) {
         
         /* Add the page to the method's arguments */
         var withPageDictionary = methodArguments
@@ -211,13 +213,17 @@ class Flickr : Model {
                     userInfo: [NSLocalizedDescriptionKey:"No data was returned by the request!"]))
                 return
             }
-            
+
+
             /* Parse the data! */
-            let parsedResult: AnyObject!
+            let parsedResult: [String: Any]
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                guard let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                    completionHandler(nil, nil, nil , NSError(domain: "getImageFromFlickrBySearchWithPage", code: 9999, userInfo: [NSLocalizedDescriptionKey: "Could not convert to dictionary '\(data)'"]))
+                    return
+                }
+                parsedResult = dictionary
             } catch {
-                parsedResult = nil
                 completionHandler(nil, nil, nil, NSError(domain: "getImageFromFlickrBySearchWithPage", code: 0,
                     userInfo: [NSLocalizedDescriptionKey:"Could not parse the data as JSON: '\(data)'"]))
                 return
@@ -323,7 +329,7 @@ extension Flickr {
                     // can be nil
                     let originalImageUrlStr = photoDictionary["url_o"] as? String
                     
-                    guard let license = photoDictionary["license"]?.intValue else {
+                    guard let license = photoDictionary["license"] as? Int else {
                         print("cannot find key license in \(photoDictionary) ")
                         return
                     }
@@ -344,7 +350,7 @@ extension Flickr {
             }
         })
     }
-    func getCellImageConvenience(_ url:String, completion: @escaping ((data: Data) -> Void)) {
+    func getCellImageConvenience(_ url:String, completion: @escaping ((_ data: Data) -> Void)) {
         self.downloadImage(url, completion: { (data, response, error) -> Void in
             /* GUARD: Was there an error? */
             guard (error == nil) else {
@@ -353,7 +359,7 @@ extension Flickr {
             }
             
             /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 if let response = response as? HTTPURLResponse {
                     print("Your request returned an invalid response! Status code: \(response.statusCode)!")
                 } else if let response = response {

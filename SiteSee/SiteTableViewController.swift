@@ -366,22 +366,23 @@ class SiteTableViewController: UITableViewController {
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
-    lazy var fetchedArticlesController: NSFetchedResultsController = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+
+    lazy var fetchedArticlesController: NSFetchedResultsController<Article> = {
+        let request = NSFetchRequest<Article>(entityName: "Article")
         request.predicate = NSPredicate(format: "pin == %@", self.annotation)
         request.sortDescriptors = [NSSortDescriptor(key: "sortOrder", ascending: true)]
         
-        let fetched =  NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetched =  NSFetchedResultsController<Article>(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         fetched.delegate = self
         return fetched
     }()
     
-    lazy var fetchedImagesController: NSFetchedResultsController = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Image")
+    lazy var fetchedImagesController: NSFetchedResultsController<Image> = {
+        let request = NSFetchRequest<Image>(entityName: "Image")
         request.predicate = NSPredicate(format: "pin == %@", self.annotation)
         request.sortDescriptors = [NSSortDescriptor(key: "sortOrder", ascending: true)]
         
-        let fetched =  NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetched =  NSFetchedResultsController<Image>(fetchRequest: request, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         fetched.delegate = self
         return fetched
     }()
