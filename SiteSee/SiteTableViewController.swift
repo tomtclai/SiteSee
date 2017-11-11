@@ -507,7 +507,7 @@ extension SiteTableViewController : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! VTCollectionViewCell
         cell.activity.hidesWhenStopped = true
         let fi = convertIndexPathForFetchedResultsController(indexPath)
-        let image = fetchedImagesController.object(at: fi) as! Image
+        let image = fetchedImagesController.object(at: fi) 
         
         // look for local path, if not found, download and save to documents directory
         

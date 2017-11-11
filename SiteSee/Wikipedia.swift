@@ -25,9 +25,9 @@ class Wikipedia : Model {
     func stripHTMLTags(_ htmlString: String) -> String {
         let data = htmlString.data(using: String.Encoding.utf8)!
 
-        let option : [String: Any] = [
-            NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
+        let option : [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType : NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
         ]
         var attr = NSAttributedString()
         do {

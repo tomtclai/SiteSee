@@ -95,7 +95,7 @@ class LocationsMapViewController: UIViewController {
     }
     
     // MARK: User Interaction
-    func mapTypeChanged(_ notification: Notification) {
+    @objc func mapTypeChanged(_ notification: Notification) {
 
         if let rawValue = UserDefaults.standard.object(forKey: "mapType") as? UInt {
             if let mapType = MKMapType(rawValue: rawValue) {

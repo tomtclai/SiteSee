@@ -298,8 +298,8 @@ extension PhotoAlbumViewController : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! VTCollectionViewCell
         cell.activity.hidesWhenStopped = true
         cell.delegate = self
-        let image = fetchedResultsController.object(at: indexPath) as! Image
-        
+        let image = fetchedResultsController.object(at: indexPath)
+
         // look for local path, if not found, download and save to documents directory
         
         if let uuid = image.uuid  {
