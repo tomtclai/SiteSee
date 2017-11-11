@@ -7,4 +7,4 @@
 //
 
 import Foundation
-let FlickrSecretAPIKey = ""
+let FlickrSecretAPIKey = "82064b1488e6ae258e952da24fedd56f"

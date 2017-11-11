@@ -10,10 +10,17 @@ import UIKit
 import SafariServices
 class PhotoViewController: UIViewController {
     var image : Image!
+    @IBOutlet weak var imageViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageViewTrailingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var effectView: UIVisualEffectView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var attributionLabel: UILabel!
     @IBOutlet weak var attribution: UIButton!
     @IBOutlet weak var imageView: UIImageView!
-    func attributionStr(flickrLicense: Int, ownerName: String)->String {
+    func attributionStr(_ flickrLicense: Int, ownerName: String)->String {
         let licenseName = Flickr.Constants.licenseName(flickrLicense)
         if flickrLicense == 7 || flickrLicense == 8 {
             return "\(licenseName)."
@@ -22,8 +29,8 @@ class PhotoViewController: UIViewController {
         }
     }
     
-    @IBAction func tapped(sender: UITapGestureRecognizer) {
-        let sfv = SFSafariViewController(URL: NSURL(string:image.flickrPageUrl!)!)
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        let sfv = SFSafariViewController(url: URL(string:image.flickrPageUrl!)!)
         navigationController?.pushViewController(sfv, animated: true)
     }
     override func viewDidLoad() {
@@ -36,39 +43,71 @@ class PhotoViewController: UIViewController {
         }
         
         imageView.image = UIImage(contentsOfFile: Image.imgPath(uuid))
-        attribution.setTitle(attributionStr(image.license!.integerValue, ownerName:image.ownerName!), forState: .Normal)
-        attribution.titleLabel?.textAlignment = .Center
-        attributionLabel.text = "Copyright © \(image.ownerName!). No changes were made."
-        attributionLabel.textColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
-        attribution.titleLabel?.textColor = UIColor.blueColor().colorWithAlphaComponent(0.7)
+        
+        scrollView.delegate = self;
+        setupAttributions()
         loadFullSizeImage()
     }
     
-    @IBAction func attributionTapped(sender: UIButton) {
-        let sfv = SFSafariViewController(URL: NSURL(string: Flickr.Constants.licenseUrl(image.license!.integerValue)!)!)
+    override func viewDidLayoutSubviews() {
+        updateMinZoomScaleFor(scrollView.bounds.size)
+    }
+    fileprivate func updateConstraintsForSize(_ size: CGSize) {
+        
+        let yOffset = max(0, (size.height - imageView.frame.height) / 2)
+        imageViewTopConstraint.constant = yOffset
+        imageViewBottomConstraint.constant = yOffset
+        
+        let xOffset = max(0, (size.width - imageView.frame.width) / 2)
+        imageViewLeadingConstraint.constant = xOffset
+        imageViewTrailingConstraint.constant = xOffset
+        
+        view.layoutIfNeeded()
+    }
+    func updateMinZoomScaleFor(_ size: CGSize) -> Void {
+        let minXScale = size.width / imageView.bounds.width
+        let minYScale = size.height / imageView.bounds.height
+        scrollView.minimumZoomScale = min(minXScale,minYScale)
+        scrollView.zoomScale = scrollView.minimumZoomScale
+    }
+    @IBAction func attributionTapped(_ sender: UIButton) {
+        let sfv = SFSafariViewController(url: URL(string: Flickr.Constants.licenseUrl(image.license!.intValue)!)!)
         navigationController?.pushViewController(sfv, animated: true)
+    }
+    func setupAttributions() -> Void {
+        attribution.setTitle(attributionStr(image.license!.intValue, ownerName:image.ownerName!), for: UIControlState())
+        attribution.titleLabel?.textAlignment = .center
+        attributionLabel.text = "Copyright © \(image.ownerName!). No changes were made."
+        attributionLabel.textColor = UIColor.black.withAlphaComponent(0.7)
+        attribution.titleLabel?.textColor = UIColor.blue.withAlphaComponent(0.7)
+        scrollView.scrollIndicatorInsets.bottom = effectView.frame.height;
     }
     func loadFullSizeImage() -> Void {
         guard image.origImageUrl != nil else {
             return
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { (data) -> Void in
-            dispatch_async(dispatch_get_main_queue()){
+            DispatchQueue.main.async{
                 
-                UIView.transitionWithView(self.imageView, duration:0.2, options: .TransitionCrossDissolve, animations: {
-                    self.imageView.image = UIImage(data: data)!
-                    }, completion: nil)
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                self.imageView.image = UIImage(data: data)!
+                self.updateMinZoomScaleFor(self.imageView.bounds.size)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         })
     }
 }
 extension PhotoViewController: UIGestureRecognizerDelegate{
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(attribution){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: attribution){
             return false
         }
         return true
+    }
+}
+
+extension PhotoViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView;
     }
 }

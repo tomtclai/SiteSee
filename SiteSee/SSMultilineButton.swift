@@ -10,12 +10,12 @@ import UIKit
 
 class SSMultilineButton: UIButton {
 
-    override func intrinsicContentSize() -> CGSize
+    override var intrinsicContentSize : CGSize
     {
         if let titleLabel = self.titleLabel {
-            return titleLabel.intrinsicContentSize();
+            return titleLabel.intrinsicContentSize;
         } else {
-            return super.intrinsicContentSize()
+            return super.intrinsicContentSize
         }
     }
     

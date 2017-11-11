@@ -8,14 +8,14 @@
 
 import Foundation
 class Model : NSObject {
-    typealias CompletionHandler = (result: AnyObject!, error: NSError) -> Void
-    var session: NSURLSession
+    typealias CompletionHandler = (_ result: AnyObject?, _ error: NSError) -> Void
+    var session: URLSession
     override init() {
-        session = NSURLSession.sharedSession()
+        session = URLSession.shared
         super.init()
     }
     // MARK: Escape HTML Parameters
-    func escapedParameters(parameters: [String : AnyObject]) -> String {
+    func escapedParameters(_ parameters: [String : AnyObject]) -> String {
         
         var urlVars = [String]()
         
@@ -25,24 +25,35 @@ class Model : NSObject {
             let stringValue = "\(value)"
             
             /* Escape it */
-            let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            let escapedValue = stringValue.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
             
             /* Append it */
             urlVars += [key + "=" + "\(escapedValue!)"]
             
         }
         
-        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
     }
     // MARK: Convenience
-    func getDataFromUrl(url: NSURL, completion: ((data:NSData?, response: NSURLResponse?, error: NSError?) ->Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(url) {
-            completion(data: $0, response: $1, error: $2)
-            }.resume()
+    func getDataFromUrl(_ url: URL, completion: @escaping ((_ data:Data?, _ response: URLResponse?, _ error: NSError?) ->Void)) {
+        URLSession.shared.dataTask(with: url, completionHandler: {
+            completion($0, $1, $2 as? NSError)
+            }) .resume()
     }
-    func downloadImage(url: String, completion:(data:NSData?, response: NSURLResponse?, error: NSError?) ->Void) {
-        getDataFromUrl(NSURL(string: url)!) {
-            completion(data: $0, response: $1, error: $2)
+    func downloadImage(_ url: String, completion:@escaping (_ data:Data?, _ response: URLResponse?, _ error: NSError?) ->Void) {
+        getDataFromUrl(URL(string: url)!) {
+            completion($0, $1, $2)
         }
     }
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
+
 }

@@ -18,13 +18,13 @@ class Article: NSManagedObject {
         static let SortOrder = "sortOrder"
     }
     
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     init(dictionary: [String:AnyObject?], context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entityForName("Article", inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: "Article", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         title = dictionary[Keys.Title] as? String
         subtitle = dictionary[Keys.Subtitle] as? String

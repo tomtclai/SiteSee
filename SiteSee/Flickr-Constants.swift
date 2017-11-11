@@ -12,14 +12,14 @@ extension Flickr {
     struct Constants {
         static let baseUrl = "https://api.flickr.com/services/rest/"
         static let apiKey = FlickrSecretAPIKey // Not to be shared on a public repo
-        static func webPageUrlForPhoto(userID: String, photoID: String) -> String {
+        static func webPageUrlForPhoto(_ userID: String, photoID: String) -> String {
             var url = "https://www.flickr.com/photos/"
-            url.appendContentsOf(userID)
-            url.appendContentsOf("/")
-            url.appendContentsOf(photoID)
+            url.append(userID)
+            url.append("/")
+            url.append(photoID)
             return url
         }
-        static func licenseUrl(licenseID: Int) -> String? {
+        static func licenseUrl(_ licenseID: Int) -> String? {
             // TODO: use the API function to get these
             switch licenseID {
             case 1:
@@ -42,7 +42,7 @@ extension Flickr {
                 return nil
             }
         }
-        static func licenseName(licenseID: Int) -> String? {
+        static func licenseName(_ licenseID: Int) -> String? {
             // TODO: use the API function to get these
             switch licenseID {
             case 1:
