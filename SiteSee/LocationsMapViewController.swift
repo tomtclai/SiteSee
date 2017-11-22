@@ -143,7 +143,7 @@ class LocationsMapViewController: UIViewController {
         case .denied:
             let uac = UIAlertController(title: "Enable Location Services to Allow SiteSee to Determine Your Location", message: "", preferredStyle: UIAlertControllerStyle.alert)
             uac.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (action) in
-                UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!);
+                UIApplication.shared.open(URL(string:UIApplicationOpenSettingsURLString)!, completionHandler: nil)
             }))
             uac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
