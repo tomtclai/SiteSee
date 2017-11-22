@@ -43,15 +43,12 @@ class PhotoViewController: UIViewController {
         }
         
         imageView.image = UIImage(contentsOfFile: Image.imgPath(uuid))
-        
+        updateZoomScale()
         scrollView.delegate = self;
         setupAttributions()
         loadFullSizeImage()
     }
-    
-    override func viewDidLayoutSubviews() {
-        updateMinZoomScaleFor(scrollView.bounds.size)
-    }
+
     fileprivate func updateConstraintsForSize(_ size: CGSize) {
         
         let yOffset = max(0, (size.height - imageView.frame.height) / 2)
@@ -64,10 +61,13 @@ class PhotoViewController: UIViewController {
         
         view.layoutIfNeeded()
     }
-    func updateMinZoomScaleFor(_ size: CGSize) -> Void {
-        let minXScale = size.width / imageView.bounds.width
-        let minYScale = size.height / imageView.bounds.height
-        scrollView.minimumZoomScale = min(minXScale,minYScale)
+    func updateZoomScale() -> Void {
+        let viewSize = self.scrollView.bounds.size
+        let imageSize = imageView.bounds.size
+        let xScale = imageSize.width / viewSize.width
+        let yScale = imageSize.height / viewSize.height
+        scrollView.minimumZoomScale = min(xScale, yScale)
+        scrollView.maximumZoomScale = max(xScale, yScale)
         scrollView.zoomScale = scrollView.minimumZoomScale
     }
     @IBAction func attributionTapped(_ sender: UIButton) {
@@ -91,7 +91,7 @@ class PhotoViewController: UIViewController {
             DispatchQueue.main.async{
                 
                 self.imageView.image = UIImage(data: data)!
-                self.updateMinZoomScaleFor(self.imageView.bounds.size)
+                self.updateZoomScale()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         })
