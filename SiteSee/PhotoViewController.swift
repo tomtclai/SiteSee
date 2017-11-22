@@ -23,7 +23,7 @@ class PhotoViewController: UIViewController {
     func attributionStr(_ flickrLicense: Int, ownerName: String)->String {
         let licenseName = Flickr.Constants.licenseName(flickrLicense)
         if flickrLicense == 7 || flickrLicense == 8 {
-            return "\(licenseName)."
+            return "\(licenseName ?? "License not available")."
         } else {
         return "This photo is made available under a \(licenseName!) license."
         }
