@@ -49,6 +49,10 @@ class PhotoViewController: UIViewController {
         loadFullSizeImage()
     }
 
+    override func viewWillLayoutSubviews() {
+        updateZoomScale()
+    }
+
     fileprivate func updateConstraintsForSize(_ size: CGSize) {
         
         let yOffset = max(0, (size.height - imageView.frame.height) / 2)
@@ -61,11 +65,14 @@ class PhotoViewController: UIViewController {
         
         view.layoutIfNeeded()
     }
-    func updateZoomScale() -> Void {
-        let viewSize = self.scrollView.bounds.size
-        let imageSize = imageView.bounds.size
-        let xScale = imageSize.width / viewSize.width
-        let yScale = imageSize.height / viewSize.height
+
+    func updateZoomScale() {
+        let viewSize = scrollView.bounds.size
+        guard let imageSize = self.imageView.image?.size else {
+            return
+        }
+        let xScale = viewSize.width / imageSize.width
+        let yScale = viewSize.height / imageSize.height
         scrollView.minimumZoomScale = min(xScale, yScale)
         scrollView.maximumZoomScale = max(xScale, yScale)
         scrollView.zoomScale = scrollView.minimumZoomScale
@@ -89,7 +96,6 @@ class PhotoViewController: UIViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { (data) -> Void in
             DispatchQueue.main.async{
-                
                 self.imageView.image = UIImage(data: data)!
                 self.updateZoomScale()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
