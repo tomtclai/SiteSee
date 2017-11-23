@@ -84,16 +84,28 @@ class LocationsMapViewController: UIViewController {
         fetchedResultsController.delegate = self
         do {
             try fetchedResultsController.performFetch()
+            if let objects = fetchedResultsController.fetchedObjects {
+                let annotations = objects.map{$0 as MKAnnotation}
+                mapView.removeAnnotations(mapView.annotations)
+                mapView.addAnnotations(annotations)
+            }
+
         } catch {
             fatalError("Fetch failed: \(error)")
         }
         locationManager.delegate = self
-        mapView.removeAnnotations(mapView.annotations)
-        mapView.addAnnotations(fetchedResultsController.fetchedObjects as! [MKAnnotation])
+        updateVisiblity(traitCollection)
         locationManager.requestWhenInUseAuthorization()
         NotificationCenter.default.addObserver(self, selector: #selector(LocationsMapViewController.mapTypeChanged(_:)), name: UserDefaults.didChangeNotification, object: nil)
     }
-    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        updateVisiblity(newCollection)
+    }
+    func updateVisiblity(_ newCollection: UITraitCollection) {
+        let isCompactHeight = newCollection.verticalSizeClass == .compact
+        segmentedControl?.isHidden = isCompactHeight
+        navigationController?.navigationBar.isHidden = isCompactHeight
+    }
     // MARK: User Interaction
     @objc func mapTypeChanged(_ notification: Notification) {
 
