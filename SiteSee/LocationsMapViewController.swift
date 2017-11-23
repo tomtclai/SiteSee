@@ -292,27 +292,20 @@ class LocationsMapViewController: UIViewController {
     // MARK: Helpers
     func locationNames(_ placemark: CLPlacemark, altitude: CLLocationDistance) -> [String] {
         var names = [String]()
-        
-        
-        if altitude < 200000 {
-            if let subLocality = placemark.subLocality {
-                names.append(subLocality)
-            }
+
+        if altitude < 200000, let subLocality = placemark.subLocality {
+            names.append(subLocality)
         }
         
-        if altitude < 400000 {
-            if let locality = placemark.locality {
-                names.append(locality)
-            }
+        if altitude < 400000, let locality = placemark.locality {
+            names.append(locality)
         }
         
-        if altitude < 10000000 {
-            if let administrativeArea = placemark.administrativeArea {
-                if let name = dictionaryStateNames[administrativeArea] as? String{
-                    names.append(name)
-                } else {
-                    names.append(administrativeArea)
-                }
+        if altitude < 10000000, let administrativeArea = placemark.administrativeArea {
+            if let name = dictionaryStateNames[administrativeArea] as? String{
+                names.append(name)
+            } else {
+                names.append(administrativeArea)
             }
         }
 
