@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 class PhotoViewController: UIViewController {
-    var image : Image!
+    var photoViewModel: PhotoViewModel!
     @IBOutlet weak var imageViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewLeadingConstraint: NSLayoutConstraint!
@@ -20,31 +20,27 @@ class PhotoViewController: UIViewController {
     @IBOutlet weak var attributionLabel: UILabel!
     @IBOutlet weak var attribution: UIButton!
     @IBOutlet weak var imageView: UIImageView!
-    func attributionStr(_ flickrLicense: Int, ownerName: String)->String {
-        let licenseName = Flickr.Constants.licenseName(flickrLicense)
-        if flickrLicense == 7 || flickrLicense == 8 {
-            return "\(licenseName ?? "License not available")."
-        } else {
-        return "This photo is made available under a \(licenseName!) license."
-        }
-    }
+
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let sfv = SFSafariViewController(url: URL(string:image.flickrPageUrl!)!)
-        navigationController?.pushViewController(sfv, animated: true)
+        showFlickrPage()
+    }
+    func showFlickrPage() {
+        guard let url = photoViewModel.flickrPageURL else {return}
+        let sfv = SFSafariViewController(url: url)
+        navigationController?.isNavigationBarHidden = true
+        sfv.delegate = self
+        present(sfv, animated: true, completion: nil)
     }
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        
-        guard let uuid = image.uuid else {
-            print("image has no uuid")
-            return
-        }
-        
-        imageView.image = UIImage(contentsOfFile: Image.imgPath(uuid))
+        imageView.image = photoViewModel.image
         updateZoomScale()
-        scrollView.delegate = self;
+        scrollView.delegate = self
+        if #available(iOS 11.0, *) {
+            scrollView.contentInsetAdjustmentBehavior = .automatic
+        }
         setupAttributions()
         loadFullSizeImage()
     }
@@ -78,29 +74,29 @@ class PhotoViewController: UIViewController {
         scrollView.zoomScale = scrollView.minimumZoomScale
     }
     @IBAction func attributionTapped(_ sender: UIButton) {
-        let sfv = SFSafariViewController(url: URL(string: Flickr.Constants.licenseUrl(image.license!.intValue)!)!)
-        navigationController?.pushViewController(sfv, animated: true)
+        showFlickrPage()
     }
     func setupAttributions() -> Void {
-        attribution.setTitle(attributionStr(image.license!.intValue, ownerName:image.ownerName!), for: UIControlState())
+        attribution.setTitle(photoViewModel.attributionTitle, for: .normal)
         attribution.titleLabel?.textAlignment = .center
-        attributionLabel.text = "Copyright © \(image.ownerName!). No changes were made."
+        attributionLabel.text = photoViewModel.attributionLabelText
         attributionLabel.textColor = UIColor.black.withAlphaComponent(0.7)
         attribution.titleLabel?.textColor = UIColor.blue.withAlphaComponent(0.7)
         scrollView.scrollIndicatorInsets.bottom = effectView.frame.height;
     }
     func loadFullSizeImage() -> Void {
-        guard image.origImageUrl != nil else {
-            return
-        }
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { (data) -> Void in
-            DispatchQueue.main.async{
-                self.imageView.image = UIImage(data: data)!
-                self.updateZoomScale()
+        photoViewModel.downloadFullSizeImage { [weak self] image in
+            DispatchQueue.main.async {
+                guard let strongSelf = self else {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    return
+                }
+                strongSelf.imageView.image = image
+                strongSelf.updateZoomScale()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
-        })
+        }
     }
 }
 extension PhotoViewController: UIGestureRecognizerDelegate{
@@ -115,5 +111,10 @@ extension PhotoViewController: UIGestureRecognizerDelegate{
 extension PhotoViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView;
+    }
+}
+extension PhotoViewController: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        navigationController?.isNavigationBarHidden = false
     }
 }

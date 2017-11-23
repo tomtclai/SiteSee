@@ -79,7 +79,7 @@ class PhotoAlbumViewController: UIViewController {
                 print("objectAtIndexPath isn't Image")
                 return
             }
-            destVc.image = image
+            destVc.photoViewModel = PhotoViewModel(imageData:image)
         }
     }
     
