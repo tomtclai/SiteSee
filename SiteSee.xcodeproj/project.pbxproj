@@ -35,6 +35,7 @@
 		777DE3AA1CACDB8B007A81FC /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777DE3A91CACDB8B007A81FC /* SnapshotHelper.swift */; };
 		7793B1C81CA33F8100D893B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B1C71CA33F8100D893B7 /* AppDelegate.swift */; };
 		7793B1CF1CA33F8100D893B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7793B1CE1CA33F8100D893B7 /* Assets.xcassets */; };
+		77DA5DCE1FD89DEE0096D3DC /* StateAbbreviations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DA5DCD1FD89DEE0096D3DC /* StateAbbreviations.swift */; };
 		77F0CA7E1CACCFF400D4CD95 /* SSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F0CA7D1CACCFF400D4CD95 /* SSUITests.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		7793B1C71CA33F8100D893B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7793B1CE1CA33F8100D893B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7793B1D31CA33F8100D893B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77DA5DCD1FD89DEE0096D3DC /* StateAbbreviations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateAbbreviations.swift; sourceTree = "<group>"; };
 		77F0CA731CACCF7400D4CD95 /* SiteSeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SiteSeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77F0CA751CACCF7400D4CD95 /* SiteSeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSeeUITests.swift; sourceTree = "<group>"; };
 		77F0CA771CACCF7400D4CD95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				7712ACB41FD327CB00A77759 /* CoreDataStackManager.swift */,
+				77DA5DCD1FD89DEE0096D3DC /* StateAbbreviations.swift */,
 				7712ACB61FD327CB00A77759 /* Model.xcdatamodeld */,
 				7712ACA01FD3273C00A77759 /* Model.swift */,
 				7712ACA11FD3273C00A77759 /* VTAnnotation.swift */,
@@ -374,6 +377,7 @@
 				7712AC8E1FD326A000A77759 /* Wikipedia.swift in Sources */,
 				7712ACC91FD327F800A77759 /* SiteTableViewController.swift in Sources */,
 				7712ACCC1FD327F800A77759 /* PhotoViewController.swift in Sources */,
+				77DA5DCE1FD89DEE0096D3DC /* StateAbbreviations.swift in Sources */,
 				7712ACB21FD327BB00A77759 /* SSTableViewCell.swift in Sources */,
 				7712ACB01FD327BB00A77759 /* SSTableViewPhotosCell.swift in Sources */,
 			);
