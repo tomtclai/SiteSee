@@ -228,7 +228,9 @@ class LocationsMapViewController: UIViewController {
                 print("unexpected destionation viewcontroller")
                 return
             }
-            pavc.annotation = annotation
+            let siteTableViewmodel = SiteTableViewModel(annotation: annotation)
+
+            pavc.siteTableViewModel = siteTableViewmodel
             
         }
     }

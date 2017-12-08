@@ -10,17 +10,10 @@ import UIKit
 import CoreData
 import SafariServices
 class SiteTableViewController: UITableViewController {
-    let flickerSection = 0
-    let wikiSection = 1
-    
-    var annotation: VTAnnotation! {
+    var siteTableViewModel: SiteTableViewModel! {
         didSet {
             self.navigationItem.rightBarButtonItem = self.editButtonItem
-            var keyword = annotation.title!
-            if let subtitle = annotation.subtitle {
-                keyword += ", \(subtitle)"
-                navigationItem.title = keyword
-            }
+//            let keyword = siteTableViewModel.keyword
             fetchedArticlesController.delegate = self
             fetchedImagesController.delegate = self
             do {
@@ -30,14 +23,14 @@ class SiteTableViewController: UITableViewController {
                 fatalError("Fetch failed: \(error)")
             }
             if !UserDefaults.standard.bool(forKey: locationIsLoadedKey()) {
-                searchWikipediaForArticles(keyword)
-                searchFlickrForPhotos(keyword)
+                searchWikipediaForArticles(siteTableViewModel.keyword)
+                searchFlickrForPhotos(siteTableViewModel.keyword)
             }
         }
     }
     let placeholder = UIImage(named: "placeholder")!
     var collectionView: UICollectionView {
-        let flickrCell = tableView.cellForRow(at: IndexPath(row: 0, section: flickerSection)) as! SSTableViewPhotosCell
+        let flickrCell = tableView.cellForRow(at: IndexPath(row: 0, section: siteTableViewModel.flickerSection)) as! SSTableViewPhotosCell
         return flickrCell.collectionView
     }
 
@@ -55,7 +48,7 @@ class SiteTableViewController: UITableViewController {
 
     // MARK: Helpers
     func locationIsLoadedKey() -> String {
-        return "locationIsLoaded: \(annotation.latitude) \(annotation.longitude)"
+        return "locationIsLoaded: \(siteTableViewModel.selectedAnnotation.latitude) \(siteTableViewModel.selectedAnnotation.longitude)"
     }
     func convertIndexPathForFetchedResultsController(_ indexPath: IndexPath) -> IndexPath {
         return setSectionForIndexPath(indexPath, section: 0)!
@@ -97,84 +90,7 @@ class SiteTableViewController: UITableViewController {
         navigationController?.pushViewController(sfVc, animated: true)
     }
 
-    // MARK: Flickr Client
-    func searchFlickrForPhotos(_ text:String) {
-        let methodArguments = Flickr.sharedInstance().getSearchPhotoMethodArgumentsConvenience(text, perPage: 21)
-        
-        Flickr.sharedInstance().getImageFromFlickrBySearch(methodArguments) { (stat, photosDict, totalPages, error) -> Void in
-            guard error == nil else {
-                print(error?.localizedDescription)
-                return
-            }
-            DispatchQueue.main.async{
-                var sortOrder: Double = 0.0
-                Flickr.sharedInstance().getImageFromFlickrWithPageConvenience(methodArguments, pageNumber: 0, completionHandler: { (thumbnailUrl, origImageUrl, flickrPageUrl, ownerName, license, error) in
-                    guard error == nil else {
-                        return
-                    }
-                    // add thumbnail url to core data
-                    // add medium url to core data
-                    let imageDictionary : [String: AnyObject?] = [
-                        Image.Keys.ThumbnailUrl : thumbnailUrl! as AnyObject,
-                        Image.Keys.OrigImageUrl : origImageUrl as AnyObject,
-                        Image.Keys.SortOrder : NSNumber(value: sortOrder as Double),
-                        Image.Keys.FlickrPageUrl : flickrPageUrl as AnyObject,
-                        Image.Keys.OwnerName : ownerName as AnyObject,
-                        Image.Keys.License : NSNumber(value: license!) as AnyObject
-                    ]
-                    sortOrder += 1.0
-                    
-                    DispatchQueue.main.async{
-                        let image = Image(dictionary: imageDictionary, context: self.sharedContext)
-                        image.pin = self.annotation
-                        self.saveContext()
-                    }
-                })
 
-                
-            }
-        }
-        
-        
-    }
-    func searchWikipediaForArticles(_ keyword: String) {
-        let metthodArguments: [String: AnyObject] = [
-            "action" : Wikipedia.Actions.query as AnyObject,
-            "format" : Wikipedia.Constants.format as AnyObject,
-            "list" : Wikipedia.List.search as AnyObject,
-            "utf-8" : 1 as AnyObject,
-            "srsearch" : keyword as AnyObject,
-            "srlimit" : 8 as AnyObject
-        ]
-        var sortOrder : Double = 0.0
-        Wikipedia.sharedInstance().getListOfArticles(metthodArguments) { (title, subtitle, error) -> Void in
-            guard error == nil else {
-                let uac = UIAlertController(title: error!.localizedDescription, message: nil, preferredStyle: .alert)
-                uac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(uac, animated: true, completion: nil)
-                UserDefaults.standard.set(false, forKey: self.locationIsLoadedKey())
-                return
-            }
-            if let title = title {
-                let articleDict : [String : AnyObject?] = [
-                    Article.Keys.Title : title as AnyObject,
-                    Article.Keys.Subtitle : subtitle as AnyObject,
-                    Article.Keys.Url : nil,
-                    Article.Keys.SortOrder : NSNumber(value: sortOrder as Double)
-                ]
-                sortOrder += 1.0
-                DispatchQueue.main.async(execute: {
-                    Article(dictionary: articleDict, context: self.sharedContext).pin = self.annotation
-                    do {
-                        try self.sharedContext.save()
-                    } catch {}
-                })
-            } else {
-                print ("no title")
-            }
-        }
-        UserDefaults.standard.set(true, forKey: locationIsLoadedKey())
-    }
     
     // MARK: - Table View Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
