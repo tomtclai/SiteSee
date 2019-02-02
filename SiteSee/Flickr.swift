@@ -192,7 +192,7 @@ class Flickr : Model {
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 completionHandler(nil, nil, nil, NSError(domain: "getImageFromFlickrBySearchWithPage", code: 0,
-                    userInfo: [NSLocalizedDescriptionKey:"There was an error with your request: \(error)"]))
+                                                         userInfo: [NSLocalizedDescriptionKey:"There was an error with your request: \(String(describing: error))"]))
                 return
             }
             
@@ -300,14 +300,14 @@ extension Flickr {
     func getImageFromFlickrWithPageConvenience(_ methodArguments: [String:AnyObject], pageNumber:Int, completionHandler:@escaping (_ thumbnailUrl: String?, _ origImageUrl: String?, _ flickrPageUrl: String?, _ ownerName: String?, _ license: Int?, _ error: NSError?)->Void) {
         Flickr.sharedInstance().getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: pageNumber, completionHandler: { (stat, photosDictionary, totalPhotosVal, error) -> Void in
             guard error == nil else {
-                print(error?.localizedDescription)
+              print(String(describing: error?.localizedDescription))
                 return
             }
             
             if totalPhotosVal! > 0 {
                 /* GUARD: Is the "photo" key in photosDictionary? */
                 guard let photosArray = photosDictionary!["photo"] as? [[String: AnyObject]] else {
-                    print("Cannot find key 'photo' in \(photosDictionary)")
+                  print("Cannot find key 'photo' in \(photosDictionary)")
                     return
                 }
                 for photoDictionary in photosArray {
