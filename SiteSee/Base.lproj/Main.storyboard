@@ -257,7 +257,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="92m-nP-cMX">
-                                <rect key="frame" x="64" y="44" width="884" height="370"/>
+                                <rect key="frame" x="64" y="44" width="776" height="370"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="kqo-Ae-pdd">
@@ -298,7 +298,7 @@
                             <constraint firstItem="92m-nP-cMX" firstAttribute="top" secondItem="s84-eY-zwK" secondAttribute="topMargin" id="EvD-bk-cpZ"/>
                             <constraint firstAttribute="bottom" secondItem="92m-nP-cMX" secondAttribute="bottom" id="Ief-HI-NS6"/>
                             <constraint firstItem="92m-nP-cMX" firstAttribute="top" secondItem="s84-eY-zwK" secondAttribute="topMargin" id="N1F-dt-m0B"/>
-                            <constraint firstAttribute="trailing" secondItem="92m-nP-cMX" secondAttribute="trailingMargin" id="s8Z-q3-xAx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="92m-nP-cMX" secondAttribute="trailingMargin" id="s8Z-q3-xAx"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

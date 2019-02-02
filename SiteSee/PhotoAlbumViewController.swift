@@ -253,8 +253,8 @@ extension PhotoAlbumViewController : NSFetchedResultsControllerDelegate {
 // MARK: UICollectionViewDelegateFlowLayout
 extension PhotoAlbumViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemsPerRow:CGFloat = 3
-        let padding:CGFloat = 5
+        let itemsPerRow: CGFloat = 3
+        let padding: CGFloat = 5
         let rowWidth = min(collectionView.bounds.width, collectionView.bounds.height)
         let photoSide = (rowWidth / itemsPerRow) - padding
         return CGSize(width: photoSide, height: photoSide)
