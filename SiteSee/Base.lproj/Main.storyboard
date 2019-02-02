@@ -46,7 +46,7 @@
                                 </connections>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qc2-Ev-WcM">
-                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <items>
                                     <barButtonItem image="GPS" id="3BX-99-c6V" userLabel="GPS Button">
                                         <connections>
@@ -56,7 +56,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Sgt-ge-weE"/>
                                     <barButtonItem style="plain" id="YJb-BV-c5k">
                                         <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="fCe-mm-FUa">
-                                            <rect key="frame" x="88.5" y="7" width="237" height="30"/>
+                                            <rect key="frame" x="88.5" y="12" width="237" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
                                                 <segment title="Standard"/>
@@ -256,8 +256,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="92m-nP-cMX">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="92m-nP-cMX">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="kqo-Ae-pdd">
@@ -357,9 +357,9 @@
                                 </connections>
                             </scrollView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j2b-GV-D72">
-                                <rect key="frame" x="0.0" y="802" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="810" width="414" height="86"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Raz-c0-XAy">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="86"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="syF-9G-poA">
@@ -385,7 +385,7 @@
                                     <constraints>
                                         <constraint firstItem="syF-9G-poA" firstAttribute="top" secondItem="Raz-c0-XAy" secondAttribute="top" constant="8" id="5Ey-JI-hKy"/>
                                         <constraint firstAttribute="trailing" secondItem="syF-9G-poA" secondAttribute="trailing" constant="4" id="C5q-Q8-VzW"/>
-                                        <constraint firstAttribute="bottom" secondItem="syF-9G-poA" secondAttribute="bottom" constant="8" id="Kf4-cS-UC8"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="syF-9G-poA" secondAttribute="bottom" constant="8" id="Kf4-cS-UC8"/>
                                         <constraint firstItem="syF-9G-poA" firstAttribute="leading" secondItem="Raz-c0-XAy" secondAttribute="leading" constant="4" id="nIq-DF-VZy"/>
                                     </constraints>
                                 </view>
@@ -395,12 +395,13 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="aL8-tI-Xjr" secondAttribute="bottom" id="4aG-ZG-ckF"/>
+                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="syF-9G-poA" secondAttribute="bottom" id="DUU-gk-p7S"/>
                             <constraint firstItem="aL8-tI-Xjr" firstAttribute="top" secondItem="1Rt-1s-WTE" secondAttribute="top" id="UL0-NS-giC"/>
                             <constraint firstAttribute="trailing" secondItem="j2b-GV-D72" secondAttribute="trailing" id="X2a-Do-6OD"/>
                             <constraint firstAttribute="trailing" secondItem="aL8-tI-Xjr" secondAttribute="trailing" id="lTn-Ui-EXq"/>
                             <constraint firstItem="j2b-GV-D72" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leading" id="lcw-35-J82"/>
                             <constraint firstItem="aL8-tI-Xjr" firstAttribute="leading" secondItem="1Rt-1s-WTE" secondAttribute="leading" id="oM5-Wn-Ase"/>
-                            <constraint firstItem="pUD-74-h8S" firstAttribute="top" secondItem="j2b-GV-D72" secondAttribute="bottom" id="uQw-vp-DsP"/>
+                            <constraint firstAttribute="bottom" secondItem="j2b-GV-D72" secondAttribute="bottom" id="uQw-vp-DsP"/>
                         </constraints>
                     </view>
                     <connections>
@@ -408,10 +409,6 @@
                         <outlet property="attributionLabel" destination="Ili-jP-EO5" id="bdR-RO-X6S"/>
                         <outlet property="effectView" destination="j2b-GV-D72" id="KwO-v2-Q9t"/>
                         <outlet property="imageView" destination="t8q-iA-Z4c" id="2C0-1t-iTS"/>
-                        <outlet property="imageViewBottomConstraint" destination="AAP-Xt-sDb" id="7Zm-3R-Hey"/>
-                        <outlet property="imageViewLeadingConstraint" destination="QAT-iJ-GXD" id="muL-gC-sre"/>
-                        <outlet property="imageViewTopConstraint" destination="9Lv-jL-1B7" id="79h-9a-7L1"/>
-                        <outlet property="imageViewTrailingConstraint" destination="4rO-4m-t7Y" id="SPu-5v-xBG"/>
                         <outlet property="scrollView" destination="aL8-tI-Xjr" id="xDr-iN-0B2"/>
                     </connections>
                 </viewController>
