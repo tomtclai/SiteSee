@@ -15,6 +15,7 @@ class PhotoViewController: UIViewController {
   @IBOutlet weak var attributionLabel: UILabel!
   @IBOutlet weak var attribution: UIButton!
   @IBOutlet weak var imageView: UIImageView!
+  @IBOutlet weak var spinner: UIActivityIndicatorView!
   func attributionStr(_ flickrLicense: Int, ownerName: String)->String {
     let licenseName = Flickr.Constants.licenseName(flickrLicense)
     if flickrLicense == 7 || flickrLicense == 8 {
@@ -72,6 +73,7 @@ class PhotoViewController: UIViewController {
   func loadFullSizeImage() -> Void {
     guard image.origImageUrl != nil else { return }
     UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    spinner.startAnimating()
     Flickr.sharedInstance().getCellImageConvenience(image.origImageUrl!, completion: { [weak self] (data) -> Void in
       guard let self = self else { return }
       guard let image = UIImage(data: data) else { return }
@@ -79,6 +81,7 @@ class PhotoViewController: UIViewController {
       self.updateZoom()
       self.centerImage()
       UIApplication.shared.isNetworkActivityIndicatorVisible = false
+      self.spinner.stopAnimating()
     })
   }
 
